@@ -9,7 +9,7 @@ import SecondaryBtn from "../buttons/SecondaryBtn";
 const AddListing = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
-    const [imageFiles, setImageFiles] = useState([]);
+    // const [imageFiles, setImageFiles] = useState([]);
 
     const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedCategory(event.target.value);
@@ -34,7 +34,7 @@ const AddListing = () => {
         <div className='px-3 py-8 sm:max-w-[500px] sm:m-auto'>
             <hr className="bg-orange border-none h-2 w-20 " />
             <h2 className="mb-10  text-3xl relative font-bold">Add Listing</h2>
-            <form className='flex flex-col gap-5'>
+            <form onSubmit={addList} className='flex flex-col gap-5'>
                 <div>
                     <p>CATEGORY</p>
                     <select className='w-full' name='category' onChange={handleCategoryChange}>
@@ -136,7 +136,7 @@ const AddListing = () => {
                         <textarea className="border p-2 outline-none" name="description" rows={4} cols={50} placeholder='Give important details'></textarea>
                 )}
 
-                <SecondaryBtn onClick={addList}  text='Add'/>
+                <SecondaryBtn text='Add'/>
             </form>
             {/* <ToastContainer /> */}
         </div>
