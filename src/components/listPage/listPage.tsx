@@ -4,7 +4,7 @@ import SearchInstitute from "../Search/SearchInstitute";
 import SecondaryBtn from "../buttons/SecondaryBtn";
 import { SchoolContextProvider } from "@/lib/Context/SchholContext";
 import React, { useState, useEffect } from 'react'
-import { categories } from '@/app/page'
+import { categories } from "@/data/categories";
 import { useParams } from 'next/navigation'
 import { Filter_1, Filter_2, Filter_3, Filter_4 } from "../filter/Filte";
 

@@ -1,5 +1,5 @@
 interface IFilter {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 
 }
 
