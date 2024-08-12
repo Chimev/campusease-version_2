@@ -1,9 +1,7 @@
 import React from 'react'
-import ListCard from '../listCard/ListCard'
-
 const Listing = () => {
   return (
-    <ListCard/>
+    <div>Listings</div>
   )
 }
 
