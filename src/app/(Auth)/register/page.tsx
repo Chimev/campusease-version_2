@@ -3,6 +3,14 @@ import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
 
+
+
+interface RegisterForm {
+  name: string;
+  email: string;
+  password: string;
+}
+
 const Register = () => {
   const route = useRouter()
   const [loading, setLoading] = useState(false)
@@ -10,16 +18,17 @@ const Register = () => {
    const [showPassword, setShowPassword] = useState(false)
 
    //hook for the forms
-   const [formData, setFormData] = useState({
-    name: "",
-    email : "",
-    password : ""
-})
+   const [formData, setFormData] = useState<RegisterForm>({   
+
+    name: '',
+    email: '',
+    password: '',
+  });
 
 const {name, email, password} = formData;
 
  //for the input values
- const onChange = (e) => {
+ const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   setFormData(prev => ({
       ...prev,
       [e.target.id] : e.target.value
