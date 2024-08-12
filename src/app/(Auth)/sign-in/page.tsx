@@ -61,20 +61,20 @@ const SignIn = () => {
         <div>
           <input
             type="email"
-            id='email'
+            id="email"
             value={email}
             onChange={onChange}
-            placeholder='Email'
+            placeholder="Email"
             required
           />
         </div>
         <div className='relative'>
           <input
-            type={showPassword ? 'text' : 'password'}
-            id='password'
+            type={showPassword ? "text" : "password"}
+            id="password"
             value={password}
             onChange={onChange}
-            placeholder='Password'
+            placeholder="Password"
             required
           />
           <div className="absolute top-3 right-3">
@@ -86,11 +86,11 @@ const SignIn = () => {
           </div>
         </div>
         <button
-          type='submit'
+          type="submit"
           className='w-full p-2 mb-2 text-lg border-none outline-none text-white bg-orange'
           disabled={loading} // Disable button while loading
         >
-          {loading ? 'Loading...' : 'Sign In'}
+          {loading ? "Loading..." : "Sign In"}
         </button>
         <div className='text-center'>
           <p>
