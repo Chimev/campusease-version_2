@@ -1,7 +1,7 @@
 'use client'
 import React, {useState} from 'react'
 
-const page = () => {
+const ForgotPassword = () => {
     const [email, setEmail] = useState("")
     const [loading, setLoading] = useState(false)
 
@@ -40,4 +40,4 @@ const page = () => {
   )
 }
 
-export default page
+export default ForgotPassword

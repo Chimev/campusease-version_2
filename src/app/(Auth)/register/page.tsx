@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
 
-const page = () => {
+const Register = () => {
   const route = useRouter()
   const [loading, setLoading] = useState(false)
    //for showing password
@@ -101,4 +101,4 @@ const {name, email, password} = formData;
   )
 }
 
-export default page
+export default Register
