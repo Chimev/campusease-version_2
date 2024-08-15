@@ -60,11 +60,12 @@ const handleInstituteSubmit = (event: React.FormEvent<HTMLFormElement>) => {
        {showListing && <div className="px-8 py-3 bg-lightGray2 text-white text-2xl text-center" onClick={() => setShowFilter(prev => !prev)} >Filter</div>}
        {
         showFilter && 
-        <form action="" className="mt-2">
+        <form action="" className="mt-2 flex flex-col">
           {category === 'Accommodation' && <Filter_1/>}
           {category === 'Service' && <Filter_2 />}
           {category === 'Property' && <Filter_3 />}
           {category === 'Roommates' && <Filter_4/>}
+          <SecondaryBtn text='Filter'/>
         </form>
        }
       </div>

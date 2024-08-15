@@ -28,7 +28,7 @@ return (
   }
     <div>
         <label className="p-text">ACCOMMODATION TYPE</label>
-        <select name="accommodationType" className="p-3 w-3/4 bg-[#d6c2c29d]">
+        <select name="accommodationType" className="p-3 w-3/4 mb-5 bg-[#d6c2c29d]">
           <option>---</option>
           <option value="4 Bedroom">4 Bedroom </option>
           <option value="3 Bedroom">3 Bedroom </option>
