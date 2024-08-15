@@ -10,7 +10,7 @@ type Card = {
 const CategoryCard = ({category, img, description}: Card ) => {
   return (
     // card
-    <div className="w-96 h-80 border flex items-end relative  text-white bg-cover md:w-72">
+    <div className="w-[95%] h-80 m-auto border flex items-end relative  text-white bg-cover md:w-72">
         <div className="pl-5 mb-5 grid gap3"> 
         <h3 className='text-2xl font-semibold'>{category}</h3>
         <p className='font-semibold'>{description}</p>
