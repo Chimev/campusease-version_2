@@ -1,60 +1,52 @@
 'use client'
 
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import { signIn, useSession } from 'next-auth/react';
 
-interface SignInForm {
-  email: string;
-  password: string;
-}
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const route = useRouter();
+  const [error, setError] = useState("")
+  const session = useSession();
 
-  const [formData, setFormData] = useState<SignInForm>({
-    email: '',
-    password: '',
-  });
+  useEffect( () => {
+    if(session?.status === "authenticated") {
+      route.replace('/')
+    }
+  },[session, route] )
 
-  const { email, password } = formData;
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.id]: e.target.value,
-    }));
-  };
+  const handleLogin = async (e:any) => {
+    e.preventDefault()
+    const email = e.target[0].value;
+    const password = e.target[1].value;
 
-  // Assuming you have a suitable authentication function
-  // const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
+    const res = await signIn("credentials", {
+      redirect: false,
+      email,
+      password
+    })
 
-  //   try {
-  //     setLoading(true);
-  //     // Implement your authentication logic here
-  //     const user = await authenticate(email, password);
-  //     if (user) {
-  //       toast.success('Success Notification!');
-  //       setTimeout(() => {
-  //         route.push('/');
-  //       }, 2000);
-  //     } else {
-  //       toast.error('Invalid email or password');
-  //     }
-  //   } catch (error) {
-  //     toast.error('Error logging in');
-  //     console.error(error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+    if(res?.error) {
+      setError("Invalid email or password");
+      if(res?.url) route.replace("/")
+    }else {
+      setError("");
+    }
+
+   }
+
+
+
+
 
   return (
     <section className='pt-10'>
-      <form className='max-w-sm h-72 flex flex-col m-auto'>
+      <form onSubmit={handleLogin} className='max-w-sm h-72 flex flex-col m-auto'>
         <h1 className='text-3xl leading-9 text-center font-bold mb-10'>
           Sign In
         </h1>
@@ -62,8 +54,6 @@ const SignIn = () => {
           <input
             type="email"
             id="email"
-            value={email}
-            onChange={onChange}
             placeholder="Email"
             required
           />
@@ -72,8 +62,6 @@ const SignIn = () => {
           <input
             type={showPassword ? "text" : "password"}
             id="password"
-            value={password}
-            onChange={onChange}
             placeholder="Password"
             required
           />
@@ -92,6 +80,7 @@ const SignIn = () => {
         >
           {loading ? "Loading..." : "Sign In"}
         </button>
+        <p className='text-red-600 text-[16px] mb-4' >{error && error}</p>
         <div className='text-center'>
           <p>
             Don't have an account yet?{' '}

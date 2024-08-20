@@ -21,7 +21,7 @@ export default function Home() {
                   <div className="flex flex-col gap-2">
                     
                     {categories.map( menu => (
-                      <Link href={`category/${menu.link}`} key={menu.category}><CategoryCard category={menu.category} description={menu.description} img={menu.img}/></Link>
+                      <Link href={`${menu.link}`} key={menu.category}><CategoryCard category={menu.category} description={menu.description} img={menu.img}/></Link>
                     ) )}
 
                   </div>

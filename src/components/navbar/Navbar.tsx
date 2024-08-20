@@ -7,11 +7,17 @@ import { FaPlus } from "react-icons/fa";
 import { FaSignInAlt } from "react-icons/fa";
 import { useRouter } from 'next/navigation'
 import Image from 'next/image';
+import { useSession } from 'next-auth/react';
 
 const Navbar = () => {
     const router = useRouter();
     const [hiddenMenu, setHiddenMenu] = useState(false);
     const [open, setOpen] = useState(false)
+    const {data: session} : any = useSession();
+
+    console.log(session)
+
+
   return (
     <nav className='h-20 flex justify-between items-center border-none relative z-10
        '>
@@ -40,7 +46,7 @@ const Navbar = () => {
             <div className={`absolute text-[18px]  left-4 -z-10 w-11/12 h-16 bg-white bg-opacity-75 flex justify-center gap-5 items-center transition-all duration-500 ease-in-out ${open ? 'top-16' : '-top-96'}`}>
                 <Link href="/" onClick={() => setOpen(false)} className='block  hover:text-orange'>Home</Link>
                 <Link href="/about" onClick={() => setOpen(false)} className='block  hover:text-orange'>About</Link>
-                <Link href="/sign-in" onClick={() => setOpen(false)} className='flex items-center gap-2  hover:text-orange'>{hiddenMenu ? "Profile" : <><FaSignInAlt /> Sign in</>}</Link>
+                <Link href={session ? '/profile' : '/sign-in'} onClick={() => setOpen(false)} className='flex items-center gap-2  hover:text-orange'>{session ? <>Profile</> : <><FaSignInAlt /> Sign in</>}</Link>
                 <Link href='/add-listing' onClick={() => setOpen(false)} className='bg-blue text-white px-3 py-3 mr-10 flex items-center gap-2'><FaPlus /> Add</Link>
             </div>
         </div>

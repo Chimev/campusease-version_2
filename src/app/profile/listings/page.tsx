@@ -1,9 +1,11 @@
-import Listing from '@/components/listings/Listing'
+// import Listing from '@/components/listings/Listing'
+import ListCard from '@/components/listCard/ListCard'
 import React from 'react'
 
 const page = () => {
   return (
-    <Listing/>
+    // <Listing/>
+    <ListCard/>
   )
 }
 

@@ -11,7 +11,8 @@ import { Filter_1, Filter_2, Filter_3, Filter_4 } from "../filter/Filte";
 
 
 const ListPage = () => {
-  const categoryMenu = useParams()
+  const categoryMenu = useParams();
+
   
   const [category, setCategory] = useState<string | undefined>('');
   const [description, setDescription] = useState<string | undefined>('');
