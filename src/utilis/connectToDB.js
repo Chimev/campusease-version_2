@@ -16,7 +16,7 @@ export const connectToDB = async () => {
         //update connection if it is not empty use te existing one
         connection.isConnected = db.connections[0].readyState;
       } catch (error) {
-        console.log(error);
+        console.log(error, 'Erro error');
         throw new Error(error)
       }
 }

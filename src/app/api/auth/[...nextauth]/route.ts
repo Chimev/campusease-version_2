@@ -1,5 +1,5 @@
 import NextAuth from "next-auth"
-import { Account, User as AuthUser } from "next-auth";
+// import { Account, User as AuthUser } from "next-auth";
 import GithubProvider from "next-auth/providers/github"
 import CredentialsProvider from "next-auth/providers/credentials"
 import User from '@/utilis/models/User';
@@ -8,7 +8,7 @@ import bcrypt from 'bcryptjs';
 
 
 
-export const authOptions:any = {
+export const authOptions = {
   // Configure one or more authentication providers
   providers: [
     CredentialsProvider({
@@ -31,6 +31,7 @@ export const authOptions:any = {
               return user;
             }
           }
+          return null;
         } catch (error: any) {
           throw new Error(error);
         }
