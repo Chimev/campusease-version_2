@@ -11,7 +11,6 @@ import { useSession } from 'next-auth/react';
 
 const Navbar = () => {
     const router = useRouter();
-    const [hiddenMenu, setHiddenMenu] = useState(false);
     const [open, setOpen] = useState(false)
     const {data: session} : any = useSession();
 
@@ -35,7 +34,7 @@ const Navbar = () => {
         <div className="hidden lg:flex justify-between items-center text-gray-600 text-2xl ">
             <Link className='px-4 py-3 mr-10 ' href="/">Home</Link>
             <Link className='px-4 py-3 mr-10'  href="/about">About</Link>
-            <Link className='px-4 py-3 mr-10 flex items-center gap-2'  href="/profile">{hiddenMenu ? "Profile" : <><FaSignInAlt/>Sign in</>}</Link>
+            <Link className='px-4 py-3 mr-10 flex items-center gap-2'  href={session ? '/profile' : '/sign-in'}>{session ? <>Profile</> : <><FaSignInAlt /> Sign in</>}</Link>
             <Link  className=' bg-blue text-white px-4 py-3 mr-10 flex items-center gap-2' href='/add-listing'><FaPlus /> Add</Link>
         </div>
 
@@ -50,7 +49,7 @@ const Navbar = () => {
                 <Link href='/add-listing' onClick={() => setOpen(false)} className='bg-blue text-white px-3 py-3 mr-10 flex items-center gap-2'><FaPlus /> Add</Link>
             </div>
         </div>
-        
+         
     </nav>
     
   )

@@ -25,6 +25,8 @@ const SignIn = () => {
     const email = e.target[0].value;
     const password = e.target[1].value;
 
+    setLoading(true)
+
     const res = await signIn("credentials", {
       redirect: false,
       email,
@@ -32,6 +34,7 @@ const SignIn = () => {
     })
 
     if(res?.error) {
+      setLoading(false)
       setError("Invalid email or password");
       if(res?.url) route.replace("/")
     }else {
@@ -45,7 +48,7 @@ const SignIn = () => {
 
 
   return (
-    <section className='pt-10'>
+    <section className='pt-10 px-6'>
       <form onSubmit={handleLogin} className='max-w-sm h-72 flex flex-col m-auto'>
         <h1 className='text-3xl leading-9 text-center font-bold mb-10'>
           Sign In
@@ -75,13 +78,13 @@ const SignIn = () => {
         </div>
         <button
           type="submit"
-          className='w-full p-2 mb-2 text-lg border-none outline-none text-white bg-orange'
+          className='w-full p-2 text-lg border-none outline-none text-white bg-orange'
           disabled={loading} // Disable button while loading
         >
           {loading ? "Loading..." : "Sign In"}
         </button>
-        <p className='text-red-600 text-[16px] mb-4' >{error && error}</p>
-        <div className='text-center'>
+        <p className='text-red-600 text-[16px] -mt-1' >{error && error}</p>
+        <div className='text-center -mt-7'>
           <p>
             Don't have an account yet?{' '}
             <span
@@ -93,7 +96,7 @@ const SignIn = () => {
           </p>
           <p
             onClick={() => route.push('/forgot-password')}
-            className='text-lightBlue cursor-pointer font-semibold'
+            className='text-lightBlue cursor-pointer font-semibold -mt-5'
           >
             Forgot Password?
           </p>
