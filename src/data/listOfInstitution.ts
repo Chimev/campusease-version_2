@@ -16,46 +16,46 @@ export const ListOfInstitutions : Institution<institutions>[] =  [
             {    
                 school: 'Ebsu',
                 campus: [
-                    "Area 1",
-                    "Area 2",
-                    "Area 3"
-                ]
-            },
-            {
-                school: 'Lasu',
-                campus: [
-                    "Area 4",
-                    "Area 5",
-                    "Area 6"
+                    "CAS",
+                    "ISHIEKE",
+                    "PRESCO",
+                    "UGWU ACHARA"
                 ]
             },
             {
                 school: 'Esut',
                 campus: [
-                    "Area 7",
-                    "Area 8",
-                    "Area 9"
+                    "Agbani",
+                    "Parklane",
                 ]
-            }
+            },
+            {
+                school: 'Lasu',
+                campus: [
+                    "Epe" ,
+                    "Ikeja",
+                    "Ojo",
+                ]
+            },
         ]
     },
     {
         type: 'Fedeeral',
         institution: [
             {
-                school: 'unilag',
-                campus: [
-                    "Area 1",
-                    "Area 2",
-                    "Area 3"
-                ]
-            },
-            {
-                school: 'funai',
+                school: 'FUNAI',
                 campus: [
                     "Area 4",
                     "Area 5",
                     "Area 6"
+                ]
+            },
+            {
+                school: 'UNILAG',
+                campus: [
+                    "Idiaraba",
+                    "Radiography",
+                    "Akoko Yaba"
                 ]
             },
             {
@@ -72,15 +72,7 @@ export const ListOfInstitutions : Institution<institutions>[] =  [
         type: 'Polytechnic',
         institution: [
             {
-                school: 'Yabatech',
-                campus: [
-                    "Area 1",
-                    "Area 2",
-                    "Area 3"
-                ]
-            },
-            {
-                school: 'Futo',
+                school: 'FUTO',
                 campus: [
                     "Area 4",
                     "Area 5",
@@ -88,13 +80,12 @@ export const ListOfInstitutions : Institution<institutions>[] =  [
                 ]
             },
             {
-                school: 'OKO',
+                school: 'YABATECH',
                 campus: [
-                    "Area 7",
-                    "Area 8",
-                    "Area 9"
+                    "Epe",
+                    "Yaba"
                 ]
-            }
+            },
         ]
     }
 ]

@@ -16,7 +16,7 @@ const CategoryCard = ({category, img, description}: Card ) => {
         <p className='font-semibold'>{description}</p>
         </div>
         <div className="absolute w-full h-full top-0 left-0 -z-10">
-        <Image src={img} alt='' fill className='object-ontain' />
+        <Image src={img} alt='' fill sizes='100vw' className='object-ontain' />
         </div>
     </div>
   )

@@ -14,8 +14,6 @@ const Navbar = () => {
     const [open, setOpen] = useState(false)
     const {data: session} : any = useSession();
 
-    console.log(session)
-
 
   return (
     <nav className='h-20 flex justify-between items-center border-none relative z-10

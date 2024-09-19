@@ -1,34 +1,175 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, {  useRef, useState } from 'react';
 import { Filter_1, Filter_2, Filter_3, Filter_4 } from "../filter/Filte";
-import { SchoolContextProvider } from "@/lib/Context/SchholContext";
 import SearchInstitute from "../Search/SearchInstitute";
 import SecondaryBtn from "../buttons/SecondaryBtn";
+import { useRouter } from 'next/navigation';
+import { useSchoolProvider } from '@/lib/Context/SchholContext';
+import { ListOfInstitutions } from "@/data/listOfInstitution";
 
-const AddListing = () => {
+
+
+const AddListing = ({email} : {email: string;}) => {
+    const route = useRouter();
     const [errorMessage, setErrorMessage] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
+    const [loading, setLoading] = useState(false);
+    // const [imageUrls, setImageUrls] = useState<string[]>([]);
+
+    //useRef
+    const categoryRef = useRef<HTMLSelectElement>(null);
+    const imageRef = useRef<HTMLInputElement>(null); 
+    const institutionRef = useRef<HTMLSelectElement>(null);
+    const typeRef = useRef<HTMLSelectElement>(null);
+    const campusRef = useRef<HTMLSelectElement>(null);
+    const descriptionRef = useRef<HTMLTextAreaElement>(null);
+    const accommodationNameRef = useRef<HTMLInputElement>(null);
+    const priceRef = useRef<HTMLInputElement>(null);
+    const phoneRef = useRef<HTMLInputElement>(null);
+    const accommodationTypeRef = useRef<HTMLSelectElement>(null);
+    const serviceTypeRef = useRef<HTMLSelectElement>(null);
+    const propertyTypeRef = useRef<HTMLSelectElement>(null);
+    const roommateNameRef = useRef<HTMLInputElement>(null);
+    const levelRef = useRef<HTMLSelectElement>(null);
+    const genderRef = useRef<HTMLSelectElement>(null);
+
+
+    //For my serchINstution form
+  //------START-----//
+  const value = useSchoolProvider();
+
+  const changeType = (e: React.ChangeEvent<HTMLSelectElement>) => {
+      const selectedType = e.target.value;
+      const selectedInstitutions = ListOfInstitutions.find(int => int.type === selectedType)?.institution || [];
+      
+      value?.setType(selectedType);
+      value?.setInstitutions(selectedInstitutions);
+      value?.setInstitution(''); // Reset institution and campus on type change
+      value?.setCampus('');
+  };
+
+  const changeInstitution = (e: React.ChangeEvent<HTMLSelectElement>) => {
+      const selectedInstitution = e.target.value;
+      const selectedCampus = value?.institutions.find(int => int.school === selectedInstitution)?.campus || [];
+      
+      value?.setInstitution(selectedInstitution);
+      value?.setCampuses(selectedCampus);
+      value?.setCampus(''); // Reset campus on institution change
+  };
+
+  const changeCampus = (e: React.ChangeEvent<HTMLSelectElement>) => {
+      value?.setCampus(e.target.value);
+  };
+
+  // ----END------//
+
+
+   
     // const [imageFiles, setImageFiles] = useState([]);
 
     const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedCategory(event.target.value);
     };
 
-    const addList = (e: React.FormEvent<HTMLFormElement>) => {
+    const addList = async(e: any) => {
         e.preventDefault();
-        //
+
+        const category = categoryRef?.current?.value;
+        const description = descriptionRef?.current?.value;
+        const institution = institutionRef?.current?.value;
+        const type = typeRef?.current?.value;
+        const campus = campusRef?.current?.value;
+        const accommodationType = accommodationTypeRef?.current?.value;
+        const accommodationName = accommodationNameRef?.current?.value;
+        const service = serviceTypeRef?.current?.value;
+        const property = propertyTypeRef?.current?.value;
+        const level = levelRef?.current?.value;
+        const gender = genderRef?.current?.value;
+        const price = priceRef?.current?.value;
+        const phone = phoneRef?.current?.value;
+        const roommateName = roommateNameRef?.current?.value;
+        const image = imageRef?.current?.files;
+
+        const imageUrls : string[]= []
+
+        if(image && image.length > 0) {
+            if(image.length > 3){
+                setErrorMessage("Maximum of 3 images.");
+                return;
+            }
+
+            // const imageUrls: string[] = [];
+
+            const files = Array.from(image); //convert FileList to Array clg img
+
+            //mage upload
+            try{
+                for(const file of files) {
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    formData.append('upload_preset', process.env.NEXT_PUBLIC_UPLOAD_PRESET || "");
+
+                    //for img process
+                    const res = await fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`, {
+                        method : "POST",
+                        body : formData,
+                    }
+                );
+                    const data = await res.json();
+                    imageUrls.push(data.secure_url)
+                    console.log(imageUrls)
+                }
+            }catch(error){
+                console.error('Error uploading images:', error);
+                setErrorMessage('Error uploading images.');
+                setLoading(false)
+                return;
+            }
+        }else{
+            console.log('NNo images selected');
+        }
+
+
+        //add listing api
+        try {
+            const res = await fetch("/api/listings", {
+                method: "POST",
+                headers: {
+                    "Content-Type" : "application/json"
+                },
+                body: JSON.stringify({
+                    category,
+                    description, 
+                    institution, 
+                    image:imageUrls,
+                    type, 
+                    campus, 
+                    accommodationName,
+                    accommodationType,
+                    service, 
+                    property, 
+                    roommateName,
+                    level, 
+                    gender,
+                    price,
+                    phone,
+                    email,
+                })
+            });
+
+            if (res.status === 500) {
+                throw new Error('Failed to add listing');
+            }if (res.status === 200) {
+                route.push('/');
+            }
+        } catch (error) {
+            console.log("Error during listing:", error)
+            setErrorMessage("Error during listing")
+        }
+        
     }
 
-    // const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     const files = event.target.files;
-    //     if (files.length < 2 || files.length > 5) {
-    //         setErrorMessage("Images should be more than 2 and less than 5");
-    //     } else {
-    //         setErrorMessage('');
-    //     }
-    //     setImageFiles(files);
-    // };
 
     return (
         <div className='px-3 py-8 sm:max-w-[500px] sm:m-auto'>
@@ -37,12 +178,12 @@ const AddListing = () => {
             <form onSubmit={addList} className='flex flex-col gap-5'>
                 <div>
                     <p>CATEGORY</p>
-                    <select className='w-full' name='category' onChange={handleCategoryChange}>
+                    <select className='w-full' name='category' onChange={handleCategoryChange} ref={categoryRef} >
                         <option value="">---</option>
-                        <option value="Accommodation">Accommodation</option>
-                        <option value="Service">Service</option>
-                        <option value="Property">Property</option>
-                        <option value="Roommate">Roommate</option>
+                        <option value="accommodation">Accommodation</option>
+                        <option value="service">Service</option>
+                        <option value="property">Property</option>
+                        <option value="roommate">Roommate</option>
                     </select>
                 </div>
 
@@ -53,90 +194,87 @@ const AddListing = () => {
                         name='images' 
                         type="file" 
                         accept='.jpg, .png, .jpeg'
+                        ref={imageRef}
                         multiple
-                        required
                     />
                     <div className="error">{errorMessage}</div>
                 </div>
 
                 <div className="flex flex-col w-10/12">
-                    <SchoolContextProvider>
-                        <SearchInstitute />
-                    </SchoolContextProvider>
+                    
+                <SearchInstitute typeRef={typeRef} institutionRef={institutionRef} campusRef={campusRef} value={value} changeType={changeType} changeInstitution={changeInstitution} changeCampus={changeCampus}/>
                 </div>
 
                 <div className="input">
-                    {selectedCategory === 'Accommodation' && (
-                        <Filter_1>
+                    {selectedCategory === 'accommodation' && (
+                        <Filter_1 accommodationTypeRef={accommodationTypeRef}>
                             <div className="input">
                                 <label className="p-text">ACCOMMODATION NAME</label>
                                 <div className="price">
-                                    <input type="text" name="accommodationName" placeholder='Accommodation Name' />
+                                    <input type="text" ref={accommodationNameRef} name="accommodationName" placeholder='Accommodation Name' />
                                 </div>
                             </div>
                             <div className="input">
                                 <label className="p-text">PRICE</label>
                                 <div className="price">
-                                    <input type="number" name="price" placeholder='Price' />
+                                    <input type="number" ref={priceRef} name="price" placeholder='Price' />
                                 </div>
                             </div>
                             <div className="input">
                                 <label className="p-text">PHONE</label>
                                 <div className="price">
-                                    <input type="number" name="phoneNo" />
+                                    <input type="number" ref={phoneRef} name="phoneNo" />
                                 </div>
                             </div>
                         </Filter_1>
                     )}
-                    {selectedCategory === 'Service' && (
-                        <Filter_2>
+                    {selectedCategory === 'service' && (
+                        <Filter_2 serviceTypeRef={serviceTypeRef}>
                             <div className="input">
                                 <label className="p-text">PHONE</label>
                                 <div className="price">
-                                    <input type="number" name="phoneNo" />
+                                    <input type="number" ref={phoneRef} name="phoneNo" />
                                 </div>
                             </div>
                         </Filter_2>
                     )}
-                    {selectedCategory === 'Property' && (
-                        <Filter_3>
+                    {selectedCategory === 'property' && (
+                        <Filter_3 propertyTypeRef={propertyTypeRef}>
                             <div className="input">
                             <label className="p-text">PRICE</label>
                             <div className="price">
-                            <input type="number" name="price"  placeholder='Price'/>
+                            <input type="number" ref={priceRef} name="price"  placeholder='Price'/>
                             </div>
                             <div className="input">
                             <label className="p-text">phone</label>
                             <div className="price">
-                            <input type="number" name="phoneNo" />
+                            <input type="number" ref={phoneRef} name="phoneNo" />
                             </div>
                             </div>
                             </div>
                         </Filter_3>
                     )}
-                    {selectedCategory === 'Roommate' && (
-                        <Filter_4>
+                    {selectedCategory === 'roommate' && (
+                        <Filter_4 levelRef={levelRef} genderRef={genderRef}>
                             <div className="input">
                             <label className="p-text">Name</label>
                             <div className="price">
-                            <input type="text" name="roommateName"  placeholder='Your Name'/>
+                            <input type="text" ref={roommateNameRef} name="roommateName"  placeholder='Your Name'/>
                             </div>
                             </div>
                             <div className="input">
                             <label className="p-text">phone</label>
                             <div className="price">
-                            <input type="number" name="phoneNo"  />
+                            <input type="number" ref={phoneRef} name="phoneNo"  />
                             </div>
                             </div>
                         </Filter_4>
                     )}
                 </div>
 
-                {selectedCategory !== 'Service' && (
-                        <textarea className="border p-2 outline-none" name="description" rows={4} cols={50} placeholder='Give important details'></textarea>
-                )}
+                <textarea ref={descriptionRef} className="border p-2 outline-none" name="description" rows={4} cols={50} placeholder='Give important details'></textarea>
 
-                <SecondaryBtn text='Add'/>
+                <SecondaryBtn onClick={() => setLoading(true)} text='Add' loading={loading}/>
             </form>
             {/* <ToastContainer /> */}
         </div>

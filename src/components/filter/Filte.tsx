@@ -1,20 +1,15 @@
 interface IFilter {
   children?: React.ReactNode;
-
+  accommodationTypeRef?: React.RefObject<HTMLSelectElement>;
+  serviceTypeRef?  : React.RefObject<HTMLSelectElement>;
+  propertyTypeRef? : React.RefObject<HTMLSelectElement>;
+  levelRef? : React.RefObject<HTMLSelectElement>;
+  genderRef? : React.RefObject<HTMLSelectElement>;
 }
 
 
 
-export const Filter_1 = ({children}: IFilter) => {
-    
-  // const onChange = (e) => {
-  //     setFilter_1(prev => ({
-  //             ...prev,
-  //             [e.target.name] : e.target.value
-  //         }))
-  // }
-
-
+export const Filter_1 = ({children, accommodationTypeRef}: IFilter) => {
 return (
   <>
   {children ??
@@ -28,7 +23,7 @@ return (
   }
     <div>
         <label className="p-text">ACCOMMODATION TYPE</label>
-        <select name="accommodationType" className="p-3 w-3/4 mb-5 bg-[#d6c2c29d]">
+        <select name="accommodationType" ref={accommodationTypeRef} className="p-3 w-3/4 mb-5 bg-[#d6c2c29d]">
           <option>---</option>
           <option value="4 Bedroom">4 Bedroom </option>
           <option value="3 Bedroom">3 Bedroom </option>
@@ -43,7 +38,7 @@ return (
 )
 }
 
-export const Filter_2 = ({children}: IFilter) => {
+export const Filter_2 = ({children, serviceTypeRef}: IFilter) => {
   // const onChange = (e) => {
   //     setFilter_1(prev => ({
   //             ...prev,
@@ -55,7 +50,7 @@ export const Filter_2 = ({children}: IFilter) => {
     {children}
       <div className="flex flex-col">
           <label className="p-text">SERVICE TYPE</label>
-          <select name="service" className="p-3 w-fill bg-[#d6c2c29d]" >
+          <select name="service" ref={serviceTypeRef} className="p-3 w-fill bg-[#d6c2c29d]" >
               <option>---</option>
               <option value="Barber">Barber</option>
               <option value="Painter">Painter</option>
@@ -67,7 +62,7 @@ export const Filter_2 = ({children}: IFilter) => {
   )
 }
 
-export const Filter_3 = ({children}: IFilter) => {
+export const Filter_3 = ({children, propertyTypeRef}: IFilter) => {
   // const onChange = (e) => {
   //     setFilter_1(prev => ({
   //             ...prev,
@@ -79,7 +74,7 @@ return (
   {children}
   <div className="flex flex-col">
       <label className="p-text">PROPERTY TYPE</label>
-      <select name="property" className="p-3 w-fill bg-[#d6c2c29d]" >
+      <select name="property" ref={propertyTypeRef} className="p-3 w-fill bg-[#d6c2c29d]" >
           <option>---</option>
           <option value="chair">Chair</option>
           <option value="table">Table</option>
@@ -90,7 +85,7 @@ return (
 )
 }
 
-export const Filter_4 = ({children}: IFilter) => {
+export const Filter_4 = ({children, levelRef, genderRef}: IFilter) => {
   // const onChange = (e) => {
   //     setFilter_1(prev => ({
   //             ...prev,
@@ -103,7 +98,7 @@ return (
   {children}
   <div className="flex flex-col">
       <label className="p-text">LEVEL</label>
-      <select name="level" >
+      <select ref={levelRef} name="level" >
           <option>---</option>
           <option value="level 1">Level 1</option>
           <option value="level 2">Level 2</option>
@@ -116,7 +111,7 @@ return (
   </div>
   <div className="flex flex-col">
       <label className="p-text">GENDER</label>
-      <select name="gender">
+      <select ref={genderRef} name="gender">
           <option>---</option>
           <option value="male">Male</option>
           <option value="female">Female</option>

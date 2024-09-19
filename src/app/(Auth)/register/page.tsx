@@ -4,13 +4,6 @@ import  { useState } from 'react'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
 
 
-
-interface RegisterForm {
-  name: string;
-  email: string;
-  password: string;
-}
-
 const Register = () => {
   const route = useRouter()
   const [loading, setLoading] = useState(false)
