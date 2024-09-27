@@ -89,6 +89,8 @@ const ListPage = () => {
 
   }
 
+
+
   
 
   return (
@@ -136,7 +138,7 @@ const ListPage = () => {
              <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {Array.isArray(listings) && listings.length > 0 ? (
                   listings.map((listing: any, index: number) => (
-                    <ListCard key={index} listing={listing} />
+                    <ListCard key={index} listing={listing}  />
                   ))
                 ) : (
                   <p>No listings found</p>

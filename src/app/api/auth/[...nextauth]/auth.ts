@@ -1,5 +1,4 @@
 import { NextAuthOptions } from "next-auth";// ts
-import GithubProvider from "next-auth/providers/github"
 import CredentialsProvider from "next-auth/providers/credentials"
 import User from '@/utilis/models/User';
 import  {connectToDB}  from '@/utilis/connectToDB';
@@ -33,12 +32,7 @@ export const authOptions: NextAuthOptions = {
             throw new Error(error);
           }
         }
-      }),
-      GithubProvider({
-        clientId: process.env.GITHUB_ID ?? "",
-        clientSecret: process.env.GITHUB_SECRET ?? "",
-      }),
-      // ...add more providers here
+      })
     ],
   }
 

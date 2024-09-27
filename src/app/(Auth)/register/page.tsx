@@ -18,7 +18,7 @@ const Register = () => {
     const password = e.target[2].value;
 
     try {
-      const res = await fetch("/api/register", {
+      const res = await fetch("/api/user", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

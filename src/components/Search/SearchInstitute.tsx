@@ -28,14 +28,14 @@ const SearchInstitute = ({ children, institutionRef, typeRef, campusRef, value, 
 
             <select name="institution" onChange={changeInstitution} ref={institutionRef} required>
                 <option value="">--Institution--</option>
-                {value?.institutions.map((inst, index) => (
+                {value?.institutions.map((inst:any, index:any) => (
                     <option key={index} value={inst.school}>{inst.school}</option>
                 ))}
             </select>
 
             <select name="campus" onChange={changeCampus} ref={campusRef} required>
                 <option value="">--Campus--</option>
-                {value?.campuses.map((campus, index) => (
+                {value?.campuses.map((campus:any, index:any) => (
                     <option key={index} value={campus}>{campus}</option>
                 ))}
             </select>

@@ -5,13 +5,24 @@ import React from 'react';
 import { FaPhoneAlt } from 'react-icons/fa';
 import { TbCurrencyNaira } from "react-icons/tb";
 
-const ListCard = ({ listing }: any) => {
-  const profile = false;
+import { MdDelete, MdEdit } from "react-icons/md";
+
+interface ListCardProps {
+  listing: any;
+  onDelete?: any;
+  onEdit?: any;
+  profile?:boolean;
+}
+
+const   ListCard = ({ listing, onDelete, onEdit, profile }: ListCardProps) => {
+
+
+
   return (
-    <div className="border rounded-lg shadow-lg overflow-hidden p-4 bg-white transition hover:shadow-xl">
+    <div className="relative border rounded-lg shadow-lg overflow-hidden p-4 bg-white transition hover:shadow-xl">
       {/* Uncomment if you want to use an image */}
       <div className="relative h-48 w-full mb-4">
-        <Image src={'/Roommate.jpg'} alt='image' layout="fill" objectFit="cover" className="rounded-t-lg" />
+        <Image src={listing.image[0]} alt='image' layout="fill" objectFit="cover" className="rounded-t-lg" />
       </div>
       <div className="info space-y-0">
         {profile && (
@@ -57,8 +68,16 @@ const ListCard = ({ listing }: any) => {
         </p>
         <p className="text-gray-600"><span className="font-semibold">Description: </span>{listing.description}</p>
       </div>
+      {
+          profile && 
+          <div className='absolute top-56 right-6 text-2xl text-orange flex'>
+            <MdEdit  onClick={onEdit} />
+            <MdDelete  onClick={() =>  onDelete(listing._id, listing.image[0])} />
+          </div>  
+        }
     </div>
   );
 };
 
 export default ListCard;
+
