@@ -21,7 +21,7 @@ const page = () => {
         console.log(email);  // Email should be available when authenticated
 
         
-        const res = await fetch(`/api/user/${email}`);
+        const res = await fetch(`/api/listings/user/${email}`);
         const data = await res.json();
         console.log(data)
         setListings(data)
