@@ -105,6 +105,7 @@ const AddListing = ({email} : {email: string;}) => {
 
             //mage upload
             try{
+                setLoading(true)
                 for(const file of files) {
                     const formData = new FormData();
                     formData.append('file', file);
@@ -118,16 +119,15 @@ const AddListing = ({email} : {email: string;}) => {
                 );
                     const data = await res.json();
                     imageUrls.push(data.secure_url)
-                    console.log(imageUrls)
+                    // console.log(imageUrls)
                 }
+                
             }catch(error){
-                console.error('Error uploading images:', error);
+                // console.error('Error uploading images:', error);
                 setErrorMessage('Error uploading images.');
                 setLoading(false)
                 return;
             }
-        }else{
-            console.log('NNo images selected');
         }
 
 
@@ -161,7 +161,7 @@ const AddListing = ({email} : {email: string;}) => {
             if (res.status === 500) {
                 throw new Error('Failed to add listing');
             }if (res.status === 200) {
-                route.push('/');
+                route.push('/profile/listings');
             }
         } catch (error) {
             console.log("Error during listing:", error)
@@ -187,7 +187,7 @@ const AddListing = ({email} : {email: string;}) => {
 
                 <div className="input">
                     <p>IMAGE</p>
-                    <p className='-mt-6 text-sm'>The first image will be the cover (max 5)</p>
+                    <p className='-mt-6 text-sm'>The first image will be the cover (max 3)</p>
                     <input 
                         name='images' 
                         type="file" 
@@ -274,7 +274,7 @@ const AddListing = ({email} : {email: string;}) => {
                 <h4 className='-mb-3'>Desciption</h4>
                 <textarea ref={descriptionRef} className="border p-2 outline-none" name="description" rows={4} cols={50} required placeholder='Give important details'></textarea>
 
-                <SecondaryBtn onClick={() => setLoading(true)} text='Add' loading={loading}/>
+                <SecondaryBtn text='Add' loading={loading}/>
             </form>
             {/* <ToastContainer /> */}
         </div>

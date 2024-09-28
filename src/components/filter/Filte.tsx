@@ -75,7 +75,7 @@ return (
   <div className="flex flex-col">
       <label className="p-text">PROPERTY TYPE</label>
       <select name="property" ref={propertyTypeRef} required className="p-3 w-fill bg-[#d6c2c29d]" >
-          <option>---</option>
+          <option disabled >---</option>
           <option value="chair">Chair</option>
           <option value="table">Table</option>
           <option value="fan">Fan</option>
