@@ -119,14 +119,16 @@ const ListPage = () => {
       <div className="mt-28 w-11/12 flex flex-col gap-1 m-auto">
         {showListing && (
           <>
-            <div
+          {/* Later Feature */}
+            {/* <div
               className="px-8 py-3 bg-lightGray2 text-white text-2xl text-center mb-8"
               onClick={() => setShowFilter(prev => !prev)}
             >
               Filter
-            </div>
+            </div> */}
             <div>
-              {showFilter && (
+              {/* Later Implementation */}
+              {/* {showFilter && (
                 <form action="" className="mt-2 flex flex-col mb-8">
                   {category === 'Accommodation' && <Filter_1 />}
                   {category === 'Service' && <Filter_2 />}
@@ -134,7 +136,7 @@ const ListPage = () => {
                   {category === 'Roommates' && <Filter_4 />}
                   <SecondaryBtn text="Filter" />
                 </form>
-              )}
+              )} */}
              <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {Array.isArray(listings) && listings.length > 0 ? (
                   listings.map((listing: any, index: number) => (
