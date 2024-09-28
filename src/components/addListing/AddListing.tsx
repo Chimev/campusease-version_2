@@ -167,9 +167,7 @@ const AddListing = ({email} : {email: string;}) => {
             console.log("Error during listing:", error)
             setErrorMessage("Error during listing")
         }
-        
     }
-
 
     return (
         <div className='px-3 py-8 sm:max-w-[500px] sm:m-auto'>
@@ -178,7 +176,7 @@ const AddListing = ({email} : {email: string;}) => {
             <form onSubmit={addList} className='flex flex-col gap-5'>
                 <div>
                     <p>CATEGORY</p>
-                    <select className='w-full' name='category' onChange={handleCategoryChange} ref={categoryRef} >
+                    <select className='w-full' name='category' required onChange={handleCategoryChange} ref={categoryRef} >
                         <option value="">---</option>
                         <option value="accommodation">Accommodation</option>
                         <option value="service">Service</option>
@@ -196,11 +194,13 @@ const AddListing = ({email} : {email: string;}) => {
                         accept='.jpg, .png, .jpeg'
                         ref={imageRef}
                         multiple
+                        required
                     />
                     <div className="error">{errorMessage}</div>
                 </div>
 
                 <div className="flex flex-col w-10/12">
+                <h4>Select School</h4>
                     
                 <SearchInstitute typeRef={typeRef} institutionRef={institutionRef} campusRef={campusRef} value={value} changeType={changeType} changeInstitution={changeInstitution} changeCampus={changeCampus}/>
                 </div>
@@ -211,19 +211,19 @@ const AddListing = ({email} : {email: string;}) => {
                             <div className="input">
                                 <label className="p-text">ACCOMMODATION NAME</label>
                                 <div className="price">
-                                    <input type="text" ref={accommodationNameRef} name="accommodationName" placeholder='Accommodation Name' />
+                                    <input type="text" required ref={accommodationNameRef} name="accommodationName" placeholder='Accommodation Name' />
                                 </div>
                             </div>
                             <div className="input">
                                 <label className="p-text">PRICE</label>
                                 <div className="price">
-                                    <input type="number" ref={priceRef} name="price" placeholder='Price' />
+                                    <input type="number" required ref={priceRef} name="price" placeholder='Price' />
                                 </div>
                             </div>
                             <div className="input">
                                 <label className="p-text">PHONE</label>
                                 <div className="price">
-                                    <input type="number" ref={phoneRef} name="phoneNo" />
+                                    <input type="number" required ref={phoneRef} name="phoneNo" />
                                 </div>
                             </div>
                         </Filter_1>
@@ -233,7 +233,7 @@ const AddListing = ({email} : {email: string;}) => {
                             <div className="input">
                                 <label className="p-text">PHONE</label>
                                 <div className="price">
-                                    <input type="number" ref={phoneRef} name="phoneNo" />
+                                    <input type="number" required ref={phoneRef} name="phoneNo" />
                                 </div>
                             </div>
                         </Filter_2>
@@ -243,12 +243,12 @@ const AddListing = ({email} : {email: string;}) => {
                             <div className="input">
                             <label className="p-text">PRICE</label>
                             <div className="price">
-                            <input type="number" ref={priceRef} name="price"  placeholder='Price'/>
+                            <input type="number" ref={priceRef} required name="price"  placeholder='Price'/>
                             </div>
                             <div className="input">
                             <label className="p-text">phone</label>
                             <div className="price">
-                            <input type="number" ref={phoneRef} name="phoneNo" />
+                            <input type="number" ref={phoneRef} required name="phoneNo" />
                             </div>
                             </div>
                             </div>
@@ -259,20 +259,20 @@ const AddListing = ({email} : {email: string;}) => {
                             <div className="input">
                             <label className="p-text">Name</label>
                             <div className="price">
-                            <input type="text" ref={roommateNameRef} name="roommateName"  placeholder='Your Name'/>
+                            <input type="text" ref={roommateNameRef} name="roommateName" required  placeholder='Your Name'/>
                             </div>
                             </div>
                             <div className="input">
                             <label className="p-text">phone</label>
                             <div className="price">
-                            <input type="number" ref={phoneRef} name="phoneNo"  />
+                            <input type="number" ref={phoneRef} name="phoneNo" required />
                             </div>
                             </div>
                         </Filter_4>
                     )}
                 </div>
-
-                <textarea ref={descriptionRef} className="border p-2 outline-none" name="description" rows={4} cols={50} placeholder='Give important details'></textarea>
+                <h4 className='-mb-3'>Desciption</h4>
+                <textarea ref={descriptionRef} className="border p-2 outline-none" name="description" rows={4} cols={50} required placeholder='Give important details'></textarea>
 
                 <SecondaryBtn onClick={() => setLoading(true)} text='Add' loading={loading}/>
             </form>
