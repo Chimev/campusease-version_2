@@ -6,20 +6,21 @@ import { useSchoolProvider } from "@/lib/Context/SchholContext";
 import React, { useState, useEffect } from 'react';
 import { categories } from "@/data/categories";
 import { useParams } from 'next/navigation';
-import { Filter_1, Filter_2, Filter_3, Filter_4 } from "../filter/Filte";
+// import { Filter_1, Filter_2, Filter_3, Filter_4 } from "../filter/Filte";
 import ListCard from "../listCard/ListCard";
 import { ListOfInstitutions } from "@/data/listOfInstitution";
 // import { listings } from "@/hooks/mock";
 
 const ListPage = () => {
   const { category: categoryParam } = useParams();
+  const [loading, setLoading] = useState(true)
   
   const [category, setCategory] = useState<string | undefined>('');
   const [description, setDescription] = useState<string | undefined>('');
   const [img, setImg] = useState<string | undefined>();
 
   const [showListing, setShowListing] = useState(false);
-  const [showFilter, setShowFilter] = useState(false);
+  // const [showFilter, setShowFilter] = useState(false);
 
   const [listings, setListings] = useState([])
 
@@ -72,7 +73,8 @@ const ListPage = () => {
     try {
       const res = await fetch(`/api/listings/${categoryParam}?type=${value?.type}&institution=${value?.institution}&campus=${value?.campus}`) 
       const data = await res.json()
-      console.log(data)
+      // console.log(data)
+      setLoading(false)
       setListings(data)
     } catch (error) {
       
@@ -137,15 +139,21 @@ const ListPage = () => {
                   <SecondaryBtn text="Filter" />
                 </form>
               )} */}
-             <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {Array.isArray(listings) && listings.length > 0 ? (
-                  listings.map((listing: any, index: number) => (
-                    <ListCard key={index} listing={listing}  />
-                  ))
-                ) : (
-                  <p>No listings found</p>
-                )}
-              </div>
+             <div>
+              {loading ? (
+                <p>Loading...</p> // You can replace this with a spinner component or any loading indicator
+              ) : (
+                <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                  {Array.isArray(listings) && listings.length > 0 ? (
+                    listings.map((listing: any) => (
+                      <ListCard key={listing.id} listing={listing} />
+                    ))
+                  ) : (
+                    <p>No listings found</p>
+                  )}
+                </div>
+              )}
+            </div>
 
             </div>
           </>

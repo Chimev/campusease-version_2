@@ -89,7 +89,6 @@ const page = () => {
       )}
     </>
   );
-s  
 }
 
 export default page
