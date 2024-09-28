@@ -103,7 +103,7 @@ const ListPage = () => {
             <Image src={img} alt="" fill className="object-cover" />
           </div>
         )}
-        <div className="h-3/4 flex justify-center flex-col items-center gap-3 text-2xl">
+        <div className="h-3/4 flex justify-center text-center flex-col items-center gap-3 text-2xl">
           <h2 className="text-4xl font-semibold">{category}</h2>
           <p className="-mt-1 font-medium">{description}</p>
         </div>
