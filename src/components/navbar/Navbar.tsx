@@ -20,10 +20,8 @@ const Navbar = () => {
        '>
         {/* left */}
         <div>
-            <div className="flex text-3xl gap-2  pl-5" onClick={() => router.push("/")}>
-                <div className='relative w-8 h-8 '> 
-                    <Image src='/logo.png' alt='' fill className='object-contain' />
-                </div>
+            <div className="flex text-2xl gap-2  pl-5" onClick={() => router.push("/")}>
+                    <Image src='/logo.png' alt=''  width={30} height={30} className='object-contain' />
                 <span>campusEase</span>
             </div>
         </div>
@@ -38,7 +36,7 @@ const Navbar = () => {
 
         {/* small screen */}
         <div className='lg:hidden'>
-            <GiHamburgerMenu className=' mr-6 text-5xl text-gray cursor-pointer' onClick={() => setOpen(prev => !prev)} />
+            <GiHamburgerMenu className=' mr-6 text-4xl text-gray cursor-pointer' onClick={() => setOpen(prev => !prev)} />
             
             <div className={`absolute text-[18px]  left-4 -z-10 w-11/12 h-16 bg-white bg-opacity-75 flex justify-center gap-5 items-center transition-all duration-500 ease-in-out ${open ? 'top-16' : '-top-96'}`}>
                 <Link href="/" onClick={() => setOpen(false)} className='block  hover:text-orange'>Home</Link>

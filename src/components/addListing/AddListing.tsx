@@ -96,16 +96,17 @@ const AddListing = ({email} : {email: string;}) => {
         if(image && image.length > 0) {
             if(image.length > 3){
                 setErrorMessage("Maximum of 3 images.");
+                setLoading(false)
                 return;
             }
 
             // const imageUrls: string[] = [];
 
             const files = Array.from(image); //convert FileList to Array clg img
+            setLoading(true)
 
             //mage upload
             try{
-                setLoading(true)
                 for(const file of files) {
                     const formData = new FormData();
                     formData.append('file', file);
@@ -196,7 +197,7 @@ const AddListing = ({email} : {email: string;}) => {
                         multiple
                         required
                     />
-                    <div className="error">{errorMessage}</div>
+                    <div className="-mt-6 text-red-600 text-[16px]  ">{errorMessage}</div>
                 </div>
 
                 <div className="flex flex-col w-10/12">
