@@ -19,15 +19,20 @@ const Navbar = () => {
     <nav className='h-20 flex justify-between items-center border-none relative z-10
        '>
         {/* left */}
-        <div>
+        <div className='relative w-[200px] h-[200px] md:w-[300px] md:h-[100px]'> 
+            <Image src='/logo_6.png' alt=''  fill className='object-contain absolute' />
+        </div>
+        
+        {/* <div className='flex justify-center items-center'>
+        <Image src='/logo_5.png' alt=''  width={400} height={100} className='object-contain ' />
             <div className="flex text-2xl gap-2  pl-5" onClick={() => router.push("/")}>
-                    <Image src='/logo.png' alt=''  width={30} height={30} className='object-contain' />
+                    <Image src='/logo_1.png' alt=''  width={30} height={30} className='object-contain' />
                 <span>campusEase</span>
             </div>
-        </div>
+        </div> */}
 
         {/* right */}
-        <div className="hidden lg:flex justify-between items-center text-gray-600 text-2xl ">
+        <div className="hidden lg:flex justify-between font-bold items-center text-gray-600 text-2xl ">
             <Link className='px-4 py-3 mr-10 ' href="/">Home</Link>
             <Link className='px-4 py-3 mr-10'  href="/about">About</Link>
             <Link className='px-4 py-3 mr-10 flex items-center gap-2'  href={session ? '/profile' : '/sign-in'}>{session ? <>Profile</> : <><FaSignInAlt /> Sign in</>}</Link>
