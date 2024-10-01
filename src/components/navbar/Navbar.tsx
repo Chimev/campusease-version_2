@@ -16,12 +16,13 @@ const Navbar = () => {
 
 
   return (
-    <nav className='h-20 flex justify-between items-center border-none relative z-10
+    <nav className='h-16 md:h-20 flex justify-between items-center border-none relative z-10
        '>
         {/* left */}
         <div className='relative w-[200px] h-[200px] md:w-[300px] md:h-[100px]'> 
             <Image src='/logo_6.png' alt=''  fill className='object-contain absolute' />
         </div>
+        
         
         {/* <div className='flex justify-center items-center'>
         <Image src='/logo_5.png' alt=''  width={400} height={100} className='object-contain ' />
