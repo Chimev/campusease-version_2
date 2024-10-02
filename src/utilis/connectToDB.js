@@ -8,7 +8,7 @@ const connection = {};
 export const connectToDB = async () => {
     try {
         //checking if connection exist so to avoid reconnection everytime we start our application
-        if(connection.isConnected){s
+        if(connection.isConnected){
             console.log("Using exisiting connection")
             return;
         }

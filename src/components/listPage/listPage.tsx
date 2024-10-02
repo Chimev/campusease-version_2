@@ -146,7 +146,7 @@ const ListPage = () => {
                 <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                   {Array.isArray(listings) && listings.length > 0 ? (
                     listings.map((listing: any) => (
-                      <ListCard key={listing.id} listing={listing} />
+                      <ListCard key={listing._id} listing={listing} />
                     ))
                   ) : (
                     <p>No listings found</p>
