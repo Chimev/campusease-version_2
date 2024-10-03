@@ -19,9 +19,9 @@ const Navbar = () => {
     <nav className='h-16 md:h-20 flex justify-between items-center border-none relative z-10
        '>
         {/* left */}
-        <div className='relative w-[200px] h-[50px] md:w-[300px] md:h-[100px]'> 
+        <Link href={'/'} className='relative w-[200px] h-[50px] md:w-[300px] md:h-[100px]'> 
             <Image src='/logo_6.png' alt=''  fill className='object-contain absolute' />
-        </div>
+        </Link>
         
         
         {/* <div className='flex justify-center items-center'>

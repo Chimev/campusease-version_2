@@ -1,9 +1,11 @@
 'use client'
-
+//Incomplete Work
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { signIn, useSession } from 'next-auth/react';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const SignIn = () => {
@@ -15,7 +17,10 @@ const SignIn = () => {
 
   useEffect( () => {
     if(session?.status === "authenticated") {
-      route.replace('/')
+      toast.success("Login Successful");
+      setTimeout(() => {
+        route.replace('/')
+      }, 1000);
     }
   },[session, route] )
 
@@ -33,12 +38,17 @@ const SignIn = () => {
       password
     })
 
-    if(res?.error) {
+    if(res?.error === "Error: read ECONNRESET") {
+      console.log(res?.error)
       setLoading(false)
-      setError("Invalid email or password");
-      if(res?.url) route.replace("/")
-    }else {
-      setError("");
+      toast.error("Network Error",{
+        position: "top-left"
+      });
+      // if(res?.url) route.replace("/")
+    }if(res?.error === "CredentialsSignin"){
+      console.log(res?.error)
+      setLoading(false)
+      toast.error("Invalid email or password");
     }
 
    }
@@ -49,6 +59,7 @@ const SignIn = () => {
 
   return (
     <section className='pt-10 px-6'>
+      <ToastContainer/>
       <form onSubmit={handleLogin} className='max-w-sm h-72 flex flex-col m-auto'>
         <h1 className='text-3xl leading-9 text-center font-bold mb-10'>
           Sign In
@@ -102,7 +113,7 @@ const SignIn = () => {
           </p>
         </div>
       </form>
-      {/* <ToastContainer /> */}
+      
     </section>
   );
 };

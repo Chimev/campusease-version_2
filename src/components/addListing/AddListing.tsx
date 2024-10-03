@@ -7,6 +7,7 @@ import SecondaryBtn from "../buttons/SecondaryBtn";
 import { useRouter } from 'next/navigation';
 import { useSchoolProvider } from '@/lib/Context/SchholContext';
 import { ListOfInstitutions } from "@/data/listOfInstitution";
+import { ToastContainer, toast } from 'react-toastify';
 
 
 
@@ -162,11 +163,12 @@ const AddListing = ({email} : {email: string;}) => {
             if (res.status === 500) {
                 throw new Error('Failed to add listing');
             }if (res.status === 200) {
+                toast.success("List Added")
                 route.push('/profile/listings');
             }
         } catch (error) {
             console.log("Error during listing:", error)
-            setErrorMessage("Error during listing")
+            toast.error("Error during listing")
         }
     }
 
@@ -277,7 +279,7 @@ const AddListing = ({email} : {email: string;}) => {
 
                 <SecondaryBtn text='Add' loading={loading}/>
             </form>
-            {/* <ToastContainer /> */}
+            <ToastContainer />
         </div>
     );
 }

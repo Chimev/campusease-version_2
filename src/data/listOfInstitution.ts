@@ -40,7 +40,7 @@ export const ListOfInstitutions : Institution<institutions>[] =  [
         ]
     },
     {
-        type: 'Fedeeral',
+        type: 'Federal',
         institution: [
             {
                 school: 'FUNAI',
