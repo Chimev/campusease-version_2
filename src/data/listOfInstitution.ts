@@ -18,6 +18,7 @@ export const ListOfInstitutions : Institution<institutions>[] =  [
                 campus: [
                     "CAS",
                     "ISHIEKE",
+                    "PERMSITE",
                     "PRESCO",
                     "UGWU ACHARA"
                 ]
@@ -77,6 +78,15 @@ export const ListOfInstitutions : Institution<institutions>[] =  [
                     "Area 4",
                     "Area 5",
                     "Area 6"
+                ]
+            },
+            {
+                school: 'IMT',
+                campus: [
+                    "CAMPUS 1",
+                    "CAMPUS 2",
+                    "CAMPUS 3",
+                    "CAMPUS 4"
                 ]
             },
             {
