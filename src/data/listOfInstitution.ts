@@ -60,11 +60,33 @@ export const ListOfInstitutions : Institution<institutions>[] =  [
                 ]
             },
             {
+                school: 'UNIPORT',
+                campus: [
+                    "Abuja",
+                    "CHOBA",
+                    "DELTA"
+                ]
+            },
+            {
+                school: 'UNICAL',
+                campus: [
+                    "MAIN CAMPUS"
+                ]
+            },
+            {
+                school: 'UNIZIK',
+                campus: [
+                    "Awka",
+                    "NNEWI"
+                ]
+            },
+            {
                 school: 'UNN',
                 campus: [
-                    "Area 7",
-                    "Area 8",
-                    "Area 9"
+                    "NSUkKA",
+                    "UNAC",
+                    "UNEC",
+                    "UNTH"
                 ]
             }
         ]
@@ -72,14 +94,6 @@ export const ListOfInstitutions : Institution<institutions>[] =  [
     {
         type: 'Polytechnic',
         institution: [
-            {
-                school: 'FUTO',
-                campus: [
-                    "Area 4",
-                    "Area 5",
-                    "Area 6"
-                ]
-            },
             {
                 school: 'IMT',
                 campus: [
