@@ -19,7 +19,6 @@ const page = () => {
     const fetchListing = async () => {
       if (status === 'authenticated' && session?.user?.email) {
         const email = session.user.email;
-        console.log(email);  // Email should be available when authenticated
 
         
         const res = await fetch(`/api/listings/user/${email}`);
@@ -34,7 +33,6 @@ const page = () => {
   }, [status, session]);  // Add status and session to dependencies
 
   const onDelete = async (id: string) => {
-    // console.log(id, image)
 
     try {
       const res = await fetch(`/api/listings/${id}`, {
@@ -52,11 +50,8 @@ const page = () => {
       }
 
     } catch (error) {
-      
+      //
     }
-
-
-
   }
 
   

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
-const listingsSchema = new Schema(
+const FavoriteSchema = new Schema(
     {
         email:{
             type: String,
@@ -56,12 +56,9 @@ const listingsSchema = new Schema(
         },
         gender: {
             type: String,
-        },
-        isFavorite: {
-            type: String,
-        },
+        }
     },
     {timestamps: true}
 );
 
-export default mongoose.models.Listings || mongoose.model("Listings", listingsSchema);
+export default mongoose.models.Favorite || mongoose.model("Favorite", FavoriteSchema);

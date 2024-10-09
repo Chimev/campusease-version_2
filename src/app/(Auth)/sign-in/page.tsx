@@ -100,7 +100,7 @@ const SignIn = () => {
             Don't have an account yet?{' '}
             <span
               onClick={() => route.push('/register')}
-              className='text-orange cursor-pointer font-semibold text-xs'
+              className='text-orange cursor-pointer font-semibold text-lg'
             >
               Register
             </span>
