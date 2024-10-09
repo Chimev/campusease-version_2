@@ -45,7 +45,7 @@ const Saved = () => {
 
   return (
     <section>
-        <h2 className='font-bold mb-5'>Sved listings ({favoriteList.length})</h2>
+        <h2 className='font-bold mb-5'>Saved listings ({favoriteList.length})</h2>
 
 
         {loading ? (
