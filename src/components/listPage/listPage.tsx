@@ -3,15 +3,18 @@ import Image from "next/image";
 import SearchInstitute from "../Search/SearchInstitute";
 import SecondaryBtn from "../buttons/SecondaryBtn";
 import { useSchoolProvider } from "@/lib/Context/SchholContext";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { categories } from "@/data/categories";
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 // import { Filter_1, Filter_2, Filter_3, Filter_4 } from "../filter/Filte";
 import ListCard from "../listCard/ListCard";
 import { ListOfInstitutions } from "@/data/listOfInstitution";
+import { FavoriteContext } from "@/lib/Context/FavoriteContext";
+import { useSession } from "next-auth/react";
 // import { listings } from "@/hooks/mock";
 
 const ListPage = () => {
+  const route = useRouter();
   const { category: categoryParam } = useParams();
   const [loading, setLoading] = useState(true)
   
@@ -22,7 +25,13 @@ const ListPage = () => {
   const [showListing, setShowListing] = useState(false);
   // const [showFilter, setShowFilter] = useState(false);
 
+  //for saved listing
+  const {favorite, setFavorite, setFavoriteList} = useContext<any>(FavoriteContext)
+
+
   const [listings, setListings] = useState([])
+
+  const {data: session, status} = useSession();
 
   //For my serchINstution form
   //------START-----//
@@ -50,7 +59,6 @@ const ListPage = () => {
     const changeCampus = (e: React.ChangeEvent<HTMLSelectElement>) => {
         value?.setCampus(e.target.value);
     };
-
     // ----END------//
 
   //Effect for params
@@ -63,12 +71,6 @@ const ListPage = () => {
     }
   }, [categoryParam]);
 
-  //Effect for listings
-  // useEffect( () => {
-   
-       
-  // }, [categoryParam, showListing])
-
   const getLisiting = async () => {
     try {
       const res = await fetch(`/api/listings/${categoryParam}?type=${value?.type}&institution=${value?.institution}&campus=${value?.campus}`) 
@@ -80,15 +82,50 @@ const ListPage = () => {
       
       //
     }
-    
   };
-  
 
   const handleInstituteSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setShowListing(prev => !prev);
     getLisiting(); 
+  }
 
+  
+
+  const handleFavorite = async ( id:any) => {
+    const FavouriteList = listings.find((list:any) => list._id == id)
+    console.log(id)
+
+    if(!FavouriteList) return
+    if(status === "authenticated" && session?.user?.email){
+      const email = session.user.email
+
+      const newFavouriteList = {...FavouriteList as any, email: email}
+      console.log( "check", newFavouriteList)
+
+      try {
+        const res = await fetch('/api/favorite', {
+          method: "POST",
+          headers: {
+            "Content-Type" : "application/json"
+        },
+        body: JSON.stringify(newFavouriteList)
+        })
+  
+        if(res.status === 500){
+          setFavorite(false)
+          throw new Error("Could not add to save")
+        }if(res.status === 200){
+          setFavorite(true)
+          console.log("success")
+        }
+      } catch (error) {
+        //
+      }
+  }else {
+    route.push('/sign-in')
+  }
+    console.log("list",FavouriteList)
   }
 
 
@@ -146,7 +183,7 @@ const ListPage = () => {
                 <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                   {Array.isArray(listings) && listings.length > 0 ? (
                     listings.map((listing: any) => (
-                      <ListCard key={listing._id} listing={listing} />
+                      <ListCard key={listing._id} listing={listing} favorite={favorite} handleFavorite={handleFavorite} />
                     ))
                   ) : (
                     <p>No listings found</p>

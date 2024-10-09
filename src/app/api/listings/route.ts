@@ -19,6 +19,7 @@ interface FormData {
   level?:string;
   gender?:string;
   email:string;
+  isFavorite?:string;
 }
 
 
@@ -48,27 +49,29 @@ export const POST = async (request: any) => {
         level,
         gender,
         email,
+        isFavorite,
     } = await request.json();
 
     await connectToDB();
 
     const formData: FormData = {
-        category,
-        image,
-        institution,
-        type,
-        campus,
-        description,
-        accommodationName,
-        price,
-        phone,
-        accommodationType,
-        service,
-        property,
-        roommateName,
-        level,
-        gender,
-        email
+      isFavorite,
+      category,
+      image,
+      institution,
+      type,
+      campus,
+      description,
+      accommodationName,
+      price,
+      phone,
+      accommodationType,
+      service,
+      property,
+      roommateName,
+      level,
+      gender,
+      email
     }
     if(category === 'Accommodation'){
         delete formData.service;
@@ -105,7 +108,6 @@ export const POST = async (request: any) => {
 
     
     const newListing = new Listings(formData);
-    console.log(newListing)
     try {
       await newListing.save();
       return NextResponse.json('List Added', { status: 200 });

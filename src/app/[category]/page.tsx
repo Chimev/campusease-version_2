@@ -1,11 +1,14 @@
 import ListPage from '@/components/listPage/listPage'
+import { FavouriteListProvider } from '@/lib/Context/FavoriteContext'
 import { SchoolContextProvider } from '@/lib/Context/SchholContext'
 
 
 const page = () => {
   return (
     <SchoolContextProvider>
-         <ListPage />
+      <FavouriteListProvider>
+        <ListPage />
+      </FavouriteListProvider>
     </SchoolContextProvider>
    
   )

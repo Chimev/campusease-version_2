@@ -6,17 +6,20 @@ import { FaPhoneAlt } from 'react-icons/fa';
 import { TbCurrencyNaira } from "react-icons/tb";
 
 import { MdDelete, MdEdit } from "react-icons/md";
+import { GrFavorite } from "react-icons/gr";
+import { MdOutlineFavorite } from "react-icons/md";
 
 interface ListCardProps {
   listing: any;
   onDelete?: any;
   onEdit?: any;
   profile?:boolean;
+  favorite?: boolean;
+  handleFavorite?: any;
+  handleRemoveFavorite?:any;
 }
 
-const   ListCard = ({ listing, onDelete, onEdit, profile }: ListCardProps) => {
-
-
+const   ListCard = ({ listing, onDelete, onEdit, profile, handleFavorite, handleRemoveFavorite, favorite }: ListCardProps) => {
 
   return (
     <div className="relative border rounded-lg shadow-lg overflow-hidden p-4 bg-white transition hover:shadow-xl">
@@ -35,6 +38,9 @@ const   ListCard = ({ listing, onDelete, onEdit, profile }: ListCardProps) => {
             </div>
           </>
         )}
+
+
+        
 
         {listing.category === 'accommodation' && (
           <>
@@ -69,12 +75,23 @@ const   ListCard = ({ listing, onDelete, onEdit, profile }: ListCardProps) => {
         <p className="text-gray-600"><span className="font-semibold">Description: </span>{listing.description}</p>
       </div>
       {
-          profile && 
+        profile && 
           <div className='absolute top-56 right-6 text-2xl text-orange flex'>
             <MdEdit  onClick={onEdit} />
             <MdDelete  onClick={() =>  onDelete(listing._id, listing.image[0])} />
           </div>  
         }
+        {
+        !profile && 
+          <div 
+          className='absolute top-5 right-6 text-5xl text-orange  flex'
+          >
+            {favorite ? <MdOutlineFavorite onClick={() => handleRemoveFavorite(listing._id)}  /> : <GrFavorite onClick={() => handleFavorite(listing._id)} /> }
+            
+            
+          </div>  
+        }
+        
     </div>
   );
 };

@@ -157,6 +157,7 @@ const AddListing = ({email} : {email: string;}) => {
                     price,
                     phone,
                     email,
+                    isFavorite:false
                 })
             });
 
