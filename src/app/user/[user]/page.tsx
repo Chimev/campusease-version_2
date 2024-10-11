@@ -68,7 +68,7 @@ const UserProfile = () => {
               <ListCard
                 key={index} 
                 listing={listing} 
-                profile={true} 
+                profile={false} 
               />
             ))
           ) : (
