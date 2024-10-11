@@ -1,18 +1,39 @@
 import { connectToDB } from "@/utilis/connectToDB";
 import User from "@/utilis/models/User";
-import { NextRequest, NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server";
 
+export const GET = async (req: NextRequest, { params }: any) => {
+    const searchParam = params.slug;  // Either email or name
+    console.log(searchParam);
 
-export const GET = async(req:NextRequest, {params}: any) => {
-    const email = params.slug
-    console.log(email)
-
-    
     try {
         await connectToDB();
-        const userList = await User.findOne({email})
-        return NextResponse.json(userList)
-    } catch (error) {
-        
+
+        let userList;
+
+        // Check if the searchParam contains an '@' symbol to determine if it's an email
+        if (searchParam.includes('@')) {
+            // Search by email
+            userList = await User.findOne({ email: searchParam });
+        } else {
+            // Search by name (Assuming case-insensitive and partial match search)
+            userList = await User.findOne({ name: new RegExp(searchParam, 'i') });
+        }
+
+        if (!userList) {
+            return new NextResponse(JSON.stringify({ message: "User not found" }), { status: 404 });
+        }
+
+        return NextResponse.json(userList);
+    } catch (error: any) {
+        console.error("Error fetching user:", {
+            message: error.message,
+            stack: error.stack,
+            params: { searchParam }
+        });
+        return new NextResponse(
+            JSON.stringify({ message: "Internal Server Error", error: error.message }),
+            { status: 500 }
+        );
     }
-}
+};
