@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 
 const UserProfile = () => {
   const userParams = useParams(); // Getting the user param from the URL
+  const [name, setName] = useState()
   const [email, setEmail] = useState('');
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,6 +18,7 @@ const UserProfile = () => {
       const data = await res.json();
       if (data && data.email) {
         setEmail(data.email);
+        setName(data.name)
       }
     } catch (error) {
       console.error('Error fetching user:', error);
@@ -53,7 +55,7 @@ const UserProfile = () => {
   return (
     <section>
       <div>
-        <p>Name: Chime</p> {/* Static for now, should come from user data */}
+        <p>Name: {name}</p> {/* Static for now, should come from user data */}
         <p>Email: {email || 'Loading...'}</p> {/* Display email */}
       </div>
 
