@@ -3,11 +3,11 @@
 import React, {useState} from 'react'
 import Link from 'next/link';
 import { GiHamburgerMenu } from 'react-icons/gi'
-import { FaPlus } from "react-icons/fa";
 import { FaSignInAlt } from "react-icons/fa";
 import { useRouter } from 'next/navigation'
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
+import { FaPlus } from "react-icons/fa";
 
 const Navbar = () => {
     const router = useRouter();
@@ -42,7 +42,13 @@ const Navbar = () => {
 
         {/* small screen */}
         <div className='lg:hidden'>
-            <GiHamburgerMenu className=' mr-6 text-4xl text-gray cursor-pointer' onClick={() => setOpen(prev => !prev)} />
+            <div className='flex mr-3 gap-2'>
+            <GiHamburgerMenu className=' text-4xl text-gray cursor-pointer' onClick={() => setOpen(prev => !prev)} />
+            <Link href={'/add-listing'} className='bg-blue w-fit p-2'>
+                <FaPlus  className='text-white font-bold text-xl '/>
+            </Link>
+            </div>
+            
             
             <div className={`absolute text-[18px]  left-4 -z-10 w-11/12 h-16 bg-white bg-opacity-75 flex justify-center gap-5 items-center transition-all duration-500 ease-in-out ${open ? 'top-16' : '-top-96'}`}>
                 <Link href="/" onClick={() => setOpen(false)} className='block  hover:text-orange'>Home</Link>
