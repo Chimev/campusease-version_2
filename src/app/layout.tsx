@@ -27,9 +27,7 @@ export default async function RootLayout({
           <Navbar/>
           {children}
         </AuthProvider>
-        
         </>
-        
         </body>
     </html>
   );

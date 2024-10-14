@@ -12,6 +12,10 @@ const userSchema = new Schema(
             type: String,
             required: true
           },
+        isAgent: {
+            type: Boolean,
+            required: true
+        },
         email: {
             type: String,
             unique: true,
