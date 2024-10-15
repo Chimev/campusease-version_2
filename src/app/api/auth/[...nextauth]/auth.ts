@@ -34,5 +34,36 @@ export const authOptions: NextAuthOptions = {
         }
       })
     ],
+    session: {
+      // Use JWT for sessions
+      strategy: 'jwt',
+      maxAge: 24 * 60 * 60, // 1 day session
+    },
+    jwt: {
+      // Configure token expiration and issue refresh if needed
+      maxAge: 24 * 60 * 60, // 1 day expiry
+    },
+    pages: {
+      // Redirect to login page if not authenticated
+      signIn: '/sign-in', 
+    },
+
+    callbacks: {
+      // Attach user ID to the JWT token
+      async jwt({ token, user }) {
+        if (user) {
+          token.id = user.id;
+        }
+        return token;
+      },
+      async session({ session, token }) {
+        if (token) {
+          if (session.user) {
+            session.user.id = token.id as string; // Use type assertion if necessary
+          }
+        }
+        return session;
+      }
+    },
   }
 
