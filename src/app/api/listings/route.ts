@@ -18,7 +18,8 @@ interface FormData {
   roommateName?:string;
   level?:string;
   gender?:string;
-  email:string;
+  email?:string
+  name?:string;
   isFavorite?:string;
 }
 
@@ -48,6 +49,7 @@ export const POST = async (request: any) => {
         roommateName,
         level,
         gender,
+        name,
         email,
         isFavorite,
     } = await request.json();
@@ -71,6 +73,7 @@ export const POST = async (request: any) => {
       roommateName,
       level,
       gender,
+      name,
       email
     }
     if(category === 'Accommodation'){

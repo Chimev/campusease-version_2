@@ -6,14 +6,16 @@ import { SchoolContextProvider } from "@/lib/Context/SchholContext";
 
 const page = async() => {
   const session = await getServerSession();
-  const userId = session?.user?.email;
+  const userId = session?.user?.name;
+  const email = session.user.email;
+  console.log(userId)
   if(!session) {
     redirect('/sign-in');
   }
   console.log(userId)
   return (
     <SchoolContextProvider>
-       <AddListing email={userId}/>
+       <AddListing email={email} name={userId}/>
     </SchoolContextProvider>
    
   )

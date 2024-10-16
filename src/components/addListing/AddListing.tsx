@@ -11,7 +11,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 
 
-const AddListing = ({email} : {email: string;}) => {
+const AddListing = ({name, email} : {name: string; email:string;}) => {
     const route = useRouter();
     const [errorMessage, setErrorMessage] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
@@ -126,8 +126,8 @@ const AddListing = ({email} : {email: string;}) => {
                 
             }catch(error){
                 // console.error('Error uploading images:', error);
-                setErrorMessage('Error uploading images.');
                 setLoading(false)
+                setErrorMessage('Error uploading images.');
                 return;
             }
         }
@@ -157,11 +157,13 @@ const AddListing = ({email} : {email: string;}) => {
                     price,
                     phone,
                     email,
+                    name,
                     isFavorite:false
                 })
             });
 
             if (res.status === 500) {
+                setLoading(false)
                 throw new Error('Failed to add listing');
             }if (res.status === 200) {
                 toast.success("List Added")
@@ -169,6 +171,7 @@ const AddListing = ({email} : {email: string;}) => {
             }
         } catch (error) {
             console.log("Error during listing:", error)
+            setLoading(false)
             toast.error("Error during listing")
         }
     }

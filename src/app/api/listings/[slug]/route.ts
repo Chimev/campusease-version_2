@@ -15,26 +15,25 @@ export const GET = async (req: NextRequest, { params }: any) => {
     const type = searchParams.get("type");
     const institution = searchParams.get("institution");
     const campus = searchParams.get("campus");
-    const category = params?.slug;  // category slug from URL
-    const listingId = params?.id; 
+    const slug = params?.slug;  // category slug from URL
+    // const listingId = params?.slug; 
 
-    console.log({ type, institution, campus, category, listingId });
+    console.log( 'aesrch', { type, institution, campus, slug });
 
     try {
         await connectToDB();
 
-        let result;
+        if(!type && !institution && !campus){
+            const listDetails = await Listings.findById({_id: slug})
 
-        // Check if listingId is present, if so, find the specific listing by ID
-        if(listingId){
-            result = await Listings.findOne({ _id: listingId });
-
-            if(!result){
-                return new NextResponse(JSON.stringify({message: 'Lisitng not found'}), {status:400}) 
+            if(!listDetails){
+                return new NextResponse(JSON.stringify({message: "No Listing Found"}), {status:404})
             }
+
+            return NextResponse.json(listDetails)
         }else{
             const categoryList = await Listings.find({
-                category,
+                category: slug,
                 institution,
                 campus,
                 type
@@ -48,15 +47,11 @@ export const GET = async (req: NextRequest, { params }: any) => {
     
             return NextResponse.json(categoryList);
         }
-
-
-        return NextResponse.json(result)
-       
     } catch (error:any) {
         console.error("Error fetching listings:", {
             message: error.message,
             stack: error.stack,
-            params: { listingId, category, type, institution, campus }
+            params: { slug, type, institution, campus }
         });
         return new NextResponse(
             JSON.stringify({ message: "Internal Server Error", error: error.message }),
@@ -100,9 +95,4 @@ export const DELETE = async (req: NextRequest, { params }: any) => {
             { status: 500 }
         );
     }
-    
-
-
-
-    
 }
