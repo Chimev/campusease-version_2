@@ -23,11 +23,14 @@ interface ListCardProps {
 const   ListCard = ({ listing, onDelete, onEdit, profile, handleFavorite, handleRemoveFavorite, favorite }: ListCardProps) => {
 
   return (
-    <Link href={`/${listing.category}/${listing._id}`} className="relative border rounded-lg shadow-lg overflow-hidden p-4 bg-white transition hover:shadow-xl">
+    
+    <div className="relative border rounded-lg shadow-lg overflow-hidden p-4 bg-white transition hover:shadow-xl">
+      
       {/* Uncomment if you want to use an image */}
       <div className="relative h-52 w-full mb-4">
         <Image src={listing.image[0]} alt='image' fill  className="rounded-t-lg object-cover" />
       </div>
+      <Link href={`/${listing.category}/${listing._id}`} className="underline font-semibold">See More</Link>
       <div className="info space-y-0">
         {profile && (
           <>
@@ -75,6 +78,7 @@ const   ListCard = ({ listing, onDelete, onEdit, profile, handleFavorite, handle
         </p>
         <p className="text-gray-600"><span className="font-semibold">Description: </span>{listing.description}</p>
       </div>
+     
       {
         profile && 
           <div className='absolute top-56 right-6 text-2xl text-orange flex'>
@@ -93,7 +97,7 @@ const   ListCard = ({ listing, onDelete, onEdit, profile, handleFavorite, handle
           </div>  
         }
         
-    </Link>
+    </div>
   );
 };
 
