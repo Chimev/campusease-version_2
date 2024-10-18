@@ -77,6 +77,10 @@ export const DELETE = async (req: NextRequest, { params }: any) => {
         // Delete associated images from Cloudinary
         if (listing.image && listing.image.length > 0) { // Corrected typo 'lemgth'
             for (const img of listing.image) {
+                if(!img){
+                    continue;
+                }
+
                 const publicId = img.split('/').pop()?.split('.')[0]; // Extract public ID from URL
                 
                 if (publicId) {

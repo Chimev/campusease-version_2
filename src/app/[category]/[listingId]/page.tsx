@@ -68,7 +68,7 @@ const ListingDetails = () => {
       {/* Smaller Images */}
       <div className="flex gap-1">
         {details?.image.map((img, index) => (
-          <Thumbnail key={index} img={img} onClick={() => handleImageClick(img)} />
+          <Thumbnail key={index} img={img || ""} onClick={() => handleImageClick(img)} />
         ))}
       </div>
 

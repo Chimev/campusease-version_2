@@ -28,7 +28,7 @@ const   ListCard = ({ listing, onDelete, onEdit, profile, handleFavorite, handle
       
       {/* Uncomment if you want to use an image */}
       <div className="relative h-52 w-full mb-4">
-        <Image src={listing.image[0]} alt='image' fill  className="rounded-t-lg object-cover" />
+        <Image src={listing.image[0] || listing.image[1] || listing.image[2]} alt='image' fill  className="rounded-t-lg object-cover" />
       </div>
       <Link href={`/${listing.category}/${listing._id}`} className="underline font-semibold">See More</Link>
       <div className="info space-y-0">

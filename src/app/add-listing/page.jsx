@@ -7,7 +7,7 @@ import { SchoolContextProvider } from "@/lib/Context/SchholContext";
 const page = async() => {
   const session = await getServerSession();
   const userId = session?.user?.name;
-  const email = session?.user.email;
+  const email = session?.user?.email;
   
   console.log(userId)
   if(!session) {

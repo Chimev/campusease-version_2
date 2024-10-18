@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useSchoolProvider } from '@/lib/Context/SchholContext';
 import { ListOfInstitutions } from "@/data/listOfInstitution";
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -73,9 +74,9 @@ const AddListing = ({name, email} : {name: string; email:string;}) => {
         setSelectedCategory(event.target.value);
     };
 
-    const addList = async(e: any) => {
+    const addList = async (e: any) => {
         e.preventDefault();
-
+    
         const category = categoryRef?.current?.value;
         const description = descriptionRef?.current?.value;
         const institution = institutionRef?.current?.value;
@@ -87,94 +88,91 @@ const AddListing = ({name, email} : {name: string; email:string;}) => {
         const property = propertyTypeRef?.current?.value;
         const level = levelRef?.current?.value;
         const gender = genderRef?.current?.value;
-        const price = priceRef?.current?.value;
+        const price = priceRef?.current?.value.toString();
         const phone = phoneRef?.current?.value;
         const roommateName = roommateNameRef?.current?.value;
         const image = imageRef?.current?.files;
-
-        const imageUrls : string[]= []
-
-        if(image && image.length > 0) {
-            if(image.length > 3){
-                setErrorMessage("Maximum of 3 images.");
-                setLoading(false)
-                return;
-            }
-
-            // const imageUrls: string[] = [];
-
-            const files = Array.from(image); //convert FileList to Array clg img
-            setLoading(true)
-
-            //mage upload
-            try{
-                for(const file of files) {
+    
+        const imageUrls: string[] = [];
+    
+        // Ensure image length is exactly 3\
+        if (image && image.length !== 3) {
+            setErrorMessage("Images must be exactly 3.");
+            setLoading(false);
+            return; // Exit early if the condition is not met
+        }
+    
+        // Proceed with image upload
+        if (image) {
+            setLoading(true);
+            const files = Array.from(image); // Convert FileList to Array
+    
+            try {
+                for (const file of files) {
                     const formData = new FormData();
                     formData.append('file', file);
                     formData.append('upload_preset', process.env.NEXT_PUBLIC_UPLOAD_PRESET || "");
-
-                    //for img process
+    
+                    // Upload the image to Cloudinary
                     const res = await fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`, {
-                        method : "POST",
-                        body : formData,
-                    }
-                );
+                        method: "POST",
+                        body: formData,
+                    });
+    
                     const data = await res.json();
-                    imageUrls.push(data.secure_url)
-                    // console.log(imageUrls)
+                    imageUrls.push(data.secure_url); // Add the uploaded image URL to array
                 }
-                
-            }catch(error){
-                // console.error('Error uploading images:', error);
-                setLoading(false)
+            } catch (error) {
+                setLoading(false);
                 setErrorMessage('Error uploading images.');
                 return;
             }
         }
-
-
-        //add listing api
+    
+        // Add the listing via API
         try {
             const res = await fetch("/api/listings", {
                 method: "POST",
                 headers: {
-                    "Content-Type" : "application/json"
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
                     category,
-                    description, 
-                    institution, 
-                    image:imageUrls,
-                    type, 
-                    campus, 
+                    description,
+                    institution,
+                    image: imageUrls, // Use the uploaded image URLs here
+                    type,
+                    campus,
                     accommodationName,
                     accommodationType,
-                    service, 
-                    property, 
+                    service,
+                    property,
                     roommateName,
-                    level, 
+                    level,
                     gender,
                     price,
                     phone,
                     email,
                     name,
-                    isFavorite:false
-                })
+                    isFavorite: false,
+                }),
             });
-
+    
             if (res.status === 500) {
-                setLoading(false)
+                setLoading(false);
                 throw new Error('Failed to add listing');
-            }if (res.status === 200) {
-                toast.success("List Added")
+            }
+            if (res.status === 200) {
+                toast.success("List Added");
                 route.push('/profile/listings');
             }
         } catch (error) {
-            console.log("Error during listing:", error)
-            setLoading(false)
-            toast.error("Error during listing")
+            console.log("Error during listing:", error);
+            setLoading(false);
+            toast.error("Error during listing");
         }
-    }
+    };
+    
 
     return (
         <div className='px-3 py-8 sm:max-w-[500px] sm:m-auto'>
@@ -272,7 +270,7 @@ const AddListing = ({name, email} : {name: string; email:string;}) => {
                             <div className="input">
                             <label className="p-text">phone</label>
                             <div className="price">
-                            <input type="number" ref={phoneRef} name="phoneNo" required />
+                            <input type="tel" ref={phoneRef} name="phoneNo" required />
                             </div>
                             </div>
                         </Filter_4>
