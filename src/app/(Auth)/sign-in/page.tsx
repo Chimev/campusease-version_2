@@ -12,7 +12,6 @@ const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const route = useRouter();
-  const [error, setError] = useState("")
   const session = useSession();
 
   useEffect( () => {
@@ -38,12 +37,12 @@ const SignIn = () => {
       password
     })
 
-    if(res?.error === "Error: read ECONNRESET") {
+    console.log("ews", res)
+
+    if(res?.error === "Error: querySrv ETIMEOUT _mongodb._tcp.cluster0.dgonc.mongodb.net") {
       console.log(res?.error)
       setLoading(false)
-      toast.error("Network Error",{
-        position: "top-left"
-      });
+      toast.error("Network Error");
       // if(res?.url) route.replace("/")
     }if(res?.error === "CredentialsSignin"){
       console.log(res?.error)
@@ -94,8 +93,7 @@ const SignIn = () => {
         >
           {loading ? "Loading..." : "Sign In"}
         </button>
-        <p className='text-red-600 text-[16px] -mt-1' >{error && error}</p>
-        <div className='text-center -mt-7'>
+        <div className='text-center'>
           <p>
             Don't have an account yet?{' '}
             <span

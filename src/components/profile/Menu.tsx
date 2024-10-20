@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { signOut } from 'next-auth/react';
 
 
-const link = ['settings', 'listings', 'saved'];
+const link = [ 'listings', 'saved'];
 const Menu = () => {
   const pathname = usePathname();
   return (

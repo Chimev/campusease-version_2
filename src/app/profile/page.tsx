@@ -53,23 +53,30 @@ const Profile = () => {
   return (
     <section>
       {/* Display the user information */}
-      <div>
+      <div className='text-center'>
         <p>Name: {user?.name || 'Loading...'}</p>
         <p>Email: {user?.email || 'Loading...'}</p>
       </div>
 
-      {/* Button to share profile */}
-      <div className='mt-4'>
-        <button 
-          className='bg-orange p-2 text-white rounded' 
-          onClick={handleCopy}
-          disabled={!user}  // Disable the button if user data is not available
-        >
-          Share Profile
-        </button>
-        {/* Show copy success message */}
-        {copySuccess && <p className="text-green-500 mt-2">{copySuccess}</p>}
+      <div className='flex gap-2 justify-center'>
+        {/* Button to share profile */}
+          <Link href={'/profile/settings'} 
+            className='bg-orange p-2  text-white rounded' 
+          >
+            Edit Profile
+          </Link>
+            {/* Button to share profile */}
+          <button 
+            className='bg-orange p-2 text-white rounded' 
+            onClick={handleCopy}
+            disabled={!user}  // Disable the button if user data is not available
+          >
+            Share Profile
+          </button>
+          {/* Show copy success message */}
+          {copySuccess && <p className="text-green-500 mt-2">{copySuccess}</p>}
       </div>
+      
 
       {/* Optional: Link to user's profile */}
       {user && (
