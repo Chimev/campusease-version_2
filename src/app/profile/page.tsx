@@ -12,7 +12,7 @@ interface User {
   }
 
   
-export const fetchUserData = async (email:string) : Promise<User | null> => {
+const fetchUserData = async (email:string) : Promise<User | null> => {
   const baseUrl = process.env.VERCEL_URL 
     ? `https://${process.env.VERCEL_URL}`  // Production (Vercel)
     : 'http://localhost:3000';             // Local development
