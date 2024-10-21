@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 import { authOptions } from '../api/auth/[...nextauth]/auth';
 import Link from 'next/link';
 import ShareBTN from '@/components/shareBtn/ShareBTN';
+import Menu from '@/components/profile/Menu';
 
 
 interface User {
@@ -40,6 +41,7 @@ const fetchUserData = async (email:string) : Promise<User | null> => {
 
   return (
     <section>
+      <Menu />
     {/* Display the user information */}
     <div className='text-center'>
       <p>Name: {user?.name}</p>
