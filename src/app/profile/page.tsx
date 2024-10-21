@@ -37,7 +37,8 @@ const fetchUserData = async (email:string) : Promise<User | null> => {
     if(!session) {
         redirect('/sign-in');
       }
-      const user = await fetchUserData(session?.user?.email)
+      const user = session.user;
+      // const user = await fetchUserData(session?.user?.email)
 
   return (
     <section>
