@@ -30,7 +30,7 @@ const fetchUserData = async (email:string) : Promise<User | null> => {
     }
 } 
 
-export const Profile = async() => {
+ const Profile = async() => {
     const session = await getServerSession(authOptions) as any;
     console.log("new",session)
     if(!session) {
