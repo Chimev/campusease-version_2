@@ -67,3 +67,5 @@ export const Profile = async() => {
   </section>
   )
 }
+
+export default Profile
