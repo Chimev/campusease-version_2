@@ -91,7 +91,7 @@ const   ListCard = ({ listing, onDelete, onEdit, profile, handleFavorite, handle
           <div 
           className='absolute top-5 right-6 text-5xl text-orange  flex'
           >
-            {favorite ? <MdOutlineFavorite onClick={() => handleRemoveFavorite(listing._id)}  /> : <GrFavorite onClick={() => handleFavorite(listing._id)} /> }
+            {/* {favorite ? <MdOutlineFavorite onClick={() => handleRemoveFavorite(listing._id)}  /> : <GrFavorite onClick={() => handleFavorite(listing._id)} /> } */}
             
             
           </div>  
