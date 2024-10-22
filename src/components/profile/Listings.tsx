@@ -5,7 +5,7 @@ import ListCard from '@/components/listCard/ListCard'
 import { useSession } from 'next-auth/react'
 import React, { useEffect, useState } from 'react'
 
-const page = () => {
+const Listings = () => {
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true)
 
@@ -60,7 +60,7 @@ const page = () => {
   }
 
   return (
-    <>
+    <section className='p-4'>
       <h2 className='font-bold mb-5'>My listings ({listings.length})</h2>
       
       {loading ? (
@@ -82,8 +82,8 @@ const page = () => {
           )}
         </div>
       )}
-    </>
+    </section>
   );
 }
 
-export default page
+export default Listings

@@ -44,9 +44,8 @@ const Saved = () => {
     }
 
   return (
-    <section>
+    <section className='p-4'>
         <h2 className='font-bold mb-5'>Saved listings ({favoriteList.length})</h2>
-
 
         {loading ? (
         <p>Loading...</p> // Handle loading state here

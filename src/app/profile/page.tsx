@@ -2,9 +2,11 @@ import React from 'react'
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import { authOptions } from '../api/auth/[...nextauth]/auth';
+import { signOut } from 'next-auth/react';
 import Link from 'next/link';
-import ShareBTN from '@/components/shareBtn/ShareBTN';
+import ShareBTN from '@/components/profile/shareBtn/ShareBTN';
 import Menu from '@/components/profile/Menu';
+import SignOut from '@/components/profile/SignOut';
 
 
 interface User {
@@ -42,11 +44,11 @@ const fetchUserData = async (email:string) : Promise<User | null> => {
 
   return (
     <section>
-      <Menu />
+      
     {/* Display the user information */}
-    <div className='text-center'>
-      <p>Name: {user?.name}</p>
-      <p>Email: {user?.email}</p>
+    <div className='text-center text-xl'>
+      <p className='font-semibold -mb-4'>{user?.name}</p>
+      <p className='font-semibold'>{user?.email}</p>
     </div>
 
     <div className='flex gap-2 justify-center'>
@@ -57,16 +59,19 @@ const fetchUserData = async (email:string) : Promise<User | null> => {
             Edit Profile
           </Link>
          <ShareBTN user={user} />
+         <SignOut/>
       </div>
-      {/* Optional: Link to user's profile */}
+      {/*Link to user's profile */}
       {user && (
-        <div className='mt-2 text-center'>
+        <div className='mb-5 text-center'>
           <Link href={`/user/${user.name}`} className='text-blue-500 underline'>
             View your public profile
           </Link>
         </div>
       )}
+      
 
+<Menu />
   </section>
   )
 }
