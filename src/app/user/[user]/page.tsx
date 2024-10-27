@@ -8,6 +8,7 @@ const UserProfile = () => {
   const userParams = useParams(); // Getting the user param from the URL
   const [name, setName] = useState()
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState()
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -19,6 +20,7 @@ const UserProfile = () => {
       if (data && data.email) {
         setEmail(data.email);
         setName(data.name)
+        setPhone(data.phone)
       }
     } catch (error) {
       console.error('Error fetching user:', error);
@@ -57,6 +59,7 @@ const UserProfile = () => {
       <div>
         <p>Name: {name}</p> {/* Static for now, should come from user data */}
         <p>Email: {email || 'Loading...'}</p> {/* Display email */}
+        <p>phone: {phone || 'Loading...'}</p> {/* Display email */}
       </div>
 
       <div>

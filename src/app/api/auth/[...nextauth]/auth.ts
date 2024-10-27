@@ -24,7 +24,12 @@ export const authOptions: NextAuthOptions = {
                 user.password
               )
               if(isPasswordCorrect) {
-                return user;
+                return {
+                  id: user.id,
+                  email: user.email,
+                  name: user.name,
+                  phone: user.phone
+                }
               }
             }
             return null;
@@ -53,13 +58,15 @@ export const authOptions: NextAuthOptions = {
       async jwt({ token, user }) {
         if (user) {
           token.id = user.id;
+          token.phone = user.phone
         }
         return token;
       },
       async session({ session, token }) {
         if (token) {
           if (session.user) {
-            session.user.id = token.id as string; // Use type assertion if necessary
+            session.user.id = token.id as string; 
+            session.user.phone = token.phone as string;
           }
         }
         return session;

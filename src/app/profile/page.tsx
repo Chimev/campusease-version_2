@@ -15,23 +15,23 @@ interface User {
   }
 
   
-const fetchUserData = async (email:string) : Promise<User | null> => {
-  const baseUrl = process.env.VERCEL_URL 
-    ? `https://${process.env.VERCEL_URL}`  // Production (Vercel)
-    : 'http://localhost:3000';             // Local development
+// const fetchUserData = async (email:string) : Promise<User | null> => {
+//   const baseUrl = process.env.VERCEL_URL 
+//     ? `https://${process.env.VERCEL_URL}`  // Production (Vercel)
+//     : 'http://localhost:3000';             // Local development
 
 
-    try {
-      const res = await fetch(`${baseUrl}/api/user/${email}`);
-        if (!res.ok) {
-          throw new Error('Failed to fetch user data');
-        }
-        return await res.json();
-    } catch (error) {
-    console.error('Error fetching user data:', error);
-    return null;
-    }
-} 
+//     try {
+//       const res = await fetch(`${baseUrl}/api/user/${email}`);
+//         if (!res.ok) {
+//           throw new Error('Failed to fetch user data');
+//         }
+//         return await res.json();
+//     } catch (error) {
+//     console.error('Error fetching user data:', error);
+//     return null;
+//     }
+// } 
 
  const Profile = async() => {
     const session = await getServerSession(authOptions) as any;
@@ -49,6 +49,7 @@ const fetchUserData = async (email:string) : Promise<User | null> => {
     <div className='text-center text-xl'>
       <p className='font-semibold -mb-4'>{user?.name}</p>
       <p className='font-semibold'>{user?.email}</p>
+      <p className='font-semibold'>{user?.phone}</p>
     </div>
 
     <div className='flex gap-2 justify-center'>

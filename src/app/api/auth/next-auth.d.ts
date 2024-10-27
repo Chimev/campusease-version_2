@@ -7,7 +7,11 @@ declare module "next-auth" {
       id: string; // Add the id property
       name?: string | null;
       email?: string | null;
-      image?: string | null;
+      phone?: string | null;
     };
+  }
+  interface User {
+    id: string;
+    phone: string
   }
 }
