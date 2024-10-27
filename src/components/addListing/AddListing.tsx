@@ -164,7 +164,7 @@ const AddListing = ({name, email} : {name: string; email:string;}) => {
             }
             if (res.status === 200) {
                 toast.success("List Added");
-                route.push('/profile/listings');
+                route.push('/profile');
             }
         } catch (error) {
             console.log("Error during listing:", error);
