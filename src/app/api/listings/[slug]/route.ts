@@ -37,7 +37,7 @@ export const GET = async (req: NextRequest, { params }: any) => {
                 institution,
                 campus,
                 type
-            })
+            }).sort({ createdAt: -1 });
             // .limit(50); 
              // Consider limiting results for better performance
     

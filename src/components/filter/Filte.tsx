@@ -56,6 +56,7 @@ export const Filter_2 = ({children, serviceTypeRef}: IFilter) => {
               <option value="Painter">Painter</option>
               <option value="Hairdresser">Hairdresser</option>
               <option value="Electrician">Electrician</option>
+              <option value="Academic-Assistant">Academic Assitance</option>
           </select>
       </div>
     </>

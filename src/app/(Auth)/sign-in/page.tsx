@@ -39,6 +39,11 @@ const SignIn = () => {
 
     console.log("ews", res)
 
+    if(!res?.ok){
+      setLoading(false);
+      toast.error("Error while tryng to login")
+    }
+
     if(res?.error === "Error: querySrv ETIMEOUT _mongodb._tcp.cluster0.dgonc.mongodb.net") {
       console.log(res?.error)
       setLoading(false)
