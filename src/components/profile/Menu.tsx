@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 import Listings from './Listings';
 import Saved from './Saved';
+import Background from '../background/Background';
 
 
 const profileAds = [
@@ -20,6 +21,8 @@ const Menu = () => {
 
   return (
     <>
+   
+     
     <div className="flex text-lg gap-4 items-center justify-center px-4 py-1 font-medium">
       {profileAds.map(menu => <div
        className={`text-orange cursor-pointer ${activeMenu === menu.id && 'border-b-2' }`}

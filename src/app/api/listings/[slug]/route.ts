@@ -100,3 +100,26 @@ export const DELETE = async (req: NextRequest, { params }: any) => {
         );
     }
 }
+
+export const PATCH = async (req: NextRequest, {params}: any) => {
+    const body = await req.json()
+    const id = params.slug
+
+    await connectToDB();
+
+    try {
+        const listing = await Listings.findOne({_id : id});
+
+        if (!listing) {
+            return NextResponse.json({ message: "User not found" }, { status: 404 });
+        }
+
+          // Update listing with the new data from the body
+          Object.assign(listing, body); // Update listinig fields with the provided data
+          await listing.save(); // Save the updated llisting
+          return NextResponse.json({ message: "Updated" }, { status: 200 });
+    }catch (error) {
+        console.error('Error updating user:', error);
+        return NextResponse.json({ message: "Internal server error" }, { status: 500 });
+    }
+}

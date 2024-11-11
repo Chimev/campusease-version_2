@@ -1,39 +1,40 @@
 'use client'
 
-// import Listing from '@/components/listings/Listing'
 import ListCard from '@/components/listCard/ListCard'
 import { useSession } from 'next-auth/react'
 import React, { useEffect, useState } from 'react'
+import Background from '../background/Background'
 
 const Listings = () => {
+  const [showBackground, setShowBackground] = useState(false)
+  const [editId, setEditId] = useState<string | null>(null) 
+  const [editCategory, setEditCategory] = useState<string | null>(null)
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true)
 
-  // const session = useSession()
-  // const email = session.data?.user?.email;
-  // // console.log(email)
-
-  const { data: session, status } = useSession(); // Deconstruct session and status
+  const { data: session, status } = useSession(); 
 
   useEffect(() => {
     const fetchListing = async () => {
       if (status === 'authenticated' && session?.user?.email) {
         const email = session.user.email;
 
-        
-        const res = await fetch(`/api/listings/user/${email}`);
-        const data = await res.json();
-        // console.log(data)
-        setLoading(false)
-        setListings(data)
+        try {
+          const res = await fetch(`/api/listings/user/${email}`);
+          const data = await res.json();
+          setListings(data);
+        } catch (error) {
+          console.error("Error fetching listings:", error);
+        } finally {
+          setLoading(false);
+        }
       }
-    }
+    };
 
     fetchListing();
-  }, [status, session]);  // Add status and session to dependencies
+  }, [status, session, showBackground]); 
 
   const onDelete = async (id: string) => {
-
     try {
       const res = await fetch(`/api/listings/${id}`, {
         method: 'DELETE',
@@ -41,36 +42,37 @@ const Listings = () => {
           "Content-Type" : "application/json"
       },
       })
-      console.log("Response",res)
       if (res.ok) {
-        const remainingListings = listings.filter((listing:any) => listing._id !== id);
-        setListings(remainingListings); // Update state with remaining listings
+        const remainingListings = listings.filter((listing: any) => listing._id !== id);
+        setListings(remainingListings); 
       } else {
         console.error('Failed to delete listing');
       }
-
     } catch (error) {
-      //
+      console.error("Error deleting listing:", error);
     }
   }
 
-  
-  const onEdit = () => {
-    //
+  const onEdit = (id:string, category:string) => {
+    setEditId(id); // Set the id for editing
+    setEditCategory(category)
+    setShowBackground(true);
   }
 
   return (
     <section className='p-4'>
+      {showBackground && <Background id={editId} category={editCategory} setShowBackground={setShowBackground} />} {/* Pass editId to Background */}
+
       <h2 className='font-bold mb-5'>My listings ({listings.length})</h2>
       
       {loading ? (
-        <p>Loading...</p> // Handle loading state here
+        <p>Loading...</p> 
       ) : (
         <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {Array.isArray(listings) && listings.length > 0 ? (
-            listings.map((listing: any, index: number) => (
+            listings.map((listing: any) => (
               <ListCard 
-                key={index} 
+                key={listing._id} 
                 listing={listing} 
                 onDelete={onDelete} 
                 onEdit={onEdit} 
@@ -86,4 +88,4 @@ const Listings = () => {
   );
 }
 
-export default Listings
+export default Listings;

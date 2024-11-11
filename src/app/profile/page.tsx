@@ -23,7 +23,6 @@ const Profile = async() => {
     const user = session.user;
   return (
   <section>
-      
   {/* Display the user information */}
   <div className='text-center text-xl'>
     <p className='font-semibold -mb-4'>{user?.name}</p>

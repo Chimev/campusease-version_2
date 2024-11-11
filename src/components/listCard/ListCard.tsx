@@ -24,7 +24,7 @@ const   ListCard = ({ listing, onDelete, onEdit, profile, handleFavorite, handle
 
   return (
     
-    <div className="relative border rounded-lg shadow-lg overflow-hidden p-4 bg-white transition hover:shadow-xl">
+    <div className="relative  border rounded-lg shadow-lg overflow-hidden p-4 bg-white transition hover:shadow-xl">
       
       {/* Uncomment if you want to use an image */}
       <div className="relative h-52 w-full mb-4">
@@ -82,8 +82,8 @@ const   ListCard = ({ listing, onDelete, onEdit, profile, handleFavorite, handle
       {
         profile && 
           <div className='absolute top-56 right-6 text-2xl text-orange flex'>
-            <MdEdit  onClick={onEdit} />
-            <MdDelete  onClick={() =>  onDelete(listing._id, listing.image[0])} />
+            <MdEdit  onClick={() =>  onEdit(listing._id, listing.category)} />
+            <MdDelete  onClick={() =>  onDelete(listing._id)} />
           </div>  
         }
         {
