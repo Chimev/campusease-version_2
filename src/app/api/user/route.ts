@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 import { NextResponse } from 'next/server';
 
 export const POST = async (request: any) => {
-  const { name, phone, email, password, isAgent } = await request.json();
+  const { name, phone, email, password, role } = await request.json();
 
   await connectToDB();
 
@@ -25,7 +25,7 @@ export const POST = async (request: any) => {
   const newUser = new User({
     name,
     phone,
-    isAgent,
+    role,
     email,
     password: hashPassword,
   });

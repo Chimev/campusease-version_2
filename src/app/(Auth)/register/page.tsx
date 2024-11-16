@@ -1,7 +1,16 @@
 'use client'
+
+import { ChangeEvent } from 'react';
+
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
+
+const providers = [
+  {provider: 'agent', label: 'agent'},
+  {provider: 'service', label: 'service provider'},
+  {provider: 'student', label: 'student'}
+]
 
 const Register = () => {
   const route = useRouter()
@@ -10,15 +19,28 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState("")
   // For agent option
-  const [isAgent, setIsAgent] = useState(false)
+  const [role, setRole] = useState<string[]>([]);
+
+  const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value, checked } = e.target;
+    setRole((prevSelected) =>
+      checked ? [...prevSelected, value] : prevSelected.filter((item) => item !== value)
+    );
+  };
 
   const handleRegister = async (e: any) => {
     e.preventDefault()
+    if (role.length === 0) {
+      setLoading(false)
+      setError("You must select at least one role.");
+      return;
+    }
     setLoading(true)
     const name = e.target[0].value
     const phone = e.target[1].value.toString()
     const email = e.target[2].value
     const password = e.target[3].value
+
 
     try {
       const res = await fetch("/api/user", {
@@ -31,9 +53,15 @@ const Register = () => {
           phone,
           email,
           password,
-          isAgent, // Include the isAgent field in the body
+          role, // Include the isAgent field in the body
         })
       })
+
+      console.log(res)
+      if (res.status === 500) {
+        setLoading(false)
+        setError("Network error")
+      }
       if (res.status === 400) {
         setLoading(false)
         setError("This email is already registered")
@@ -43,8 +71,8 @@ const Register = () => {
         route.push("/sign-in")
       }
     } catch (error) {
-      setError("Error, try again")
       setLoading(false)
+      setError("Error, try again")
       console.log(error)
     }
   }
@@ -100,7 +128,7 @@ const Register = () => {
         </div>
 
         {/* Agent checkbox with styled elements */}
-        <div className='flex mb-6'>
+        {/* <div className='flex mb-6'>
           <input 
             type="checkbox" 
             checked={isAgent} 
@@ -111,7 +139,27 @@ const Register = () => {
           <label htmlFor="isAgent" className='ml-2 text-gray-700 text-lg'>
             Register as an agent
           </label>
+        </div> */}
+        <p className="text-xl font-semibold mb-4">Register as:</p>
+        <p className='-mt-3 text-xs'>(you can pick more than one)</p>
+        <div className="mb-6">
+          {providers.map((provider) => (
+            <div key={provider.provider} className="flex items-center mb-4">
+              <input
+                type="checkbox"
+                value={provider.provider}
+                onChange={handleCheckboxChange}
+                id={provider.provider}
+                className="w-4 h-4 text-orange bg-gray-100 border-gray-300 rounded focus:ring-orange focus:ring-2"
+              />
+              <label htmlFor={provider.provider} className="ml-2 text-gray-700 text-lg">
+                {provider.label}
+              </label>
+            </div>
+          ))}
         </div>
+
+        
 
         <button 
           type='submit'

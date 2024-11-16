@@ -12,8 +12,8 @@ const userSchema = new Schema(
             type: String,
             required: true
           },
-        isAgent: {
-            type: Boolean,
+        role: {
+            type: [String],
             required: true
         },
         email: {
