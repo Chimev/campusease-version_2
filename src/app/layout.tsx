@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/navbar/Navbar";
 import { getServerSession } from "next-auth";
 import AuthProvider from "@/utilis/SessionProvider";
+import Footer from "@/components/footer/Footer";
 
 const inter = Rubik({ subsets: ["latin"], weight:['400'] });
 
@@ -26,6 +27,7 @@ export default async function RootLayout({
         <AuthProvider session={session} >
           <Navbar/>
           {children}
+          <Footer/>
         </AuthProvider>
         </>
         </body>

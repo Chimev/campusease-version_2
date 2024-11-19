@@ -5,6 +5,7 @@ import { ChangeEvent } from 'react';
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
+import Link from 'next/link';
 
 const providers = [
   {provider: 'agent', label: 'agent'},
@@ -158,6 +159,15 @@ const Register = () => {
             </div>
           ))}
         </div>
+        <div className='-mt-7 text-center text-sm text-gray-600'>
+        <p>
+          By signing up, you agree to our 
+          <Link href="/terms" className='text-lightBlue hover:underline mx-1'>Terms and Conditions</Link> 
+          and 
+          <Link href="/privacy-policy" className='text-lightBlue hover:underline mx-1'>Privacy Policy</Link>.
+        </p>
+      </div>
+        
 
         
 
@@ -168,14 +178,17 @@ const Register = () => {
           {loading ? "Loading..." : "Sign Up"}
         </button>
 
+        
+
         <p className='text-red-600 text-[16px] mb-4'>{error && error}</p>
 
-        <div className='text-center'>
+        <div className='text-center -mt-10'>
           <p>Already have an account? 
             <span onClick={() => route.push("/sign-in")} className='text-lightBlue cursor-pointer font-semibold ml-1'>Sign In</span>
           </p>
         </div>
       </form>
+      
     </section>
   )
 }
