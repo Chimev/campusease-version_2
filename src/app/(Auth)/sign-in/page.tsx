@@ -62,7 +62,7 @@ const SignIn = () => {
 
 
   return (
-    <section className='pt-10 px-6'>
+    <section className='pt-10 px-6 min-h-screen'>
       <ToastContainer/>
       <form onSubmit={handleLogin} className='max-w-sm h-72 flex flex-col m-auto'>
         <h1 className='text-3xl leading-9 text-center font-bold mb-10'>
