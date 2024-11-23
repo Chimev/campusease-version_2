@@ -2,6 +2,9 @@
 
 import Link from "next/link";
 import React from "react";
+import { FaInstagram } from "react-icons/fa6";
+import { FaWhatsapp } from "react-icons/fa6";
+import { FaXTwitter } from "react-icons/fa6";
 
 const Footer: React.FC = () => {
   return (
@@ -19,25 +22,25 @@ const Footer: React.FC = () => {
           <p className="mb-2">© {new Date().getFullYear()} Creative Chime Production</p>
           <div className="flex space-x-4">
             <Link
-              href="/"
+              href="https://www.instagram.com/campus_ease/profilecard/?igsh=ZWFrdnI4eWQycmE="
               target="_blank"
-              className="hover:underline"
+              className="text-lg"
             >
-              Instagram
+              <FaInstagram />
             </Link>
             <Link
-              href="/"
+              href="https://x.com/campus_ease?t=IdwfU5HNyOb0ocr9AaGrUg&s=09"
               target="_blank"
-              className="hover:underline"
+              className="text-lg"
             >
-              X
+              <FaXTwitter />
             </Link>
             <Link
-              href="/"
+              href="https://whatsapp.com/channel/0029VaqvVfRC1FuGeFs2Mi1A"
               target="_blank"
-              className="hover:underline"
+              className="text-lg"
             >
-              WhatsApp
+              <FaWhatsapp />
             </Link>
           </div>
         </div>
