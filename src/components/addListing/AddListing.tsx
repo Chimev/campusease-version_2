@@ -9,6 +9,8 @@ import { useSchoolProvider } from '@/lib/Context/SchholContext';
 import { ListOfInstitutions } from "@/data/listOfInstitution";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { uploadImagesToCloudinary } from '@/lib/functions/uploadCloudinary';
+import { addListing } from '@/lib/functions/addLiisting';
 
 
 
@@ -21,7 +23,7 @@ const AddListing = ({name, email} : {name: string; email:string;}) => {
 
     //useRef
     const categoryRef = useRef<HTMLSelectElement>(null);
-    const imageRef = useRef<HTMLInputElement>(null); 
+    const imageRef = useRef<HTMLInputElement | null>(null);
     const institutionRef = useRef<HTMLSelectElement>(null);
     const typeRef = useRef<HTMLSelectElement>(null);
     const campusRef = useRef<HTMLSelectElement>(null);
@@ -76,6 +78,7 @@ const AddListing = ({name, email} : {name: string; email:string;}) => {
 
     const addList = async (e: any) => {
         e.preventDefault();
+        setLoading(true);
     
         const category = categoryRef?.current?.value;
         const description = descriptionRef?.current?.value;
@@ -88,90 +91,64 @@ const AddListing = ({name, email} : {name: string; email:string;}) => {
         const property = propertyTypeRef?.current?.value;
         const level = levelRef?.current?.value;
         const gender = genderRef?.current?.value;
-        const price = priceRef?.current?.value.toString();
+        const price = priceRef?.current?.value?.toString();
         const phone = phoneRef?.current?.value;
         const roommateName = roommateNameRef?.current?.value;
-        const image = imageRef?.current?.files;
     
-        const imageUrls: string[] = [];
+        // Handle image uploads
+        const imageFiles = imageRef?.current?.files;
     
-        // Ensure image length is exactly 3\
-        if (image && image.length !== 3) {
-            setErrorMessage("Images must be exactly 3.");
+        if (!imageFiles || imageFiles.length !== 3) {
+            setErrorMessage("Please upload exactly 3 images.");
             setLoading(false);
-            return; // Exit early if the condition is not met
+            return;
         }
     
-        // Proceed with image upload
-        if (image) {
-            setLoading(true);
-            const files = Array.from(image); // Convert FileList to Array
+        try {
+            const uploadedImages = await uploadImagesToCloudinary(imageFiles);
     
-            try {
-                for (const file of files) {
-                    const formData = new FormData();
-                    formData.append('file', file);
-                    formData.append('upload_preset', process.env.NEXT_PUBLIC_UPLOAD_PRESET || "");
-    
-                    // Upload the image to Cloudinary
-                    const res = await fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`, {
-                        method: "POST",
-                        body: formData,
-                    });
-    
-                    const data = await res.json();
-                    imageUrls.push(data.secure_url); // Add the uploaded image URL to array
-                }
-            } catch (error) {
+            if (!uploadedImages.length) {
+                setErrorMessage("Failed to upload images.");
                 setLoading(false);
-                setErrorMessage('Error uploading images.');
                 return;
             }
-        }
     
-        // Add the listing via API
-        try {
-            const res = await fetch("/api/listings", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    category,
-                    description,
-                    institution,
-                    image: imageUrls, // Use the uploaded image URLs here
-                    type,
-                    campus,
-                    accommodationName,
-                    accommodationType,
-                    service,
-                    property,
-                    roommateName,
-                    level,
-                    gender,
-                    price,
-                    phone,
-                    email,
-                    name,
-                    isFavorite: false,
-                }),
-            });
-    
-            if (res.status === 500) {
+            const listing = {
+                category,
+                description,
+                institution,
+                type,
+                campus,
+                accommodationName,
+                accommodationType,
+                service,
+                property,
+                roommateName,
+                level,
+                gender,
+                price,
+                phone,
+                email,
+                name,
+                isFavorite: false,
+                image: uploadedImages, // Use uploaded image URLs
+            }
+            // Proceed with adding the listing via API function
+            const res = await addListing(listing);
+            console.log(res)
+            if (!res.ok) {
                 setLoading(false);
-                throw new Error('Failed to add listing');
             }
-            if (res.status === 200) {
-                toast.success("List Added");
-                route.push('/profile');
-            }
+            toast.success("Listing added successfully!");
+            route.push('/profile');
         } catch (error) {
-            console.log("Error during listing:", error);
+            console.error("Error during listing:", error);
+            toast.error("Error during listing.");
+        } finally {
             setLoading(false);
-            toast.error("Error during listing");
         }
     };
+    
     
 
     return (

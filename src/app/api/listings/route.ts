@@ -1,6 +1,14 @@
 import  Listings  from '@/utilis/models/Listings'
 import { connectToDB } from '@/utilis/connectToDB'
 import { NextRequest, NextResponse } from 'next/server';
+import { v2 as cloudinary } from 'cloudinary';
+
+cloudinary.config({
+  cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
+  api_secret: process.env.NEXT_PUBLIC_CLOUDINARY_API_SECRET,
+  secure:true
+});
 
 interface FormData {
   category?:string;
@@ -56,6 +64,15 @@ export const POST = async (request: any) => {
 
     await connectToDB();
 
+    // //Upload images to Cloudinary and collect URLs
+    // const uploadedImages = [];
+    // for (const img of image) {
+    //   const result = await cloudinary.uploader.upload(img, {
+    //     folder: "campusEase", //OPtional
+    //   });
+    //   uploadedImages.push(result.secure_url);
+    // }
+
     const formData: FormData = {
       isFavorite,
       category,
@@ -108,6 +125,7 @@ export const POST = async (request: any) => {
         delete formData.property;
       }
     
+
 
     
     const newListing = new Listings(formData);
