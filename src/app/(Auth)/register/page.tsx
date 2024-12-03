@@ -13,6 +13,14 @@ const providers = [
   {provider: 'student', label: 'student'}
 ]
 
+const schools = [
+  { type: 'State', school: 'Ebsu', campuses: ['CAS', 'ISHIEKE', 'PERMSITE'] },
+  { type: 'Federal', school: 'FUNAI', campuses: ['Area 4', 'Area 5'] },
+  { type: 'Polytechnic', school: 'IMT', campuses: ['CAMPUS 1', 'CAMPUS 2'] },
+  { type: 'State', school: 'Lasu', campuses: ['Epe', 'Ikeja', 'Ojo'] },
+  { type: 'State', school: 'Esut', campuses: ['Epe', 'Ikeja', 'Ojo'] },
+];
+
 const Register = () => {
   const route = useRouter()
   const [loading, setLoading] = useState(false)
@@ -21,6 +29,11 @@ const Register = () => {
   const [error, setError] = useState("")
   // For agent option
   const [role, setRole] = useState<string[]>([]);
+  //For school Search
+  const [schoolSearch, setSchoolSearch] = useState('')
+  const [showDropDown, setShowDropdown] = useState(false)
+
+  
 
   const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = e.target;
@@ -28,6 +41,21 @@ const Register = () => {
       checked ? [...prevSelected, value] : prevSelected.filter((item) => item !== value)
     );
   };
+
+  const handleSchoolSearchChange = (query:string) => {
+    setSchoolSearch(query)
+
+    if(query.trim() === ''){
+      setShowDropdown(false);
+    }else{
+      setShowDropdown(true)
+    }
+  };
+
+  const searchedSchools = schools.filter(sch => 
+    sch.school.toLowerCase().includes(schoolSearch.toLowerCase())
+  );
+ 
 
   const handleRegister = async (e: any) => {
     e.preventDefault()
@@ -41,6 +69,7 @@ const Register = () => {
     const phone = e.target[1].value.toString()
     const email = e.target[2].value
     const password = e.target[3].value
+    const school = schoolSearch
 
 
     try {
@@ -55,6 +84,7 @@ const Register = () => {
           email,
           password,
           role, // Include the isAgent field in the body
+          school
         })
       })
 
@@ -77,6 +107,8 @@ const Register = () => {
       console.log(error)
     }
   }
+
+  
 
   return (
     <section className='pt-10 px-6'>
@@ -128,19 +160,42 @@ const Register = () => {
           </div>
         </div>
 
-        {/* Agent checkbox with styled elements */}
-        {/* <div className='flex mb-6'>
+        <div className='mb-4]'>
           <input 
-            type="checkbox" 
-            checked={isAgent} 
-            onChange={() => setIsAgent(prev => !prev)} 
-            id="isAgent" 
-            className='w-4 h-4 text-orange bg-gray-100 border-gray-300 rounded focus:ring-orange focus:ring-2'
+            type="text" 
+            id='school' 
+            value={schoolSearch}
+            onChange={e => handleSchoolSearchChange(e.target.value)}
+            placeholder='Enter School' 
+            required 
+            className='relative w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange'
           />
-          <label htmlFor="isAgent" className='ml-2 text-gray-700 text-lg'>
-            Register as an agent
-          </label>
-        </div> */}
+          {/* DropDown */}
+        {
+          showDropDown && (
+            <ul className="sticky z-10 bg-white border rounded w-[100%] max-h-40 overflow-y-auto -mt-4">
+              {
+                searchedSchools.map((sch, index) => (
+                  <li
+                  key={index}
+                  className="px-2 py-1 cursor-pointer hover:bg-gray-200"
+                  onClick={() => {
+                    setSchoolSearch(sch.school); // Set the selected school in input
+                    setShowDropdown(false); // Close the dropdown
+                  }}
+                  >
+                    {sch.school}
+                  </li>
+                ))
+              }
+            </ul>
+          )
+        }
+        </div>
+        
+
+      
+       
         <p className="text-xl font-semibold mb-4">Register as:</p>
         <p className='-mt-3 text-xs'>(you can pick more than one)</p>
         <div className="mb-6">
