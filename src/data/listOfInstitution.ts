@@ -14,7 +14,7 @@ export const ListOfInstitutions : Institution<institutions>[] =  [
         type: 'State',
         institution: [
             {    
-                school: 'Ebsu',
+                school: 'EBSU',
                 campus: [
                     "CAS",
                     "ISHIEKE",
@@ -24,14 +24,14 @@ export const ListOfInstitutions : Institution<institutions>[] =  [
                 ]
             },
             {
-                school: 'Esut',
+                school: 'ESUT',
                 campus: [
                     "Agbani",
                     "Parklane",
                 ]
             },
             {
-                school: 'Lasu',
+                school: 'LASU',
                 campus: [
                     "Epe" ,
                     "Ikeja",

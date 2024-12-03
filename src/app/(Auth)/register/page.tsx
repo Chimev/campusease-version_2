@@ -1,11 +1,12 @@
 'use client'
 
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useEffect } from 'react';
 
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
 import Link from 'next/link';
+import { searchSchool } from '@/lib/functions/searchSchool';
 
 const providers = [
   {provider: 'agent', label: 'agent'},
@@ -32,7 +33,21 @@ const Register = () => {
   //For school Search
   const [schoolSearch, setSchoolSearch] = useState('')
   const [showDropDown, setShowDropdown] = useState(false)
+  const [fetchedSchhol, setFetchedSchhol] = useState<[] | null>([])
 
+  useEffect(() => {
+    async function searchSchool() {
+      const res = await fetch('/api/schools');
+      
+      if (!res.ok) {
+        throw new Error('Failed to fetch schools');
+      }
+      const schools = await res.json();
+      setFetchedSchhol(schools);
+    }
+    searchSchool()
+  }, [])
+  
   
 
   const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -52,7 +67,7 @@ const Register = () => {
     }
   };
 
-  const searchedSchools = schools.filter(sch => 
+  const searchedSchools = fetchedSchhol?.filter((sch:any) => 
     sch.school.toLowerCase().includes(schoolSearch.toLowerCase())
   );
  
@@ -175,7 +190,7 @@ const Register = () => {
           showDropDown && (
             <ul className="sticky z-10 bg-white border rounded w-[100%] max-h-40 overflow-y-auto -mt-4">
               {
-                searchedSchools.map((sch, index) => (
+                searchedSchools?.map((sch:any, index) => (
                   <li
                   key={index}
                   className="px-2 py-1 cursor-pointer hover:bg-gray-200"
