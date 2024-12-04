@@ -4,6 +4,7 @@ import ListCard from '@/components/listCard/ListCard'
 import { useSession } from 'next-auth/react'
 import React, { useEffect, useState } from 'react'
 import Background from '../background/Background'
+import Loading from '../loading/Loading'
 
 const Listings = () => {
   const [showBackground, setShowBackground] = useState(false)
@@ -66,7 +67,7 @@ const Listings = () => {
       <h2 className='font-bold mb-5'>My listings ({listings.length})</h2>
       
       {loading ? (
-        <p>Loading...</p> 
+          <Loading big={false}/>
       ) : (
         <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {Array.isArray(listings) && listings.length > 0 ? (

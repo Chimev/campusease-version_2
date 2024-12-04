@@ -1,9 +1,9 @@
 import React from 'react'
 
 
-const Loading = () => {
+const Loading = ({big}: any) => {
   return (
-    <div className="loader"></div>
+    <div className={big ? "loader" : "loader-2"}></div>
   )
 }
 
