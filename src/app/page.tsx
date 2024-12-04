@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import CategoryCard from "@/components/categoryCard/CategoryCard";
 import { categories } from '@/data/categories';
+import Loading from '@/components/loading/Loading';
 
 
 export default function Home() {
@@ -27,6 +28,8 @@ export default function Home() {
                   </div>
             </div>
         </div>
+
+        <Loading/>
     </main>
   );
 }

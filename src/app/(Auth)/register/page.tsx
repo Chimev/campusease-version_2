@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
 import Link from 'next/link';
-import { searchSchool } from '@/lib/functions/searchSchool';
+// import { searchSchool } from '@/lib/functions/searchSchool';
 
 const providers = [
   {provider: 'agent', label: 'agent'},

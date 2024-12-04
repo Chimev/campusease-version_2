@@ -11,6 +11,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { uploadImagesToCloudinary } from '@/lib/functions/uploadCloudinary';
 import { addListing } from '@/lib/functions/addLiisting';
+import LoadingBackground from '../background/loadingBackground';
 
 
 
@@ -106,6 +107,7 @@ const AddListing = ({name, email} : {name: string; email:string;}) => {
     
         try {
             const uploadedImages = await uploadImagesToCloudinary(imageFiles);
+            console.log(uploadedImages)
     
             if (!uploadedImages.length) {
                 setErrorMessage("Failed to upload images.");
@@ -142,6 +144,11 @@ const AddListing = ({name, email} : {name: string; email:string;}) => {
             toast.success("Listing added successfully!");
             route.push('/profile');
         } catch (error) {
+            if(error instanceof Error){
+                if(error.message === "Upload failed: File size too large. Got 12503874. Maximum is 10485760. Upgrade your plan to enjoy higher limits https://www.cloudinary.com/pricing/upgrades/file-limit"){
+                    toast.error("Image size to large. Upload less than 8MB")
+                }
+            }
             console.error("Error during listing:", error);
             toast.error("Error during listing.");
         } finally {
@@ -259,6 +266,8 @@ const AddListing = ({name, email} : {name: string; email:string;}) => {
                 <SecondaryBtn text='Add' loading={loading}/>
             </form>
             <ToastContainer />
+            {loading ? <LoadingBackground/> : null }
+            
         </div>
     );
 }
