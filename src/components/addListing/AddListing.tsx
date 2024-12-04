@@ -11,7 +11,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { uploadImagesToCloudinary } from '@/lib/functions/uploadCloudinary';
 import { addListing } from '@/lib/functions/addLiisting';
-import LoadingBackground from '../background/loadingBackground';
+import LoadingBackground from '../background/LoadingBackground';
 
 
 
