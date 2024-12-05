@@ -37,3 +37,22 @@ export const GET = async (req: NextRequest, { params }: any) => {
         );
     }
 };
+
+export const PATCH =async (req:NextRequest) => {
+    const body = await req.json();
+
+    await connectToDB();
+    try {
+        const user = await User.findOne({name: body.name});
+        // if (user.name === body.name) {
+        //     return NextResponse.json({ message: "Name is already in use"}, { status: 400 });
+        // }
+        Object.assign(user, body);//updates the user data with provided data;
+        await user.save(); // Save the updated llisting
+        return NextResponse.json({ message: "Updated" }, { status: 200 });
+    } catch (error) {
+        console.error('Error updating user:', error);
+        return NextResponse.json({ message: "Internal server error" }, { status: 500 });
+    }
+    
+}

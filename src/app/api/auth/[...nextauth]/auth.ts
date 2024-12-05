@@ -28,7 +28,8 @@ export const authOptions: NextAuthOptions = {
                   id: user.id,
                   email: user.email,
                   name: user.name,
-                  phone: user.phone
+                  phone: user.phone,
+                  school: user.school
                 }
               }
             }
@@ -58,7 +59,8 @@ export const authOptions: NextAuthOptions = {
       async jwt({ token, user }) {
         if (user) {
           token.id = user.id;
-          token.phone = user.phone
+          token.phone = user.phone;
+          token.school = user.school;
         }
         return token;
       },
@@ -67,6 +69,7 @@ export const authOptions: NextAuthOptions = {
           if (session.user) {
             session.user.id = token.id as string; 
             session.user.phone = token.phone as string;
+            session.user.school = token.school as string;
           }
         }
         return session;
