@@ -57,8 +57,6 @@ const Settings = ({ name, email, phone, school }: any) => {
     }
 
     const handleSubmit = async () => {
-        console.log("Submitted Data:", formData)
-        // Perform your logic here, e.g., send data to an API.
 
         try {
             const res = await fetch(`/api/user/${email}`, {
@@ -69,7 +67,7 @@ const Settings = ({ name, email, phone, school }: any) => {
                 body: JSON.stringify(formData)
             })
             if (res.status === 200) {
-                toast.success("Update")
+                toast.success("Updated")
                 signOut()
                 
             }
@@ -108,6 +106,7 @@ const Settings = ({ name, email, phone, school }: any) => {
                 id="email"
                 name="email"
                 placeholder="Enter Your Email"
+                disabled={true}
                 value={formData.email}
                 onChange={handleChange}
                 className={`w-full p-2 border rounded ${changeDetail
