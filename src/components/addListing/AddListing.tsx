@@ -169,7 +169,7 @@ const AddListing = ({name, email} : {name: string; email:string;}) => {
                         <option value="">---</option>
                         <option value="accommodation">Accommodation</option>
                         <option value="service">Service</option>
-                        <option value="property">Property</option>
+                        <option value="marketplace">MarketPlace</option>
                         <option value="roommate">Roommate</option>
                     </select>
                 </div>
@@ -227,7 +227,7 @@ const AddListing = ({name, email} : {name: string; email:string;}) => {
                             </div>
                         </Filter_2>
                     )}
-                    {selectedCategory === 'property' && (
+                    {selectedCategory === 'marketplace' && (
                         <Filter_3 propertyTypeRef={propertyTypeRef}>
                             <div className="input">
                             <label className="p-text">PRICE</label>
