@@ -58,7 +58,7 @@ const   ListCard = ({ listing, onDelete, onEdit, profile, handleFavorite, handle
           <p className="text-gray-700"><span>Service: </span>{listing.service}</p>
         )}
 
-        {listing.category === 'property' && (
+        {listing.category === 'marketplace' && (
           <>
             <p className="text-xl font-semibold text-gray-800"><span>Property: </span>{listing.property}</p>
             <p className="flex items-center text-lg text-gray-900"><span>Price: </span><TbCurrencyNaira className="ml-1" />{listing.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
