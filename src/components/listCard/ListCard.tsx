@@ -77,7 +77,7 @@ const   ListCard = ({ listing, onDelete, onEdit, profile, handleFavorite, handle
           <FaPhoneAlt className="mr-2 text-blue-500" />{listing.phone}
         </p>
         <p className="text-gray-600"><span className="font-semibold">Description: </span>{listing.description.length > 100 
-          ? `${listing.description.substring(0, 10)}...` 
+          ? `${listing.description.substring(0, 80)}...` 
           : listing.description}</p>
       </div>
      
