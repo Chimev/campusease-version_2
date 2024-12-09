@@ -5,6 +5,8 @@ const Page = () => {
   const [loading, setLoading] = useState(false);
   const [campuses, setCampuses] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState('');
+  const [schools, setSchools] = useState<[] | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>(''); // State for search input
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,18 +26,15 @@ const Page = () => {
         body: JSON.stringify({
           type,
           school,
-          campuses, // Send campuses as an array
+          campuses,
         }),
       });
 
       if (res.status === 500) {
         console.error('Network error');
-        setLoading(false)
       } else if (res.status === 400) {
         console.error('This school is already registered');
-        setLoading(false)
       } else if (res.status === 200) {
-        setLoading(false)
         setCampuses([]);
         setInputValue('');
         console.log('School added successfully');
@@ -63,24 +62,31 @@ const Page = () => {
     setInputValue(e.target.value);
   };
 
-
-
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value.toLowerCase()); // Update search term
+  };
 
   useEffect(() => {
-    const fetchData = async() => {
-        const res = await fetch('/api/schools')
-        const data = await res.json()
-        console.log(data)
-    }
-  
-    fetchData()
-  }, [])
-  
+    const fetchData = async () => {
+      const res = await fetch('/api/schools');
+      const data = await res.json();
+      setSchools(data);
+      console.log('data', data);
+    };
+
+    fetchData();
+  }, []);
+
+  // Filtered schools based on the search term
+  const filteredSchools = schools?.filter((school: any) =>
+    school.school.toLowerCase().includes(searchTerm)
+  );
 
   return (
     <section>
       <h2 className="text-2xl font-bold">Add Schools</h2>
       <form onSubmit={handleSubmit}>
+        {/* School Type */}
         <div className="flex flex-col gap-1">
           <label htmlFor="type" className="text-xl mt-2">
             Enter Type
@@ -96,6 +102,8 @@ const Page = () => {
             <option value="Polytechnic">Polytechnic</option>
           </select>
         </div>
+
+        {/* School Name */}
         <div className="flex flex-col gap-1">
           <label htmlFor="school" className="text-xl mt-2">
             Enter School
@@ -109,6 +117,8 @@ const Page = () => {
             required
           />
         </div>
+
+        {/* Campuses */}
         <div className="flex flex-col gap-1">
           <label htmlFor="campus" className="text-xl mt-2">
             Enter Campuses
@@ -125,7 +135,7 @@ const Page = () => {
             <button
               type="button"
               onClick={handleAddCampus}
-              className="px-3 py-2  bg-blue-500 hover:bg-blue-600 rounded"
+              className="px-3 py-2 bg-blue-500 hover:bg-blue-600 rounded"
             >
               Add
             </button>
@@ -134,7 +144,7 @@ const Page = () => {
             {campuses.map((campus, index) => (
               <div
                 key={index}
-                className="bg-blue-500  px-2 py-1 rounded flex items-center gap-2"
+                className="bg-blue-500 px-2 py-1 rounded flex items-center gap-2"
               >
                 <span>{campus}</span>
                 <button
@@ -148,6 +158,8 @@ const Page = () => {
             ))}
           </div>
         </div>
+
+        {/* Submit Button */}
         <button
           type="submit"
           className="w-full mt-3 p-2 text-lg border-none outline-none text-white bg-orange"
@@ -157,10 +169,28 @@ const Page = () => {
         </button>
       </form>
 
-
-      <div>
-
-      </div>
+      {/* School List with Search */}
+      <section>
+        <h2 className="text-2xl font-bold mt-10">List of Schools ({filteredSchools?.length})</h2>
+        <input
+          type="text"
+          placeholder="Search schools"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          className="w-full px-3 py-2 border rounded mt-4 mb-4"
+        />
+        <div>
+          {filteredSchools?.length ? (
+            filteredSchools.map((sch: any) => (
+              <div key={sch._id} className="py-2 border-b">
+                {sch.school}
+              </div>
+            ))
+          ) : (
+            <p>No schools found</p>
+          )}
+        </div>
+      </section>
     </section>
   );
 };

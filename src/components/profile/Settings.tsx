@@ -9,7 +9,7 @@ const Settings = ({ name, email, phone, school }: any) => {
     const [changeDetail, setChangeDetail] = useState(true);
     const [schoolSearch, setSchoolSearch] = useState('');
     const [dropDown, setDropDown] = useState(false);
-    const [fetchedSchhol, setFetchedSchhol] = useState<[] | null>([])
+    const [fetchedSchool, setFetchedSchhol] = useState<[] | null>([])
     const [formData, setFormData] = useState({
         name: name || "",
         email: email || "",
@@ -45,7 +45,7 @@ const Settings = ({ name, email, phone, school }: any) => {
         }
     };
 
-    const searchedSchools = fetchedSchhol?.filter((sch: any) =>
+    const searchedSchools = fetchedSchool?.filter((sch: any) =>
         sch.school.toLowerCase().includes(schoolSearch.toLowerCase())
     );
 
