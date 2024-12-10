@@ -104,7 +104,7 @@ const ListingDetails = () => {
           </>
         )}
 
-        {category === "property" && details && (
+        {category === "marketplace" && details && (
           <>
             <h1 className="text-3xl font-bold mb-4">{details?.property}</h1>
             <p className="flex items-center text-gray-700"><FaPhoneAlt className="mr-2 text-blue-500" />{details?.phone}</p>
