@@ -38,6 +38,12 @@ export const ListOfInstitutions : Institution<institutions>[] =  [
                     "Ojo",
                 ]
             },
+            {
+                school: 'EKSU',
+                campus: [
+                    "PERM SITE" ,
+                ]
+            },
         ]
     },
     {
