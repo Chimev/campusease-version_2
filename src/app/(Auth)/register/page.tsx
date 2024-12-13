@@ -40,7 +40,7 @@ const Register = () => {
       const res = await fetch('/api/schools');
       
       if (!res.ok) {
-        throw new Error('Failed to fetch schools');
+        setError('Network Error: Failed to fetch schools');
       }
       const schools = await res.json();
       setFetchedSchhol(schools);
@@ -176,6 +176,7 @@ const Register = () => {
         </div>
 
         <div className='mb-4]'>
+          <p className='text-sm -mb-0'>Please select from the dropdown menu </p>
           <input 
             type="text" 
             id='school' 
