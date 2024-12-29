@@ -11,6 +11,7 @@ interface Details {
   institution: string;
   campus: string;
   accommodationName?: string;
+  videoLink?:string;
   accommodationType?: string;
   service?: string;
   property?:string
@@ -83,6 +84,7 @@ const ListingDetails = () => {
         {category === "accommodation" && details && (
           <>
             <h1 className="text-3xl font-bold mb-4">{details?.accommodationName}</h1>
+            <a target="_blank" rel="noopener noreferrer" href={details.videoLink} className="text-sm  text-gray-800"><span className='text-base font-semibold'>video: </span>{details?.videoLink}</a>
             <p>Type: {details?.accommodationType}</p>
             <p className="flex items-center text-gray-700"><FaPhoneAlt className="mr-2 text-blue-500" />{details?.phone}</p>
             <p className="flex items-center text-lg text-gray-900"><span>Price: </span><TbCurrencyNaira className="ml-1" />{details?.price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>

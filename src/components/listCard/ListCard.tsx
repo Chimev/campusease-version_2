@@ -49,6 +49,9 @@ const   ListCard = ({ listing, onDelete, onEdit, profile, handleFavorite, handle
         {listing.category === 'accommodation' && (
           <>
             <p className="text-xl font-semibold text-gray-800"><span className='text-base font-semibold'>Name: </span>{listing.accommodationName}</p>
+            <Link href={listing.videoLink} className="text-sm  text-gray-800"><span className='text-base font-semibold'>video: </span>{listing.videoLink.length > 30 
+          ? `${listing.videoLink.substring(0, 30)}...` 
+          : listing.videoLink}</Link>
             <p className="text-xl flex items-center text-gray-900"><span className='text-base font-semibold' >Price: </span><TbCurrencyNaira className="ml-1" />{listing.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
             <p className="text-xl text-gray-700"><span className='text-base font-semibold'>Type: </span>{listing.accommodationType}</p>
           </>
@@ -73,9 +76,6 @@ const   ListCard = ({ listing, onDelete, onEdit, profile, handleFavorite, handle
           </>
         )}
 
-        <p className="flex items-center text-gray-700">
-          <FaPhoneAlt className="mr-2 text-blue-500" />{listing.phone}
-        </p>
         <p className="text-gray-600"><span className='text-base font-semibold'>Description: </span>{listing.description.length > 100 
           ? `${listing.description.substring(0, 80)}...` 
           : listing.description}</p>
