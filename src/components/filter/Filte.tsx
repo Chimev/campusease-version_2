@@ -1,10 +1,10 @@
 interface IFilter {
   children?: React.ReactNode;
-  accommodationTypeRef?: React.RefObject<HTMLSelectElement>;
-  serviceTypeRef?  : React.RefObject<HTMLSelectElement>;
-  propertyTypeRef? : React.RefObject<HTMLSelectElement>;
-  levelRef? : React.RefObject<HTMLSelectElement>;
-  genderRef? : React.RefObject<HTMLSelectElement>;
+  accommodationTypeRef?: React.RefObject<HTMLSelectElement | null>;
+  serviceTypeRef?  : React.RefObject<HTMLSelectElement | null>;
+  propertyTypeRef? : React.RefObject<HTMLSelectElement | null>;
+  levelRef? : React.RefObject<HTMLSelectElement | null>;
+  genderRef? : React.RefObject<HTMLSelectElement | null>;
 }
 
 

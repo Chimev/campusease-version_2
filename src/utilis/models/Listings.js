@@ -37,6 +37,9 @@ const listingsSchema = new Schema(
         accommodationName: {
             type: String,
         },
+        videoLink: {
+            type: String,
+        },
         price: {
             type: Number,
         },

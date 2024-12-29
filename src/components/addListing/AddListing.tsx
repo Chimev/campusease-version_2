@@ -30,6 +30,7 @@ const AddListing = ({name, email} : {name: string; email:string;}) => {
     const campusRef = useRef<HTMLSelectElement>(null);
     const descriptionRef = useRef<HTMLTextAreaElement>(null);
     const accommodationNameRef = useRef<HTMLInputElement>(null);
+    const videoRef = useRef<HTMLInputElement>(null);
     const priceRef = useRef<HTMLInputElement>(null);
     const phoneRef = useRef<HTMLInputElement>(null);
     const accommodationTypeRef = useRef<HTMLSelectElement>(null);
@@ -88,6 +89,7 @@ const AddListing = ({name, email} : {name: string; email:string;}) => {
         const campus = campusRef?.current?.value;
         const accommodationType = accommodationTypeRef?.current?.value;
         const accommodationName = accommodationNameRef?.current?.value;
+        const videoLink = videoRef?.current?.value;
         const service = serviceTypeRef?.current?.value;
         const property = propertyTypeRef?.current?.value;
         const level = levelRef?.current?.value;
@@ -122,6 +124,7 @@ const AddListing = ({name, email} : {name: string; email:string;}) => {
                 type,
                 campus,
                 accommodationName,
+                videoLink,
                 accommodationType,
                 service,
                 property,
@@ -204,6 +207,12 @@ const AddListing = ({name, email} : {name: string; email:string;}) => {
                                 </div>
                             </div>
                             <div className="input">
+                                <label className="p-text">VIDEO LINK</label>
+                                <div className="price">
+                                    <input type="text" required ref={videoRef} name="accommodationName" placeholder='Add the video link (from any social media)' />
+                                </div>
+                            </div>
+                            <div className="input">
                                 <label className="p-text">PRICE</label>
                                 <div className="price">
                                     <input type="number" required ref={priceRef} name="price" placeholder='Price' />
@@ -260,7 +269,7 @@ const AddListing = ({name, email} : {name: string; email:string;}) => {
                         </Filter_4>
                     )}
                 </div>
-                <h4 className='-mb-3'>Desciption</h4>
+                <h4 className='-mb-3'>Description</h4>
                 <textarea ref={descriptionRef} className="border p-2 outline-none" name="description" rows={4} cols={50} required placeholder='Give important details'></textarea>
 
                 <SecondaryBtn text='Add' loading={loading}/>

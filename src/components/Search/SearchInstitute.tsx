@@ -5,9 +5,9 @@ import { ListOfInstitutions } from "@/data/listOfInstitution";
 
 interface SearchBox {
     children?: React.ReactNode;
-    institutionRef?: React.RefObject<HTMLSelectElement>;
-    typeRef? : React.RefObject<HTMLSelectElement>;
-    campusRef? : React.RefObject<HTMLSelectElement>;
+    institutionRef?: React.RefObject<HTMLSelectElement | null>;
+    typeRef? : React.RefObject<HTMLSelectElement | null>;
+    campusRef? : React.RefObject<HTMLSelectElement | null>;
     value:any;
     changeType?: any;
     changeInstitution?: any;

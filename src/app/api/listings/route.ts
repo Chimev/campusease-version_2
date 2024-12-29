@@ -18,6 +18,7 @@ interface FormData {
   campus?:string;
   description?:string;
   accommodationName?:string;
+  videoLink?: string;
   price?:number;
   phone?:number;
   accommodationType?:string;
@@ -49,6 +50,7 @@ export const POST = async (request: any) => {
         campus,
         description,
         accommodationName,
+        videoLink,
         price,
         phone,
         accommodationType,
@@ -85,6 +87,7 @@ export const POST = async (request: any) => {
       price,
       phone,
       accommodationType,
+      videoLink,
       service,
       property,
       roommateName,
@@ -93,15 +96,16 @@ export const POST = async (request: any) => {
       name,
       email
     }
-    if(category === 'Accommodation'){
+    if(category === 'accommodation'){
         delete formData.service;
         delete formData.property;
         delete formData.level;
         delete formData.gender;
         delete formData.roommateName;
       }
-      if(category === 'Service'){
+      if(category === 'service'){
         delete formData.accommodationName;
+        delete formData.videoLink;
         delete formData.price;
         delete formData.accommodationType;
         delete formData.property;
@@ -109,16 +113,18 @@ export const POST = async (request: any) => {
         delete formData.gender;
         delete formData.roommateName;
       }
-      if(category === 'Property'){
+      if(category === 'marketplace'){
         delete formData.accommodationName;
+        delete formData.videoLink;
         delete formData.accommodationType;
         delete formData.service;
         delete formData.level;
         delete formData.gender;
         delete formData.roommateName;
       }
-      if(category === 'Roommate'){
+      if(category === 'roommate'){
         delete formData.accommodationName;
+        delete formData.videoLink;
         delete formData.price;
         delete formData.accommodationType;
         delete formData.service;
@@ -130,6 +136,7 @@ export const POST = async (request: any) => {
     
     const newListing = new Listings(formData);
     try {
+      console.log(newListing)
       await newListing.save();
       return NextResponse.json('List Added', { status: 200 });
     } catch (error: any) {
