@@ -18,8 +18,6 @@ const page = async() => {
   }
 
   const user = session?.user
-
-  console.log(user.name)
   
   return (
     <>

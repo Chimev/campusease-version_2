@@ -68,8 +68,11 @@ const Settings = ({ name, email, phone, school }: any) => {
             })
             if (res.status === 200) {
                 toast.success("Updated")
-                signOut()
-                
+                // signOut() 
+            }
+            if(!res.ok){
+                const errorMessgae = await res.json();
+                toast.error(errorMessgae.message)
             }
         } catch (error) {
             console.error("Error updating user:", error);

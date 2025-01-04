@@ -19,7 +19,7 @@ const Navbar = () => {
     <nav className='h-16 md:h-20 flex justify-between items-center border-none relative z-10
        '>
         {/* left */}
-        <Link href={'/'} className='relative w-[200px] h-[30px] md:w-[300px] md:h-[100px]'> 
+        <Link href={'/'} className='relative w-[250px] h-[36px] md:w-[300px] md:h-[100px]'> 
             <Image src='/logo_6.png' alt='' fill className='object-fill absolute' />
         </Link>
         
@@ -37,14 +37,14 @@ const Navbar = () => {
             <Link className='px-4 py-3 mr-10 ' href="/">Home</Link>
             <Link className='px-4 py-3 mr-10'  href="/about">About</Link>
             <Link className='px-4 py-3 mr-10 flex items-center gap-2'  href={session ? '/profile' : '/sign-in'}>{session ? <>Profile</> : <><FaSignInAlt /> Sign in</>}</Link>
-            <Link  className=' bg-blue text-white px-4 py-3 mr-10 flex items-center gap-2' href='/add-listing'><FaPlus /> Add</Link>
+            <Link  className=' bg-secondary text-white px-4 py-3 mr-10 flex items-center gap-2' href='/add-listing'><FaPlus /> Add</Link>
         </div>
 
         {/* small screen */}
         <div className='lg:hidden'>
             <div className='flex mr-3 gap-2'>
             <GiHamburgerMenu className=' text-4xl text-gray cursor-pointer' onClick={() => setOpen(prev => !prev)} />
-            <Link href={'/add-listing'} className='bg-blue w-fit p-2'>
+            <Link href={'/add-listing'} className='bg-secondary w-fit p-2'>
                 <FaPlus  className='text-white font-bold text-xl '/>
             </Link>
             </div>
@@ -54,7 +54,7 @@ const Navbar = () => {
                 <Link href="/" onClick={() => setOpen(false)} className='block  hover:text-orange'>Home</Link>
                 <Link href="/about" onClick={() => setOpen(false)} className='block  hover:text-orange'>About</Link>
                 <Link href={session ? '/profile' : '/sign-in'} onClick={() => setOpen(false)} className='flex items-center gap-2  hover:text-orange'>{session ? <>Profile</> : <><FaSignInAlt /> Sign in</>}</Link>
-                <Link href='/add-listing' onClick={() => setOpen(false)} className='bg-blue text-white px-3 py-3 mr-10 flex items-center gap-2'><FaPlus /> Add</Link>
+                <Link href='/add-listing' onClick={() => setOpen(false)} className='bg-secondary text-white px-3 py-3 mr-10 flex items-center gap-2'><FaPlus /> Add</Link>
             </div>
         </div>
          

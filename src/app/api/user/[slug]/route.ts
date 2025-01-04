@@ -40,13 +40,25 @@ export const GET = async (req: NextRequest, { params }: any) => {
 
 export const PATCH =async (req:NextRequest) => {
     const body = await req.json();
-
     await connectToDB();
+
+     // Check if the name exists in any other user's data
+     const nameExist = await User.findOne({
+        name: body.name, // Replace `body.name` with the correct key if it's different
+        email: { $ne: body.email }, // Exclude the current user being updated
+    });
+
+
+    if (nameExist) {
+        return NextResponse.json(
+            { message: 'Name already exists for another user.' },
+            { status: 400 }
+        );
+    }
+
     try {
-        const user = await User.findOne({name: body.name});
-        // if (user.name === body.name) {
-        //     return NextResponse.json({ message: "Name is already in use"}, { status: 400 });
-        // }
+
+        const user = await User.findOne({email: body.email});
         Object.assign(user, body);//updates the user data with provided data;
         await user.save(); // Save the updated llisting
         return NextResponse.json({ message: "Updated" }, { status: 200 });
