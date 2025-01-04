@@ -4,12 +4,14 @@ import { signOut } from 'next-auth/react';
 import React, { useEffect, useState } from 'react'
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import LoadingBackground from '../background/LoadingBackground';
 
 const Settings = ({ name, email, phone, school }: any) => {
     const [changeDetail, setChangeDetail] = useState(true);
     const [schoolSearch, setSchoolSearch] = useState('');
     const [dropDown, setDropDown] = useState(false);
     const [fetchedSchool, setFetchedSchhol] = useState<[] | null>([])
+    const [loading, setLoading] = useState(false)
     const [formData, setFormData] = useState({
         name: name || "",
         email: email || "",
@@ -67,6 +69,7 @@ const Settings = ({ name, email, phone, school }: any) => {
                 body: JSON.stringify(formData)
             })
             if (res.status === 200) {
+                setLoading(true)
                 toast.success("Updated")
                 signOut() 
             }
@@ -188,6 +191,7 @@ const Settings = ({ name, email, phone, school }: any) => {
                 </span>
             </p>
             <ToastContainer/>
+            {loading ? <LoadingBackground /> : null }
         </form>
     )
 }
