@@ -1,5 +1,5 @@
 
-import Sidebar from '@/components/admin/sidebar/SideBar'
+import Sidebar from '@/components/admin/sidebar/Sidebar'
 import React from 'react'
 
 const layout = ({children}: any) => {
