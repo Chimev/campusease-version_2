@@ -29,6 +29,12 @@ return (
           <option value="3 Bedroom">3 Bedroom </option>
           <option value="2 Bedroom">2 Bedroom </option>
           <option value="1 Bedroom">1 Bedroom </option>
+          <option value="6 man Room">6 man Rroom </option>
+          <option value="5 man Room">5 man Rroom </option>
+          <option value="4 man Room">4 man Rroom </option>
+          <option value="3 man Room">3 man Rroom </option>
+          <option value="2 man Room">2 man Rroom </option>
+          <option value="Single Room">Single Room </option>
           <option value="Self Contain">Self Contain</option>
           <option value="1 Room">1 Room</option>
         </select>

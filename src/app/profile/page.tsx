@@ -16,7 +16,6 @@ interface User {
 
 const Profile = async() => {
   const session = await getServerSession(authOptions) as any;
-  console.log("new",session)
   if(!session) {
     redirect('/sign-in');
   }
