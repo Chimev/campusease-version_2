@@ -9,7 +9,10 @@ import Footer from "@/components/footer/Footer";
 const inter = Rubik({ subsets: ["latin"], weight:['400'] });
 
 export const metadata: Metadata = {
-  title: "CampusEase",
+  title: {
+    default: "CampusEase",
+    template: "%s - CampusEase"
+  },
   description: "Sinply Student Living",
 };
 

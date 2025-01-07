@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://campusease.com.ng
+
+# Sitemaps
+Sitemap: https://campusease.com.ng/sitemap.xml
