@@ -10,7 +10,7 @@ export default function Home() {
         <div className="hero lg:h-[calc(100vh-80px)]">
             <div className="text-center w-[90%]">
               <h1 className='text-5xl'>Find Comfort with campusEase</h1>
-              <p className='-mt-5 text-lg font-semibold'>Discover Accommodation, Services, Properties and Roommate within your campus - All in One Place!</p>
+              <p className='-mt-5 text-lg font-semibold'>Discover Accommodation, Services, MarketPLace and Roommate within your campus - All in One Place!</p>
             </div>
         </div>
 
