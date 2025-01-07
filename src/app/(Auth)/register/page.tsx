@@ -87,40 +87,59 @@ const Register = () => {
     const school = schoolSearch
 
 
-    try {
-      const res = await fetch("/api/user", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          phone,
-          email,
-          password,
-          role, // Include the isAgent field in the body
-          school
-        })
-      })
-
-      console.log(res)
-      if (res.status === 500) {
-        setLoading(false)
-        setError("Network error")
-      }
-      if (res.status === 400) {
-        setLoading(false)
-        setError("This email is already registered")
-      }
-      if (res.status === 200) {
-        setError("")
-        route.push("/sign-in")
-      }
-    } catch (error) {
-      setLoading(false)
-      setError("Error, try again")
-      console.log(error)
+    //Validate School from db
+    const isValidSchool = fetchedSchhol?.some(
+      (sch: any) => sch.school.toLowerCase() === school.toLowerCase()
+    )
+     
+    if(!isValidSchool){
+      setError("Please select a valid school from the dropdown.");
+      setLoading(false);
+      return;
     }
+    
+    console.log({
+      name,
+      phone,
+      email,
+      password,
+      school
+    })
+
+    // try {
+    //   const res = await fetch("/api/user", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       name,
+    //       phone,
+    //       email,
+    //       password,
+    //       role, // Include the isAgent field in the body
+    //       school
+    //     })
+    //   })
+
+    //   console.log(res)
+    //   if (res.status === 500) {
+    //     setLoading(false)
+    //     setError("Network error")
+    //   }
+    //   if (res.status === 400) {
+    //     setLoading(false)
+    //     setError("This email is already registered")
+    //   }
+    //   if (res.status === 200) {
+    //     setError("")
+    //     route.push("/sign-in")
+    //   }
+    // } catch (error) {
+    //   setLoading(false)
+    //   setError("Error, try again")
+    //   console.log(error)
+    // }
   }
 
   
@@ -244,14 +263,14 @@ const Register = () => {
 
         <button 
           type='submit'
-          className='w-full p-2 mb-2 text-lg border-none outline-none text-white bg-orange rounded-md hover:bg-orange-600 transition-all duration-300'
+          className='w-full p-2  text-lg border-none outline-none text-white bg-orange rounded-md hover:bg-orange-600 transition-all duration-300'
         >
           {loading ? "Loading..." : "Sign Up"}
         </button>
 
         
 
-        <p className='text-red-600 text-[16px] mb-4'>{error && error}</p>
+        <p className='text-red-600 text-[17px] mb-6'>{error && error}</p>
 
         <div className='text-center -mt-10'>
           <p>Already have an account? 

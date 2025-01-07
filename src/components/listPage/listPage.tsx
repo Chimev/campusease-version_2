@@ -11,6 +11,7 @@ import ListCard from "../listCard/ListCard";
 import { ListOfInstitutions } from "@/data/listOfInstitution";
 import { FavoriteContext } from "@/lib/Context/FavoriteContext";
 import { useSession } from "next-auth/react";
+import Loading from "../loading/Loading";
 // import { listings } from "@/hooks/mock";
 
 const ListPage = () => {
@@ -178,7 +179,7 @@ const ListPage = () => {
               )} */}
              <div>
               {loading ? (
-                <p>Loading...</p> // You can replace this with a spinner component or any loading indicator
+                <Loading big={false}/> // You can replace this with a spinner component or any loading indicator
               ) : (
                 <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                   {Array.isArray(listings) && listings.length > 0 ? (

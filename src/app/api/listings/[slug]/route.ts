@@ -19,8 +19,6 @@ export const GET = async (req: NextRequest, { params }: any) => {
     const slug = params?.slug;  // category slug from URL
     // const listingId = params?.slug; 
 
-    console.log( 'aesrch', { type, institution, campus, slug });
-
     try {
         await connectToDB();
 
