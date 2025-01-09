@@ -106,40 +106,40 @@ const Register = () => {
       school
     })
 
-    // try {
-    //   const res = await fetch("/api/user", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       name,
-    //       phone,
-    //       email,
-    //       password,
-    //       role, // Include the isAgent field in the body
-    //       school
-    //     })
-    //   })
+    try {
+      const res = await fetch("/api/user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          phone,
+          email,
+          password,
+          role, // Include the isAgent field in the body
+          school
+        })
+      })
 
-    //   console.log(res)
-    //   if (res.status === 500) {
-    //     setLoading(false)
-    //     setError("Network error")
-    //   }
-    //   if (res.status === 400) {
-    //     setLoading(false)
-    //     setError("This email is already registered")
-    //   }
-    //   if (res.status === 200) {
-    //     setError("")
-    //     route.push("/sign-in")
-    //   }
-    // } catch (error) {
-    //   setLoading(false)
-    //   setError("Error, try again")
-    //   console.log(error)
-    // }
+      console.log(res)
+      if (res.status === 500) {
+        setLoading(false)
+        setError("Network error")
+      }
+      if (res.status === 400) {
+        setLoading(false)
+        setError("This email is already registered")
+      }
+      if (res.status === 200) {
+        setError("")
+        route.push("/sign-in")
+      }
+    } catch (error) {
+      setLoading(false)
+      setError("Error, try again")
+      console.log(error)
+    }
   }
 
   
