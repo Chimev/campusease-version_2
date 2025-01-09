@@ -58,11 +58,13 @@ export const Filter_2 = ({children, serviceTypeRef}: IFilter) => {
           <label className="p-text">SERVICE TYPE</label>
           <select name="service" ref={serviceTypeRef} required className="p-3 w-fill bg-[#d6c2c29d]" >
               <option>---</option>
+              <option value="Academic-Assistant">Academic Assitance</option>
               <option value="Barber">Barber</option>
               <option value="Painter">Painter</option>
               <option value="Hairdresser">Hairdresser</option>
               <option value="Electrician">Electrician</option>
-              <option value="Academic-Assistant">Academic Assitance</option>
+              <option value="Gifting Services">Gifting Services</option>
+              <option value="Barker">Barker</option>
           </select>
       </div>
     </>
@@ -83,9 +85,11 @@ return (
       <label className="p-text">PROPERTY TYPE</label>
       <select name="property" ref={propertyTypeRef} required className="p-3 w-fill bg-[#d6c2c29d]" >
           <option disabled >---</option>
-          <option value="chair">Chair</option>
-          <option value="table">Table</option>
-          <option value="fan">Fan</option>
+          <option value="Chair">Chair</option>
+          <option value="Table">Table</option>
+          <option value="Fan">Fan</option>
+          <option value="Beb">Bed</option>
+          <option value="Bed Stand">Bed Stand</option>
       </select>
   </div>
   </>

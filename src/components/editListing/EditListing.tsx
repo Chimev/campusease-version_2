@@ -5,6 +5,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Filter_1, Filter_2, Filter_3, Filter_4 } from "../filter/Filte";
 import SecondaryBtn from "../buttons/SecondaryBtn";
 import { toast, ToastContainer } from "react-toastify";
+import LoadingBackground from '../background/LoadingBackground';
 
 interface formData {
     description?: string;
@@ -97,14 +98,14 @@ const EditListing = ({ category, id, setShowBackground }:any) => {
     }
     if(category === 'service'){
       delete formData.accommodationName;
-      delete formData.price;
       delete formData.accommodationType;
+      delete formData.price;
       delete formData.property;
       delete formData.level;
       delete formData.gender;
       delete formData.roommateName;
     }
-    if(category === 'property'){
+    if(category === 'marketplace'){
       delete formData.accommodationName;
       delete formData.accommodationType;
       delete formData.service;
@@ -174,7 +175,7 @@ const EditListing = ({ category, id, setShowBackground }:any) => {
               </div>
             </Filter_2>
           )}
-          {category === 'property' && (
+          {category === 'marketplace' && (
             <Filter_3 propertyTypeRef={propertyTypeRef}>
               <div className="input">
                 <label className="p-text">Price</label>
@@ -205,6 +206,7 @@ const EditListing = ({ category, id, setShowBackground }:any) => {
       </form>
       {error && <p className="text-red-500 mt-2">{error}</p>}
       <ToastContainer />
+      { loading && <LoadingBackground/> }
     </div>
   );
 };
