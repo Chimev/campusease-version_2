@@ -14,12 +14,12 @@ import { useSession } from "next-auth/react";
 import Loading from "../loading/Loading";
 // import { listings } from "@/hooks/mock";
 
-const ListPage = () => {
+const ListPage = ({category}:any) => {
   const route = useRouter();
-  const { category: categoryParam } = useParams();
+  // const { category: categoryParam } = useParams();
   const [loading, setLoading] = useState(true)
   
-  const [category, setCategory] = useState<string | undefined>('');
+  // const [category, setCategory] = useState<string | undefined>('');
   const [description, setDescription] = useState<string | undefined>('');
   const [img, setImg] = useState<string | undefined>();
 
@@ -62,19 +62,18 @@ const ListPage = () => {
     };
     // ----END------//
 
-  //Effect for params
+  // Effect for params
   useEffect(() => {
-    const cat = categories.find(cate => cate.link == categoryParam);
+    const cat = categories.find(cate => cate.link == category);
     if (cat) {  
-        setCategory(cat.category);
         setDescription(cat.description);
         setImg(cat.img);
     }
-  }, [categoryParam]);
+  }, []);
 
   const getLisiting = async () => {
     try {
-      const res = await fetch(`/api/listings/${categoryParam}?type=${value?.type}&institution=${value?.institution}&campus=${value?.campus}`) 
+      const res = await fetch(`/api/listings/${category}?type=${value?.type}&institution=${value?.institution}&campus=${value?.campus}`) 
       const data = await res.json()
       // console.log(data)
       setLoading(false)
@@ -142,7 +141,7 @@ const ListPage = () => {
           </div>
         )}
         <div className="h-3/4 flex justify-center text-center flex-col items-center gap-3 text-2xl">
-          <h2 className="text-4xl font-semibold">{category}</h2>
+          <h2 className="text-4xl font-semibold">{category.charAt().toUpperCase() + category.slice(1)}</h2>
           <p className="-mt-1 font-medium">{description}</p>
         </div>
 

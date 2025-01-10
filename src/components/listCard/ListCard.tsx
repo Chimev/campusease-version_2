@@ -43,9 +43,6 @@ const   ListCard = ({ listing, onDelete, onEdit, profile, handleFavorite, handle
           </>
         )}
 
-
-        
-
         {listing.category === 'accommodation' && (
           <>
             <p className="text-sm font-semibold text-gray-800"><span className='text-sm font-semibold'>Name: </span>{listing.accommodationName}</p>

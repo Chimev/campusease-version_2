@@ -1,11 +1,31 @@
 import ListPage from '@/components/listPage/listPage'
 import { FavouriteListProvider } from '@/lib/Context/FavoriteContext'
 import { SchoolContextProvider } from '@/lib/Context/SchholContext'
+import { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 
+interface PropsPage  {
+  params : {
+    category : string;
+  }
+}
 
-const page = async () => {
+
+export function generateMetadata({ params }: PropsPage): Metadata {
+  const capitalizeFirstLetter = (str: string) =>
+    str.charAt(0).toUpperCase() + str.slice(1);
+
+  return {
+    title: capitalizeFirstLetter(params.category),
+  };
+}
+
+const page = async ({params}:PropsPage) => {
+  const { category } =  params;
+
+  console.log("Category:", category);
+
   const session = await getServerSession();
 
   if(!session) {
@@ -15,7 +35,7 @@ const page = async () => {
   return (
     <SchoolContextProvider>
       <FavouriteListProvider>
-        <ListPage />
+        <ListPage category={category} />
       </FavouriteListProvider>
     </SchoolContextProvider>
    
