@@ -24,13 +24,13 @@ const   ListCard = ({ listing, onDelete, onEdit, profile, handleFavorite, handle
 
   return (
     
-    <div className="relative  border rounded-lg shadow-lg overflow-hidden p-4 bg-white transition hover:shadow-xl">
+    <div className="relative border rounded-lg shadow-lg overflow-hidden px-4 py-2 bg-white transition hover:shadow-xl">
       
       {/* Uncomment if you want to use an image */}
       <div className="relative h-52 w-full mb-4">
         <Image src={listing.image[0] || listing.image[1] || listing.image[2]} alt='image' fill  className="rounded-t-lg object-cover" />
       </div>
-      <Link href={`/${listing.category}/${listing._id}`} className="underline font-semibold">See More</Link>
+      <Link href={`/${listing.category}/${listing._id}`} className="underline text-sm font-semibold">See More</Link>
       <div className="info space-y-0">
         {profile && (
           <>
@@ -48,35 +48,35 @@ const   ListCard = ({ listing, onDelete, onEdit, profile, handleFavorite, handle
 
         {listing.category === 'accommodation' && (
           <>
-            <p className="text-xl font-semibold text-gray-800"><span className='text-base font-semibold'>Name: </span>{listing.accommodationName}</p>
+            <p className="text-sm font-semibold text-gray-800"><span className='text-sm font-semibold'>Name: </span>{listing.accommodationName}</p>
             <Link href={listing.videoLink} className="text-sm  text-gray-800"><span className='text-base font-semibold'>video: </span>{listing.videoLink.length > 30 
           ? `${listing.videoLink.substring(0, 30)}...` 
           : listing.videoLink}</Link>
-            <p className="text-xl flex items-center text-gray-900"><span className='text-base font-semibold' >Price: </span><TbCurrencyNaira className="ml-1" />{listing.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-            <p className="text-xl text-gray-700"><span className='text-base font-semibold'>Type: </span>{listing.accommodationType}</p>
+            <p className="text-sm flex items-center text-gray-900"><span className='text-sm font-semibold' >Price: </span><TbCurrencyNaira className="ml-1" />{listing.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+            <p className="text-sm text-gray-700"><span className='text-sm font-semibold'>Type: </span>{listing.accommodationType}</p>
           </>
         )}
 
         {listing.category === 'service' && (
-          <p className="text-gray-700 text-xl"><span className='text-base font-semibold'>Service: </span>{listing.service}</p>
+          <p className="text-gray-700 text-sm"><span className='text-sm font-semibold'>Service: </span>{listing.service}</p>
         )}
 
         {listing.category === 'marketplace' && (
           <>
-            <p className="text-xl -my-1  text-gray-800"><span className='text-base font-semibold'>Property: </span>{listing.property}</p>
-            <p className="flex  items-center text-gray-900"><span className='text-base font-semibold'>Price: </span><TbCurrencyNaira className="ml-1" />{listing.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+            <p className="text-sm -my-1  text-gray-800"><span className='text-sm font-semibold'>Property: </span>{listing.property}</p>
+            <p className="flex  items-center text-gray-900"><span className='text-sm font-semibold'>Price: </span><TbCurrencyNaira className="ml-1" />{listing.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
           </>
         )}
 
         {listing.category === 'roommate' && (
           <>
-            <p className="text-xl text-gray-800"><span>Name: </span>{listing.roommateName}</p>
-            <p className="text-xl text-gray-700"><span className='text-base font-semibold'>Gender: </span>{listing.gender}</p>
-            <p className="text-xl text-gray-700"><span className='text-base font-semibold'>Level: </span>{listing.level}</p>
+            <p className="text-sm text-gray-800"><span>Name: </span>{listing.roommateName}</p>
+            <p className="text-sm text-gray-700"><span className='text-sm font-semibold'>Gender: </span>{listing.gender}</p>
+            <p className="text-sm text-gray-700"><span className='text-sm font-semibold'>Level: </span>{listing.level}</p>
           </>
         )}
 
-        <p className="text-gray-600"><span className='text-base font-semibold'>Description: </span>{listing.description.length > 100 
+        <p className="text-gray-600 text-sm"><span className='text-sm font-semibold'>Description: </span>{listing.description.length > 50 
           ? `${listing.description.substring(0, 80)}...` 
           : listing.description}</p>
       </div>

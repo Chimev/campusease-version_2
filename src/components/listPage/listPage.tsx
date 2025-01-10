@@ -181,7 +181,7 @@ const ListPage = () => {
               {loading ? (
                 <Loading big={false}/> // You can replace this with a spinner component or any loading indicator
               ) : (
-                <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <div className="grid gap-4 grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                   {Array.isArray(listings) && listings.length > 0 ? (
                     listings.map((listing: any) => (
                       <ListCard key={listing._id} listing={listing} favorite={favorite} handleFavorite={handleFavorite} />
