@@ -5,14 +5,14 @@ import { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 
-interface PropsPage  {
+interface PageProps  {
   params : {
     category : string;
   }
 }
 
 
-export function generateMetadata({ params }: PropsPage): Metadata {
+export function generateMetadata({ params }: PageProps): Metadata {
   const capitalizeFirstLetter = (str: string) =>
     str.charAt(0).toUpperCase() + str.slice(1);
 
@@ -21,7 +21,7 @@ export function generateMetadata({ params }: PropsPage): Metadata {
   };
 }
 
-const page = async ({params}:PropsPage) => {
+const page = async ({params}:PageProps) => {
   const { category } =  params;
 
   console.log("Category:", category);
