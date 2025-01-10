@@ -50,7 +50,7 @@ const   ListCard = ({ listing, onDelete, onEdit, profile, handleFavorite, handle
           <>
             <p className="text-sm font-semibold text-gray-800"><span className='text-sm font-semibold'>Name: </span>{listing.accommodationName}</p>
             <Link href={listing.videoLink} className="text-sm  text-gray-800"><span className='text-base font-semibold'>video: </span>{listing.videoLink.length > 30 
-          ? `${listing.videoLink.substring(0, 30)}...` 
+          ? `${listing.videoLink.substring(0, 20)}...` 
           : listing.videoLink}</Link>
             <p className="text-sm flex items-center text-gray-900"><span className='text-sm font-semibold' >Price: </span><TbCurrencyNaira className="ml-1" />{listing.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
             <p className="text-sm text-gray-700"><span className='text-sm font-semibold'>Type: </span>{listing.accommodationType}</p>
@@ -63,7 +63,7 @@ const   ListCard = ({ listing, onDelete, onEdit, profile, handleFavorite, handle
 
         {listing.category === 'marketplace' && (
           <>
-            <p className="text-sm -my-1  text-gray-800"><span className='text-sm font-semibold'>Property: </span>{listing.property}</p>
+            <p className="text-sm   text-gray-800"><span className='text-sm font-semibold'>Property: </span>{listing.property}</p>
             <p className="flex  items-center text-gray-900"><span className='text-sm font-semibold'>Price: </span><TbCurrencyNaira className="ml-1" />{listing.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
           </>
         )}
