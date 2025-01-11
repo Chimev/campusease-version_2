@@ -6,7 +6,7 @@ export const metadata: Metadata = {
 
 const page = () => {
   return (
-    <div>About Page</div>
+    <h1>About Page</h1>
   )
 }
 

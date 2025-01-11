@@ -5,33 +5,24 @@ import { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 
-interface PageProps  {
-  params : {
-    category : string;
+type Props = {
+  params: Promise<{category: string}>
+}
+
+export const generateMetadata = async ({params}: Props):Promise<Metadata> => {
+  const category =(await params).category
+  return {
+    title: category.charAt(0).toUpperCase() + category.slice(1)
   }
 }
 
 
-export function generateMetadata({ params }: PageProps): Metadata {
-  const capitalizeFirstLetter = (str: string) =>
-    str.charAt(0).toUpperCase() + str.slice(1);
-
-  return {
-    title: capitalizeFirstLetter(params.category),
-  };
-}
-
-const page = async ({params}:PageProps) => {
-  const { category } =  params;
-
-  console.log("Category:", category);
-
+const page = async ({params}:Props) => {
+  const category =(await params).category
   const session = await getServerSession();
-
   if(!session) {
     redirect('/sign-in');
   }
-
   return (
     <SchoolContextProvider>
       <FavouriteListProvider>
@@ -41,5 +32,4 @@ const page = async ({params}:PageProps) => {
    
   )
 }
-
 export default page
