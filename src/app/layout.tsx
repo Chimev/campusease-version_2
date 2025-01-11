@@ -13,7 +13,13 @@ export const metadata: Metadata = {
     default: "CampusEase",
     template: "%s - CampusEase"
   },
-  description: "Sinply Student Living",
+  description: "Find Comfort with campusEase Discover Accommodation, Services, MarketPLace and Roommate within your campus - All in One Place!",
+  openGraph: {
+    title: "CampusEase",
+    description: "Find Comfort with campusEase Discover Accommodation, Services, MarketPLace and Roommate within your campus - All in One Place!",
+    url: `${process.env.NEXT_PUBLIC_BASE_URL}`,
+    type: 'website'
+  }
 };
 
 export default async function RootLayout({
