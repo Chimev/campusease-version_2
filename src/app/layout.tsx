@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     default: "CampusEase",
     template: "%s - CampusEase"
   },
-  description: "Find Comfort with campusEase Discover Accommodation, Services, MarketPLace and Roommate within your campus - All in One Place!",
+  description: "Find Comfort with campusEase Discover Accommodation, Services, MarketPlace and Roommate within your campus - All in One Place!",
   openGraph: {
     title: "CampusEase",
     description: "Find Comfort with campusEase Discover Accommodation, Services, MarketPLace and Roommate within your campus - All in One Place!",
