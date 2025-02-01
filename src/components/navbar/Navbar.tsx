@@ -75,7 +75,7 @@ const Navbar = () => {
                 className={` ${menu.menu === 'Add' && 'bg-secondary text-white py-1 px-2'} ${pathname === menu.link && 'border-b-secondary border-b-2 text-secondary hover:text-secondary px-3 py-1'} hover:text-secondary transition-colors flex items-center gap-1 font-semibold`}
               >
                 {menu.icon}
-                {menu.menu}
+                {menu.menu} 
               </Link>
             ))}
           </div>
