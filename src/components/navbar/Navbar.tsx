@@ -8,12 +8,13 @@ import { usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import SignOut from '../profile/SignOut';
 import { FaPlus } from "react-icons/fa";
+import { FaSignInAlt } from "react-icons/fa";
 
 // Updated navMenu to handle dynamic authentication
 const getNavMenu = (isAuthenticated: boolean) => [
   { id: 1, menu: 'Home', link: '/' },
   { id: 2, menu: 'About', link: '/about' },
-  { id: 3, menu: isAuthenticated ? 'Profile' : 'Sign In', link: isAuthenticated ? '/profile' : '/sign-in' },
+  { id: 3, menu: isAuthenticated ? 'Profile' : 'Sign In', link: isAuthenticated ? '/profile' : '/sign-in', icon: !isAuthenticated && <FaSignInAlt /> },
   { id: 6, menu: 'Add', icon: <FaPlus />, link: '/add-listing' },
 ];
 
@@ -123,8 +124,10 @@ const Navbar = () => {
                 {menu.icon}
                 {menu.menu}
               </Link>
-            ))}
-            <SignOut nav={true}/>
+            ))} 
+            {
+              authorization && <SignOut nav={true}/>
+            }
           </div>
         </div>
       </div>
