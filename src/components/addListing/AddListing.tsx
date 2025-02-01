@@ -14,13 +14,22 @@ import { addListing } from '@/lib/functions/addLiisting';
 import LoadingBackground from '../background/LoadingBackground';
 
 
+// Define schools that can show accommodation listings
+const schools_category = [
+    "UNILAG",
+];
 
-const AddListing = ({name, email} : {name: string; email:string;}) => {
+
+const AddListing = ({name, email, school} : {name: string; email:string; school:string;}) => {
     const route = useRouter();
     const [errorMessage, setErrorMessage] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
     const [loading, setLoading] = useState(false);
     // const [imageUrls, setImageUrls] = useState<string[]>([]);
+
+    const canShowAccommodationCategroy = schools_category.includes(school)
+    console.log('first', canShowAccommodationCategroy)
+    console.log('first11', school)
 
     //useRef
     const categoryRef = useRef<HTMLSelectElement>(null);
@@ -206,6 +215,14 @@ const AddListing = ({name, email} : {name: string; email:string;}) => {
                                     <input type="text" required ref={accommodationNameRef} name="accommodationName" placeholder='Accommodation Name' />
                                 </div>
                             </div>
+                            { canShowAccommodationCategroy && (
+                                <div className="input">
+                                    <label className="p-text">ACCOMMODATION Category</label>
+                                    <div className="price">
+                                        <input type="text" required ref={accommodationNameRef} name="accommodationName" placeholder='Accommodation Name' />
+                                    </div>
+                                </div>
+                            )}
                             <div className="input">
                                 <label className="p-text">VIDEO LINK</label>
                                 <div className="price">

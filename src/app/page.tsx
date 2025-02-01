@@ -6,15 +6,15 @@ import { categories } from '@/data/categories';
 
 export default function Home() {
   return (
-    <main className='homepage'>
-        <div className="hero lg:h-[calc(100vh-80px)]">
-            <div className="text-center w-[90%]">
+    <main>
+        <div className="hero lg:h-[calc(100vh-80px)] ">
+            <div className="text-center w-[90%] max-w-[1300px]">
               <h1 className='text-5xl'>Find Comfort with campusEase</h1>
               <p className='-mt-5 text-lg font-semibold'>Discover Accommodation, Services, MarketPlace and Roommate within your campus - All in One Place!</p>
             </div>
         </div>
 
-        <div className="pt-5">
+        <div className="pt-5 max-w-[1300px]">
             <div className="w-11/12 m-auto ">
               <hr className="bg-orange border-none h-2 w-20 m-auto" />
                 <h2 className="mb-10 text-center text-3xl relative font-bold">Categories</h2>

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 import { FaPhoneAlt } from 'react-icons/fa';
 import { TbCurrencyNaira } from "react-icons/tb";
 
@@ -9,6 +9,7 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import { GrFavorite } from "react-icons/gr";
 import { MdOutlineFavorite } from "react-icons/md";
 import Link from 'next/link';
+import Background from '../background/Background';
 
 interface ListCardProps {
   listing: any;
@@ -18,12 +19,50 @@ interface ListCardProps {
   favorite?: boolean;
   handleFavorite?: any;
   handleRemoveFavorite?:any;
+  setShowBackground?:any;
+  showBackground?:any;
+  setListings?:any;
+  listings?:any;
+  setLoading?:any;
+  loading?:any;
 }
 
-const   ListCard = ({ listing, onDelete, onEdit, profile, handleFavorite, handleRemoveFavorite, favorite }: ListCardProps) => {
+const ListCard = ({ listing, listings, loading, setLoading,  profile, handleFavorite, handleRemoveFavorite, favorite, setShowBackground, showBackground, setListings }: ListCardProps) => {
+   const [editId, setEditId] = useState<string | null>(null) 
+   const [editCategory, setEditCategory] = useState<string | null>(null)
+  //  const [showBackground, setShowBackground] = useState(false)
+
+  const onEdit = (id:string, category:string) => {
+    setEditId(id); // Set the id for editing
+    setEditCategory(category)
+    setShowBackground(true);
+  }
+
+  const onDelete = async (id: string) => {
+    setLoading(true)
+    try {
+      const res = await fetch(`/api/listings/${id}`, {
+        method: 'DELETE',
+        headers: {
+          "Content-Type" : "application/json"
+      },
+      })
+      if (res.ok) {
+        setLoading(false)
+        const remainingListings = listings.filter((listing: any) => listing._id !== id);
+        setListings(remainingListings); 
+      } else {
+        setLoading(false)
+        console.error('Failed to delete listing');
+      }
+    } catch (error) {
+      console.error("Error deleting listing:", error);
+    }
+  }
 
   return (
-    
+    <>
+      {showBackground && <Background id={editId} category={editCategory} setShowBackground={setShowBackground} />}
     <div className="relative border rounded-lg shadow-lg overflow-hidden px-4 py-2 bg-white transition hover:shadow-xl">
       
       {/* Uncomment if you want to use an image */}
@@ -81,7 +120,7 @@ const   ListCard = ({ listing, onDelete, onEdit, profile, handleFavorite, handle
       {
         profile && 
           <div className='absolute top-56 right-6 text-2xl text-orange flex'>
-            <MdEdit  onClick={() =>  onEdit(listing._id, listing.category)} />
+            <MdEdit  onClick={() => onEdit(listing._id, listing.category)} />
             <MdDelete  onClick={() =>  onDelete(listing._id)} />
           </div>  
         }
@@ -97,6 +136,8 @@ const   ListCard = ({ listing, onDelete, onEdit, profile, handleFavorite, handle
         }
         
     </div>
+    </>
+    
   );
 };
 

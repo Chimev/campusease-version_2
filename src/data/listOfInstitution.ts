@@ -62,7 +62,7 @@ export const ListOfInstitutions : Institution<institutions>[] =  [
                 campus: [
                     "Idiaraba",
                     "Radiography",
-                    "Akoko Yaba"
+                    "Akoka Yaba"
                 ]
             },
             {

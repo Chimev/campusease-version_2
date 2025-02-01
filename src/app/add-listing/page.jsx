@@ -3,20 +3,21 @@ import React from 'react'
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import { SchoolContextProvider } from "@/lib/Context/SchholContext";
+import { authOptions } from '../api/auth/[...nextauth]/auth';
 
 const page = async() => {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions)
   const userId = session?.user?.name;
   const email = session?.user?.email;
+  const school = session?.user?.school;
+
   
-  console.log(userId)
   if(!session) {
     redirect('/sign-in');
   }
-  console.log(userId)
   return (
     <SchoolContextProvider>
-       <AddListing email={email} name={userId}/>
+       <AddListing email={email} name={userId} school={school}/>
     </SchoolContextProvider>
    
   )

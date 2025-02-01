@@ -3,13 +3,12 @@
 import ListCard from '@/components/listCard/ListCard'
 import { useSession } from 'next-auth/react'
 import React, { useEffect, useState } from 'react'
-import Background from '../background/Background'
 import Loading from '../loading/Loading'
 
 const Listings = () => {
   const [showBackground, setShowBackground] = useState(false)
-  const [editId, setEditId] = useState<string | null>(null) 
-  const [editCategory, setEditCategory] = useState<string | null>(null)
+  // const [editId, setEditId] = useState<string | null>(null) 
+  // const [editCategory, setEditCategory] = useState<string | null>(null)
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true)
 
@@ -35,34 +34,10 @@ const Listings = () => {
     fetchListing();
   }, [status, session, showBackground]); 
 
-  const onDelete = async (id: string) => {
-    try {
-      const res = await fetch(`/api/listings/${id}`, {
-        method: 'DELETE',
-        headers: {
-          "Content-Type" : "application/json"
-      },
-      })
-      if (res.ok) {
-        const remainingListings = listings.filter((listing: any) => listing._id !== id);
-        setListings(remainingListings); 
-      } else {
-        console.error('Failed to delete listing');
-      }
-    } catch (error) {
-      console.error("Error deleting listing:", error);
-    }
-  }
-
-  const onEdit = (id:string, category:string) => {
-    setEditId(id); // Set the id for editing
-    setEditCategory(category)
-    setShowBackground(true);
-  }
 
   return (
     <section className='p-4'>
-      {showBackground && <Background id={editId} category={editCategory} setShowBackground={setShowBackground} />} {/* Pass editId to Background */}
+       
 
       <h2 className='font-bold mb-5'>My listings ({listings.length})</h2>
       
@@ -75,8 +50,13 @@ const Listings = () => {
               <ListCard 
                 key={listing._id} 
                 listing={listing} 
-                onDelete={onDelete} 
-                onEdit={onEdit} 
+                listings={listings}
+                loading={loading}
+                setLoading={setLoading}
+                setShowBackground={setShowBackground}
+                showBackground={showBackground}
+                setListings={setListings}
+                // onEdit={onEdit} 
                 profile={true} 
               />
             ))
