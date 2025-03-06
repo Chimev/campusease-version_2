@@ -146,3 +146,14 @@ export const POST = async (request: any) => {
     
 
 }
+
+export const GET = async (req:NextRequest) => {
+  try {
+    await connectToDB()
+    
+    const listings = await Listings.find({})
+    return NextResponse.json(listings, {status:200})
+  } catch (error:any) {
+    return new NextResponse(error.message, {status: 500})
+  }
+}

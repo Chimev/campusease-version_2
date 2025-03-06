@@ -1,7 +1,7 @@
 import User from '@/utilis/models/User';
 import { connectToDB } from '@/utilis/connectToDB';
 import bcrypt from 'bcryptjs';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 export const POST = async (request: any) => {
   const { name, phone, email, password, role, school } = await request.json();
@@ -38,3 +38,13 @@ export const POST = async (request: any) => {
     return new NextResponse(err.message, { status: 500 });
   }
 };
+
+export const GET = async (req: NextRequest) => {
+  try {
+    await connectToDB()
+    const users = await User.find({})
+    return NextResponse.json(users, {status: 200});
+  } catch (error:any) {
+    return new NextResponse(error.message, {status: 500})
+  }
+}

@@ -7,21 +7,19 @@ import { MdOutlineArrowDropDown } from 'react-icons/md';
 
 const menu = [
   { id: 2, menu: 'Dashboard', link: 'dashboard' },
-  { id: 1, menu: 'Users', link: 'dashboard/users' },
-  { id: 4, menu: 'Schools', link: 'dashboard/schools' },
+  { id: 1, menu: 'User Management', link: 'dashboard/users' },
   {
     id: 3,
-    menu: 'Admin',
+    menu: 'Listing',
     icon: <MdOutlineArrowDropDown />,
     submenu: [
-      { id: 1, menu: 'Manage Admins', link: 'dashboard/admins' },
-      { id: 2, menu: 'Manage Staffs', link: 'dashboard/staffs' },
-      { id: 3, menu: 'Manage Pastors', link: 'dashboard/pastors' },
-      { id: 4, menu: 'Manage Workers', link: 'dashboard/workers' },
-      { id: 4, menu: 'Manage Member', link: 'dashboard/members' },
-      { id: 4, menu: 'Manage First-Timers', link: 'dashboard/first-timers' },
+      { id: 1, menu: 'Accommodation', link: 'dashboard/accommodation' },
+      { id: 2, menu: 'Roommate', link: 'dashboard/roommate' },
+      { id: 3, menu: 'Service', link: 'dashboard/service' },
+      { id: 4, menu: 'Market Place', link: 'dashboard/marketplace' },
     ],
   },
+  // { id: 4, menu: 'Schools', link: 'dashboard/schools' },
 ];
 
 const Sidebar = () => {
@@ -40,14 +38,17 @@ const Sidebar = () => {
           <div key={menuItem.id}>
             {/* Main menu item */}
             <Link
-              href={menuItem.link ? `/admin/${menuItem.link.toLowerCase()}` : '#'}
+              href={menuItem.link ? `/admin/${menuItem.link}` : '#'}
               onClick={() => {
-                setActiveMenu(menuItem.menu);
+                if(menuItem.link){
+                  setActiveMenu(menuItem.menu);
+                }
+                
                 setActiveSubMenu(null); // Reset submenu when main menu is clicked
               }}
               className={`${
-                activemenu === menuItem.menu ? 'bg-[#52699e]' : ''
-              } flex items-center justify-between rounded-lg p-3 text-md hover:bg-[#52699e]`}
+                activemenu === menuItem.menu ? 'bg-secondaryLight' : ''
+              } flex items-center justify-between rounded-lg p-3 text-md hover:bg-secondaryLight`}
             >  
               <span>{menuItem.menu}</span>
               {menuItem.icon && (
@@ -71,8 +72,8 @@ const Sidebar = () => {
                     href={`/admin/${subItem.link?.toLowerCase()}`}
                     onClick={() => setActiveSubMenu(subItem.menu)}
                     className={`${
-                      activeSubMenu === subItem.menu ? 'bg-[#52699e]' : ''
-                    } text-sm text-white hover:bg-[#52699e] p-1 rounded`}
+                      activeSubMenu === subItem.menu ? 'bg-secondaryLight' : ''
+                    } text-sm text-white hover:bg-secondaryLight p-1 rounded`}
                   >
                     {subItem.menu}
                   </Link>

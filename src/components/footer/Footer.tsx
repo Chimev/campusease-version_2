@@ -1,12 +1,18 @@
 // components/Footer.tsx
-
+'use client'
+import { NavbarContext, NavbarProvider } from "@/lib/Context/NavContext";
 import Link from "next/link";
-import React from "react";
+import React, { useContext } from "react";
 import { FaInstagram } from "react-icons/fa6";
 import { FaWhatsapp } from "react-icons/fa6";
 import { FaXTwitter } from "react-icons/fa6";
 
 const Footer: React.FC = () => {
+    const context = useContext(NavbarContext)
+    const showNavbar = context?.showNavbar
+
+    if(!showNavbar) return null
+
   return (
     <footer className="bg-gray-100 py-6">
       <div className="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm text-gray-600">

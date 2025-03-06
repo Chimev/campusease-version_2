@@ -2,13 +2,14 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import SignOut from '../profile/SignOut';
 import { FaPlus } from "react-icons/fa";
 import { FaSignInAlt } from "react-icons/fa";
+import { NavbarContext } from '@/lib/Context/NavContext';
 
 // Updated navMenu to handle dynamic authentication
 const getNavMenu = (isAuthenticated: boolean) => [
@@ -25,6 +26,11 @@ const Navbar = () => {
   const [authorization, setAuthorization] = useState(false);
   const pathname = usePathname();
   const session = useSession();
+  const context = useContext(NavbarContext)
+  const showNavbar = context?.showNavbar
+  const setShowNavbar = context?.setShowNavbar
+  
+
 
   useEffect(() => {
     setAuthorization(session.status === 'authenticated');
@@ -58,12 +64,29 @@ const Navbar = () => {
 
   const navMenuItems = getNavMenu(authorization);
 
+
+  //Dynamic Navbar
+  useEffect(() => {
+    if (!context) return 
+    
+    if(pathname === '/'){
+      context.setShowNavbar(true)
+    }else if( ['/admin/dashboard'].includes(pathname) ) {
+      context.setShowNavbar(false)
+    }
+    
+  }, [pathname, context])
+  
+
+
+  if (!showNavbar) return null
+
   return (
     <nav className="text-primary text-xl px-2 sticky top-0 bg-white shadow-md z-50">
       <div className="flex justify-between items-center max-w-[1300px] mx-auto w-full py-3">
         {/* Logo */}
         <Link href="/">
-          <Image src="/logo_6.png" width={100} height={100} alt="logo" className="w-auto h-8 md:h-10" />
+          <Image src="/2.png" width={250} height={100} alt="logo" className="" />
         </Link>
 
         {/* Desktop Menu */}
@@ -73,7 +96,7 @@ const Navbar = () => {
               <Link
                 href={menu.link}
                 key={menu.id}
-                className={` ${menu.menu === 'Add' && 'bg-secondary text-white py-1 px-2'} ${pathname === menu.link && 'border-b-secondary border-b-2 text-secondary hover:text-secondary px-3 py-1'} hover:text-secondary transition-colors flex items-center gap-1 font-semibold`}
+                className={` ${menu.menu === 'Add' && 'bg-secondary text-white py-1 px-2 hover:text-white'} ${pathname === menu.link && 'border-b-secondary border-b-2 text-secondary hover:text-secondary px-3 py-1'} hover:text-secondary transition-colors flex items-center gap-1 font-semibold`}
               >
                 {menu.icon}
                 {menu.menu} 

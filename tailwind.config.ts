@@ -11,6 +11,7 @@ const config: Config = {
       colors: {
         orange: '#f8ae24',
         secondary: '#1b656a',
+        secondaryLight: "#0D757C",
         lightBlue: '#6c6cff',
         gray: '#484848',
         lightGray2: '#4f4d4d'

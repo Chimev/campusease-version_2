@@ -5,6 +5,7 @@ import Navbar from "@/components/navbar/Navbar";
 import { getServerSession } from "next-auth";
 import AuthProvider from "@/utilis/SessionProvider";
 import Footer from "@/components/footer/Footer";
+import { NavbarProvider } from "@/lib/Context/NavContext";
 
 const inter = Rubik({ subsets: ["latin"], weight:['400'] });
 
@@ -18,7 +19,16 @@ export const metadata: Metadata = {
     title: "CampusEase",
     description: "Find Comfort with campusEase Discover Accommodation, Services, MarketPLace and Roommate within your campus - All in One Place!",
     url: `${process.env.NEXT_PUBLIC_BASE_URL}`,
-    type: 'website'
+    type: 'website',
+    // edit this
+    // images: [
+    //   {
+    //     url: "https://campusease.com/new-cover-image.jpg", // Replace with your actual image URL
+    //     width: 1200,
+    //     height: 900,
+    //     alt: "CampusEase platform preview"
+    //   }
+    // ]
   }
 };
 
@@ -33,11 +43,13 @@ export default async function RootLayout({
     <html lang="en">
       <body className={inter.className }>
         <>
-        <AuthProvider session={session} >
-          <Navbar/>
-          {children}
-          <Footer/>
-        </AuthProvider>
+        <NavbarProvider>
+          <AuthProvider session={session} >
+            <Navbar/>
+            {children}
+            <Footer/>
+          </AuthProvider>
+        </NavbarProvider>
         </>
         </body>
     </html>

@@ -1,14 +1,22 @@
 import MetricCard from '@/components/admin/metrics/MetricCard';
+import { getListings } from '@/lib/functions/listings/getListings';
+import { getSchools } from '@/lib/functions/schools/getSchools';
+import { getUsers } from '@/lib/functions/users/getUsers';
 import { MdGroups } from "react-icons/md";
 import { MdChurch } from "react-icons/md";
 
-const Page = () => {
+const Page = async () => {
+  const users = await getUsers()
+  const listings = await getListings()
+  const schools = await getSchools()
+ 
 
 
   return (
     <div className='grid grid-cols-1 md:grid-cols-3  gap-6'>
-      <MetricCard metricTitle ={'Users'} icon={<MdGroups />} number={'1M'}  />
-      <MetricCard metricTitle ={'Schools'} icon={<MdGroups />} number={'36'}  />
+      <MetricCard metricTitle ={'Total Users'} icon={<MdGroups />} number={users.length}  />
+      <MetricCard metricTitle ={'Listings'} icon={<MdGroups />} number={listings.length}  />
+      <MetricCard metricTitle ={'Schools'} icon={<MdGroups />} number={schools.length}  />
     </div>
   );
 };

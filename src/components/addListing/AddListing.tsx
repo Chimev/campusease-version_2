@@ -10,7 +10,7 @@ import { ListOfInstitutions } from "@/data/listOfInstitution";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { uploadImagesToCloudinary } from '@/lib/functions/uploadCloudinary';
-import { addListing } from '@/lib/functions/addLiisting';
+import { addListing } from '@/lib/functions/listings/addLiisting';
 import LoadingBackground from '../background/LoadingBackground';
 
 
