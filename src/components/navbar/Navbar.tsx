@@ -28,7 +28,6 @@ const Navbar = () => {
   const session = useSession();
   const context = useContext(NavbarContext)
   const showNavbar = context?.showNavbar
-  const setShowNavbar = context?.setShowNavbar
   
 
 
