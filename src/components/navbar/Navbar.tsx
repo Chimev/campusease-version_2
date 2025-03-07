@@ -85,7 +85,7 @@ const Navbar = () => {
       <div className="flex justify-between items-center max-w-[1300px] mx-auto w-full py-3">
         {/* Logo */}
         <Link href="/">
-          <Image src="/2.png" width={250} height={100} alt="logo" className="" />
+          <Image src="/2.png" priority width={250} height={100} alt="logo" className="" />
         </Link>
 
         {/* Desktop Menu */}

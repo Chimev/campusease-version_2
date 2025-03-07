@@ -33,12 +33,6 @@ interface FormData {
 }
 
 
-// export const GET = async () => {
-//   //
-//   const res = listings;
-
-//   return  Response.json(res)
-// }
 
 
 export const POST = async (request: any) => {
