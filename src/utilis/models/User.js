@@ -20,6 +20,11 @@ const userSchema = new Schema(
             type: [String],
             required: true
         },
+        
+        agentApproval: {
+            type: Boolean,
+            required: false
+        },
         email: {
             type: String,
             unique: true,

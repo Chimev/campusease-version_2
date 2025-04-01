@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const POST = async (request: any) => {
-  const { name, phone, email, password, role, school } = await request.json();
+  const { name, phone, email, password, role, school, agentApproval } = await request.json();
 
   await connectToDB();
 
@@ -29,6 +29,7 @@ export const POST = async (request: any) => {
     school,
     email,
     password: hashPassword,
+    agentApproval
   });
 
   try {
@@ -41,10 +42,27 @@ export const POST = async (request: any) => {
 
 export const GET = async (req: NextRequest) => {
   try {
-    await connectToDB()
-    const users = await User.find({})
-    return NextResponse.json(users, {status: 200});
-  } catch (error:any) {
-    return new NextResponse(error.message, {status: 500})
+    await connectToDB();
+    
+    // Extract page and limit from query parameters
+    const { searchParams } = new URL(req.url);
+    const page = parseInt(searchParams.get('page') || '1', 10);
+    const limit = parseInt(searchParams.get('limit') || '10', 10);
+    
+    const skip = (page - 1) * limit;
+    
+    // Fetch paginated users
+    const users = await User.find().skip(skip).limit(limit);
+    const totalUsers = await User.countDocuments();
+    const totalPages = Math.ceil(totalUsers / limit);
+    
+    return NextResponse.json({ 
+      users, 
+      totalUsers, 
+      totalPages, 
+      currentPage: page 
+    }, { status: 200 });
+  } catch (error: any) {
+    return new NextResponse(error.message, { status: 500 });
   }
-}
+};

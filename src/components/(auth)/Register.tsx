@@ -39,10 +39,12 @@ const Register = () => {
     async function searchSchool() {
       const res = await fetch('/api/schools');
       
+      
       if (!res.ok) {
         setError('Network Error: Failed to fetch schools');
       }
       const schools = await res.json();
+      console.log(schools)
       setFetchedSchhol(schools);
     }
     searchSchool()
@@ -73,75 +75,79 @@ const Register = () => {
  
 
   const handleRegister = async (e: any) => {
-    e.preventDefault()
+    e.preventDefault();
     if (role.length === 0) {
-      setLoading(false)
+      setLoading(false);
       setError("You must select at least one role.");
       return;
     }
-    setLoading(true)
-    const name = e.target[0].value
-    const phone = e.target[1].value.toString()
-    const email = e.target[2].value
-    const password = e.target[3].value
-    const school = schoolSearch
-
-
-    //Validate School from db
+  
+    setLoading(true);
+    const name = e.target[0].value;
+    const phone = e.target[1].value.toString();
+    const email = e.target[2].value;
+    const password = e.target[3].value;
+    const school = schoolSearch;
+  
+    // Validate School from db
     const isValidSchool = fetchedSchhol?.some(
       (sch: any) => sch.school.toLowerCase() === school.toLowerCase()
-    )
-     
-    if(!isValidSchool){
+    );
+  
+    if (!isValidSchool) {
       setError("Please select a valid school from the dropdown.");
       setLoading(false);
       return;
     }
-    
-    console.log({
+  
+    // Determine if agent role is selected
+    const isAgentSelected = role.includes("agent");
+  
+    const userData: any = {
       name,
       phone,
       email,
       password,
-      school
-    })
+      role,
+      school,
+    };
+  
+    // If agent is selected, add agentApproval field
+    if (isAgentSelected) {
+      userData.agentApproval = false;
+    }
 
+    console.log(userData)
+  
     try {
       const res = await fetch("/api/user", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          name,
-          phone,
-          email,
-          password,
-          role, // Include the isAgent field in the body
-          school
-        })
-      })
-
-      console.log(res)
+        body: JSON.stringify(userData),
+      });
+  
+      console.log(res);
       if (res.status === 500) {
-        setLoading(false)
-        setError("Network error")
+        setLoading(false);
+        setError("Network error");
       }
       if (res.status === 400) {
-        setLoading(false)
-        setError("This email is already registered")
+        setLoading(false);
+        setError("This email is already registered");
       }
       if (res.status === 200) {
-        setError("")
-        route.push("/sign-in")
+        setError("");
+        route.push("/sign-in");
       }
     } catch (error) {
-      setLoading(false)
-      setError("Error, try again")
-      console.log(error)
+      setLoading(false);
+      setError("Error, try again");
+      console.log(error);
     }
-  }
-
+  };
+  
   
 
   return (

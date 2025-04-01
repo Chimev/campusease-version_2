@@ -31,6 +31,7 @@ export const GET = async(req:NextRequest) => {
 
     try {
         const schools = await Schools.find()
+        // console.log('sch:',schools)
         return NextResponse.json(schools)
     } catch (error) {
         throw new Error("Error while fetching");
