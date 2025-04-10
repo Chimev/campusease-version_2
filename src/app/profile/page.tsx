@@ -37,7 +37,7 @@ const Profile = async() => {
         Edit Profile
       </Link>
       <ShareBTN user={user} />
-      <SignOut/>
+      <SignOut nav={false}/>
     </div>
     {/*Link to user's profile */}
     {user && (

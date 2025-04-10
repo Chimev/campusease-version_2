@@ -20,16 +20,66 @@ const schools_category = [
 ];
 
 
-const AddListing = ({name, email, school} : {name: string; email:string; school:string;}) => {
+const AddListing = ({name, email, school, role} : {name: string; email:string; school:string; role:string[]}) => {
     const route = useRouter();
     const [errorMessage, setErrorMessage] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
     const [loading, setLoading] = useState(false);
-    // const [imageUrls, setImageUrls] = useState<string[]>([]);
 
-    const canShowAccommodationCategroy = schools_category.includes(school)
-    console.log('first', canShowAccommodationCategroy)
-    console.log('first11', school)
+    const canShowAccommodationCategroy = schools_category.includes(school);
+    
+    // Get available categories based on user role
+    const getAvailableCategories = () => {
+        const isAgent = role.includes('agent');
+        const isStudent = role.includes('student');
+        const isService = role.includes('service');
+        const isRoommate = role.includes('roommate');
+        
+        // Agent only
+        if (isAgent && !isStudent && !isService && !isRoommate) {
+            return ['accommodation', 'marketplace'];
+        }
+        
+        // Agent + Student
+        if (isAgent && isStudent && !isService && !isRoommate) {
+            return ['roommate', 'accommodation'];
+        }
+        
+        // Agent + Service
+        if (isAgent && isService && !isStudent && !isRoommate) {
+            return ['service', 'accommodation', 'marketplace'];
+        }
+        
+        // Service + Student
+        if (isService && isStudent && !isAgent && !isRoommate) {
+            return ['marketplace', 'service', 'roommate'];
+        }
+        
+        // Service only
+        if (isService && !isAgent && !isStudent && !isRoommate) {
+            return ['service', 'marketplace'];
+        }
+        
+        // Student only
+        if (isStudent && !isAgent && !isService && !isRoommate) {
+            return ['roommate', 'marketplace'];
+        }
+        
+        // Roommate + Service
+        if (isRoommate && isService && !isAgent && !isStudent) {
+            return ['service', 'marketplace', 'roommate'];
+        }
+        
+        // Agent + Roommate
+        if (isAgent && isRoommate && !isService && !isStudent) {
+            return ['accommodation', 'roommate', 'marketplace'];
+        }
+        
+        // Default - show all categories if no specific combination matches or no roles provided
+        return ['accommodation', 'service', 'marketplace', 'roommate'];
+    };
+
+    const availableCategories = getAvailableCategories();
 
     //useRef
     const categoryRef = useRef<HTMLSelectElement>(null);
@@ -79,10 +129,6 @@ const AddListing = ({name, email, school} : {name: string; email:string; school:
 
   // ----END------//
 
-
-   
-    // const [imageFiles, setImageFiles] = useState([]);
-
     const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedCategory(event.target.value);
     };
@@ -118,7 +164,6 @@ const AddListing = ({name, email, school} : {name: string; email:string; school:
     
         try {
             const uploadedImages = await uploadImagesToCloudinary(imageFiles);
-            console.log(uploadedImages)
     
             if (!uploadedImages.length) {
                 setErrorMessage("Failed to upload images.");
@@ -149,7 +194,7 @@ const AddListing = ({name, email, school} : {name: string; email:string; school:
             }
             // Proceed with adding the listing via API function
             const res = await addListing(listing);
-            console.log(res)
+            console.log(res);
             if (!res.ok) {
                 setLoading(false);
             }
@@ -158,7 +203,7 @@ const AddListing = ({name, email, school} : {name: string; email:string; school:
         } catch (error) {
             if(error instanceof Error){
                 if(error.message === "Upload failed: File size too large. Got 12503874. Maximum is 10485760. Upgrade your plan to enjoy higher limits https://www.cloudinary.com/pricing/upgrades/file-limit"){
-                    toast.error("Image size to large. Upload less than 8MB")
+                    toast.error("Image size too large. Upload less than 8MB");
                 }
             }
             console.error("Error during listing:", error);
@@ -167,22 +212,28 @@ const AddListing = ({name, email, school} : {name: string; email:string; school:
             setLoading(false);
         }
     };
-    
-    
 
     return (
         <div className='px-3 py-8 sm:max-w-[500px] sm:m-auto'>
             <hr className="bg-orange border-none h-2 w-20 " />
-            <h2 className="mb-10  text-3xl relative font-bold">Add Listing</h2>
+            <h2 className="mb-10 text-3xl relative font-bold">Add Listing</h2>
             <form onSubmit={addList} className='flex flex-col gap-5'>
                 <div>
                     <p>CATEGORY</p>
                     <select className='w-full' name='category' required onChange={handleCategoryChange} ref={categoryRef} >
                         <option value="">---</option>
-                        <option value="accommodation">Accommodation</option>
-                        <option value="service">Service</option>
-                        <option value="marketplace">MarketPlace</option>
-                        <option value="roommate">Roommate</option>
+                        {availableCategories.includes('accommodation') && (
+                            <option value="accommodation">Accommodation</option>
+                        )}
+                        {availableCategories.includes('service') && (
+                            <option value="service">Service</option>
+                        )}
+                        {availableCategories.includes('marketplace') && (
+                            <option value="marketplace">MarketPlace</option>
+                        )}
+                        {availableCategories.includes('roommate') && (
+                            <option value="roommate">Roommate</option>
+                        )}
                     </select>
                 </div>
 
@@ -197,7 +248,7 @@ const AddListing = ({name, email, school} : {name: string; email:string; school:
                         multiple
                         required
                     />
-                    <div className="-mt-6 text-red-600 text-[16px]  ">{errorMessage}</div>
+                    <div className="-mt-6 text-red-600 text-[16px]">{errorMessage}</div>
                 </div>
 
                 <div className="flex flex-col w-10/12">

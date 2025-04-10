@@ -10,6 +10,9 @@ const page = async() => {
   const userId = session?.user?.name;
   const email = session?.user?.email;
   const school = session?.user?.school;
+  const role = session?.user?.role;
+
+  console.log(role)
 
   
   if(!session) {
@@ -17,7 +20,7 @@ const page = async() => {
   }
   return (
     <SchoolContextProvider>
-       <AddListing email={email} name={userId} school={school}/>
+       <AddListing email={email} name={userId} school={school} role={role}/>
     </SchoolContextProvider>
    
   )
