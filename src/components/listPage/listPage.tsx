@@ -3,7 +3,7 @@ import Image from "next/image";
 import SearchInstitute from "../Search/SearchInstitute";
 import SecondaryBtn from "../buttons/SecondaryBtn";
 import { useSchoolProvider } from "@/lib/Context/SchholContext";
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { categories } from "@/data/categories";
 import { useParams, useRouter } from 'next/navigation';
 // import { Filter_1, Filter_2, Filter_3, Filter_4 } from "../filter/Filte";
@@ -36,31 +36,36 @@ const ListPage = ({category}:any) => {
 
   //For my serchINstution form
   //------START-----//
-  const value = useSchoolProvider();
+  // const value = useSchoolProvider();
 
-    const changeType = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const selectedType = e.target.value;
-        const selectedInstitutions = ListOfInstitutions.find(int => int.type === selectedType)?.institution || [];
+  //   const changeType = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  //       const selectedType = e.target.value;
+  //       const selectedInstitutions = ListOfInstitutions.find(int => int.type === selectedType)?.institution || [];
         
-        value?.setType(selectedType);
-        value?.setInstitutions(selectedInstitutions);
-        value?.setInstitution(''); // Reset institution and campus on type change
-        value?.setCampus('');
-    };
+  //       value?.setType(selectedType);
+  //       value?.setInstitutions(selectedInstitutions);
+  //       value?.setInstitution(''); // Reset institution and campus on type change
+  //       value?.setCampus('');
+  //   };
 
-    const changeInstitution = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const selectedInstitution = e.target.value;
-        const selectedCampus = value?.institutions.find(int => int.school === selectedInstitution)?.campus || [];
+  //   const changeInstitution = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  //       const selectedInstitution = e.target.value;
+  //       const selectedCampus = value?.institutions.find(int => int.school === selectedInstitution)?.campus || [];
         
-        value?.setInstitution(selectedInstitution);
-        value?.setCampuses(selectedCampus);
-        value?.setCampus(''); // Reset campus on institution change
-    };
+  //       value?.setInstitution(selectedInstitution);
+  //       value?.setCampuses(selectedCampus);
+  //       value?.setCampus(''); // Reset campus on institution change
+  //   };
 
-    const changeCampus = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        value?.setCampus(e.target.value);
-    };
-    // ----END------//
+  //   const changeCampus = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  //       value?.setCampus(e.target.value);
+  //   };
+  //   // ----END------//
+
+    // Create refs for form elements
+    const typeRef = useRef<HTMLSelectElement>(null);
+    const institutionRef = useRef<HTMLSelectElement>(null);
+    const campusRef = useRef<HTMLSelectElement>(null); 
 
   // Effect for params
   useEffect(() => {
@@ -72,8 +77,12 @@ const ListPage = ({category}:any) => {
   }, []);
 
   const getLisiting = async () => {
+
+    const institution = institutionRef?.current?.value;
+    const type = typeRef?.current?.value;
+    const campus = campusRef?.current?.value;
     try {
-      const res = await fetch(`/api/listings/${category}?type=${value?.type}&institution=${value?.institution}&campus=${value?.campus}`) 
+      const res = await fetch(`/api/listings/${category}?type=${type}&institution=${institution}&campus=${campus}`) 
       const data = await res.json()
       // console.log(data)
       setLoading(false)
@@ -148,8 +157,8 @@ const ListPage = ({category}:any) => {
         <div className="search-container">
           <form onSubmit={handleInstituteSubmit} className="flex flex-col w-10/12">
             {/* institutions */}
-              <SearchInstitute value={value} changeType={changeType} changeInstitution={changeInstitution} changeCampus={changeCampus}>
-                <SecondaryBtn text="Search" />
+              <SearchInstitute typeRef={typeRef} institutionRef={institutionRef} campusRef={campusRef} >
+              <SecondaryBtn text="Search" />
               </SearchInstitute>
           </form>
         </div>

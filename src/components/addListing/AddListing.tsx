@@ -1,6 +1,6 @@
 'use client'
 
-import React, {  useRef, useState } from 'react';
+import React, {  useEffect, useRef, useState } from 'react';
 import { Filter_1, Filter_2, Filter_3, Filter_4 } from "../filter/Filte";
 import SearchInstitute from "../Search/SearchInstitute";
 import SecondaryBtn from "../buttons/SecondaryBtn";
@@ -25,8 +25,11 @@ const AddListing = ({name, email, school, role} : {name: string; email:string; s
     const [errorMessage, setErrorMessage] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
     const [loading, setLoading] = useState(false);
+   
 
     const canShowAccommodationCategroy = schools_category.includes(school);
+
+     
     
     // Get available categories based on user role
     const getAvailableCategories = () => {
@@ -254,7 +257,7 @@ const AddListing = ({name, email, school, role} : {name: string; email:string; s
                 <div className="flex flex-col w-10/12">
                 <h4>Select School</h4>
                     
-                <SearchInstitute typeRef={typeRef} institutionRef={institutionRef} campusRef={campusRef} value={value} changeType={changeType} changeInstitution={changeInstitution} changeCampus={changeCampus}/>
+                <SearchInstitute typeRef={typeRef} institutionRef={institutionRef} campusRef={campusRef} />
                 </div>
 
                 <div className="input">
