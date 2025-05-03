@@ -111,7 +111,6 @@ const SearchInstitute = ({ children, institutionRef, typeRef, campusRef }: Searc
                     <option key={index} value={campus || 'Loading...'}>{campus}</option>
                 ))}
             </select>
-            
             {children}
         </>
     );

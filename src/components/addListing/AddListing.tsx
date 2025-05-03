@@ -5,8 +5,6 @@ import { Filter_1, Filter_2, Filter_3, Filter_4 } from "../filter/Filte";
 import SearchInstitute from "../Search/SearchInstitute";
 import SecondaryBtn from "../buttons/SecondaryBtn";
 import { useRouter } from 'next/navigation';
-import { useSchoolProvider } from '@/lib/Context/SchholContext';
-import { ListOfInstitutions } from "@/data/listOfInstitution";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { uploadImagesToCloudinary } from '@/lib/functions/uploadCloudinary';
@@ -103,34 +101,7 @@ const AddListing = ({name, email, school, role} : {name: string; email:string; s
     const genderRef = useRef<HTMLSelectElement>(null);
 
 
-    //For my serchINstution form
-  //------START-----//
-  const value = useSchoolProvider();
-
-  const changeType = (e: React.ChangeEvent<HTMLSelectElement>) => {
-      const selectedType = e.target.value;
-      const selectedInstitutions = ListOfInstitutions.find(int => int.type === selectedType)?.institution || [];
-      
-      value?.setType(selectedType);
-      value?.setInstitutions(selectedInstitutions);
-      value?.setInstitution(''); // Reset institution and campus on type change
-      value?.setCampus('');
-  };
-
-  const changeInstitution = (e: React.ChangeEvent<HTMLSelectElement>) => {
-      const selectedInstitution = e.target.value;
-      const selectedCampus = value?.institutions.find(int => int.school === selectedInstitution)?.campus || [];
-      
-      value?.setInstitution(selectedInstitution);
-      value?.setCampuses(selectedCampus);
-      value?.setCampus(''); // Reset campus on institution change
-  };
-
-  const changeCampus = (e: React.ChangeEvent<HTMLSelectElement>) => {
-      value?.setCampus(e.target.value);
-  };
-
-  // ----END------//
+ 
 
     const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedCategory(event.target.value);

@@ -2,7 +2,6 @@ import AddListing from '@/components/addListing/AddListing'
 import React from 'react'
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
-import { SchoolContextProvider } from "@/lib/Context/SchholContext";
 import { authOptions } from '../api/auth/[...nextauth]/auth';
 
 const page = async() => {
@@ -19,9 +18,7 @@ const page = async() => {
     redirect('/sign-in');
   }
   return (
-    <SchoolContextProvider>
        <AddListing email={email} name={userId} school={school} role={role}/>
-    </SchoolContextProvider>
    
   )
 }

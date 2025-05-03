@@ -2,7 +2,6 @@ import React from 'react'
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import { authOptions } from '../api/auth/[...nextauth]/auth';
-import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import ShareBTN from '@/components/profile/shareBtn/ShareBTN';
 import Menu from '@/components/profile/Menu';
@@ -21,33 +20,45 @@ const Profile = async() => {
   }
     const user = session.user;
   return (
-  <section>
-  {/* Display the user information */}
-  <div className='text-center text-xl'>
-    <p className='font-semibold -mb-4'>{user?.name}</p>
-    <p className='font-semibold'>{user?.email}</p>
-    <p className='font-semibold'>{user?.phone}</p>
-  </div>
-
-  <div className='flex gap-2 justify-center'>
-    {/* Button to share profile */}
-      <Link href={'/profile/settings'} 
-        className='bg-orange p-2  text-white rounded' 
+    <section className='px-1'>
+    {/* Profile Picture Placeholder (Optional) */}
+    <div className="flex justify-center mb-4 pt-4">
+      <div className="w-24 h-24 rounded-full bg-secondaryLight text-white flex items-center justify-center text-gray-500 text-2xl font-semibold">
+        {user?.name?.charAt(0).toUpperCase()}
+      </div>
+    </div>
+  
+    {/* User Info */}
+    <div className="text-center mb-6">
+      <h2 className="text-2xl font-bold text-gray-800 mb-1">{user?.name}</h2>
+      <p className="text-sm text-gray-600">{user?.email || ""}</p>
+      {user?.phone && (
+        <p className="text-sm text-gray-600 mt-1">{user.phone || ''}</p>
+      )}
+    </div>
+  
+    {/* Actions */}
+    <div className="flex justify-center flex-wrap gap-3 mb-6">
+      <Link
+        href="/profile/settings"
+        className="bg-[#f8ae24] hover:bg-[#d9941f] text-white px-5 py-2 rounded text-sm font-medium transition"
       >
         Edit Profile
       </Link>
       <ShareBTN user={user} />
-      <SignOut nav={false}/>
+      <SignOut nav={false} />
     </div>
-    {/*Link to user's profile */}
-    {user && (
-      <div className='mb-5 text-center'>
-        <Link href={`/user/${user.name}`} className='text-blue-500 underline'>
-          View your public profile
-        </Link>
-      </div>
-    )}
-    
+  
+    {/* Public Profile Link */}
+    <div className="text-center">
+      <Link
+        href={`/user/${user.name}`}
+        className="text-blue-600 hover:underline text-sm"
+      >
+        View your public profile
+      </Link>
+    </div>
+  
 
     <Menu />
   </section>

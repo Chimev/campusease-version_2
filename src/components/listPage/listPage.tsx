@@ -2,13 +2,11 @@
 import Image from "next/image";
 import SearchInstitute from "../Search/SearchInstitute";
 import SecondaryBtn from "../buttons/SecondaryBtn";
-import { useSchoolProvider } from "@/lib/Context/SchholContext";
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { categories } from "@/data/categories";
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 // import { Filter_1, Filter_2, Filter_3, Filter_4 } from "../filter/Filte";
 import ListCard from "../listCard/ListCard";
-import { ListOfInstitutions } from "@/data/listOfInstitution";
 import { FavoriteContext } from "@/lib/Context/FavoriteContext";
 import { useSession } from "next-auth/react";
 import Loading from "../loading/Loading";
@@ -33,34 +31,6 @@ const ListPage = ({category}:any) => {
   const [listings, setListings] = useState([])
 
   const {data: session, status} = useSession();
-
-  //For my serchINstution form
-  //------START-----//
-  // const value = useSchoolProvider();
-
-  //   const changeType = (e: React.ChangeEvent<HTMLSelectElement>) => {
-  //       const selectedType = e.target.value;
-  //       const selectedInstitutions = ListOfInstitutions.find(int => int.type === selectedType)?.institution || [];
-        
-  //       value?.setType(selectedType);
-  //       value?.setInstitutions(selectedInstitutions);
-  //       value?.setInstitution(''); // Reset institution and campus on type change
-  //       value?.setCampus('');
-  //   };
-
-  //   const changeInstitution = (e: React.ChangeEvent<HTMLSelectElement>) => {
-  //       const selectedInstitution = e.target.value;
-  //       const selectedCampus = value?.institutions.find(int => int.school === selectedInstitution)?.campus || [];
-        
-  //       value?.setInstitution(selectedInstitution);
-  //       value?.setCampuses(selectedCampus);
-  //       value?.setCampus(''); // Reset campus on institution change
-  //   };
-
-  //   const changeCampus = (e: React.ChangeEvent<HTMLSelectElement>) => {
-  //       value?.setCampus(e.target.value);
-  //   };
-  //   // ----END------//
 
     // Create refs for form elements
     const typeRef = useRef<HTMLSelectElement>(null);

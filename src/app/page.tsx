@@ -10,21 +10,21 @@ export default function Home() {
         <div className="hero lg:h-[calc(100vh-80px)] ">
             <div className="text-center w-[90%] max-w-[1300px]">
               <h1 className='text-5xl'>Find Comfort with campusEase</h1>
-              <p className='-mt-5 text-lg font-semibold'>Discover Accommodation, Services, MarketPlace and Roommate within your campus - All in One Place!</p>
+              <p className='-mt-5 text-lg font-semibold'>Discover Accommodation, Roommate Services and MarketPlace  within your campus - All in One Place!</p>
             </div>
         </div>
 
-        <div className="pt-5 max-w-[1300px]">
+        <div className="pt-5 max-w-[1300px] mx-auto">
             <div className="w-11/12 m-auto ">
-              <hr className="bg-orange border-none h-2 w-20 m-auto" />
-                <h2 className="mb-10 text-center text-3xl relative font-bold">Categories</h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                    
-                    {categories.map( menu => (
-                      <Link href={`${menu.link}`} key={menu.category}><CategoryCard category={menu.category} description={menu.description} img={menu.img}/></Link>
-                    ) )}
+              <hr className="bg-orange border-none h-1 w-20 m-auto" />
+              <h2 className="text-3xl text-center font-semibold mb-6 text-[#1b656a]">Category</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                  
+                  {categories.map( menu => (
+                    <Link href={`${menu.link}`} key={menu.category}><CategoryCard category={menu.category} description={menu.description} img={menu.img}/></Link>
+                  ) )}
 
-                  </div>
+                </div>
             </div>
         </div>
     </main>

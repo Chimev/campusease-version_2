@@ -14,14 +14,6 @@ const providers = [
   {provider: 'student', label: 'student'}
 ]
 
-const schools = [
-  { type: 'State', school: 'Ebsu', campuses: ['CAS', 'ISHIEKE', 'PERMSITE'] },
-  { type: 'Federal', school: 'FUNAI', campuses: ['Area 4', 'Area 5'] },
-  { type: 'Polytechnic', school: 'IMT', campuses: ['CAMPUS 1', 'CAMPUS 2'] },
-  { type: 'State', school: 'Lasu', campuses: ['Epe', 'Ikeja', 'Ojo'] },
-  { type: 'State', school: 'Esut', campuses: ['Epe', 'Ikeja', 'Ojo'] },
-];
-
 const Register = () => {
   const route = useRouter()
   const [loading, setLoading] = useState(false)
