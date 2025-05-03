@@ -3,7 +3,7 @@ import Listings from "@/utilis/models/Listings";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (_req: NextRequest, { params }: any) => {
-  const searchParam = params.slug;  // Could be either email or name
+  const searchParam = await params.slug;  // Could be either email or name
 
   try {
     await connectToDB();
