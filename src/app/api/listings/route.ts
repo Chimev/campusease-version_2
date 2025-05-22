@@ -23,6 +23,7 @@ interface FormData {
   phone?:number;
   accommodationType?:string;
   service?:string;
+  propertyType?:string;
   property?:string;
   roommateName?:string;
   level?:string;
@@ -49,6 +50,7 @@ export const POST = async (request: any) => {
         phone,
         accommodationType,
         service,
+        propertyType,
         property,
         roommateName,
         level,
@@ -83,6 +85,7 @@ export const POST = async (request: any) => {
       accommodationType,
       videoLink,
       service,
+      propertyType,
       property,
       roommateName,
       level,
@@ -92,6 +95,7 @@ export const POST = async (request: any) => {
     }
     if(category === 'accommodation'){
         delete formData.service;
+        delete formData.propertyType;
         delete formData.property;
         delete formData.level;
         delete formData.gender;
@@ -102,6 +106,7 @@ export const POST = async (request: any) => {
         delete formData.videoLink;
         delete formData.price;
         delete formData.accommodationType;
+        delete formData.propertyType;
         delete formData.property;
         delete formData.level;
         delete formData.gender;
@@ -122,6 +127,7 @@ export const POST = async (request: any) => {
         delete formData.price;
         delete formData.accommodationType;
         delete formData.service;
+        delete formData.propertyType;
         delete formData.property;
       }
     

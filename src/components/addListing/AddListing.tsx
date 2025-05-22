@@ -23,6 +23,7 @@ const AddListing = ({name, email, school, role} : {name: string; email:string; s
     const [errorMessage, setErrorMessage] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
     const [loading, setLoading] = useState(false);
+    const [selectedPropertyType, setSelectedPropertyType] = useState('')
    
 
     const canShowAccommodationCategroy = schools_category.includes(school);
@@ -96,6 +97,7 @@ const AddListing = ({name, email, school, role} : {name: string; email:string; s
     const accommodationTypeRef = useRef<HTMLSelectElement>(null);
     const serviceTypeRef = useRef<HTMLSelectElement>(null);
     const propertyTypeRef = useRef<HTMLSelectElement>(null);
+    const propertyRef = React.useRef<HTMLSelectElement>(null);
     const roommateNameRef = useRef<HTMLInputElement>(null);
     const levelRef = useRef<HTMLSelectElement>(null);
     const genderRef = useRef<HTMLSelectElement>(null);
@@ -120,7 +122,8 @@ const AddListing = ({name, email, school, role} : {name: string; email:string; s
         const accommodationName = accommodationNameRef?.current?.value;
         const videoLink = videoRef?.current?.value;
         const service = serviceTypeRef?.current?.value;
-        const property = propertyTypeRef?.current?.value;
+        const propertyType = propertyTypeRef?.current?.value;
+        const property = propertyRef?.current?.value;
         const level = levelRef?.current?.value;
         const gender = genderRef?.current?.value;
         const price = priceRef?.current?.value?.toString();
@@ -155,6 +158,7 @@ const AddListing = ({name, email, school, role} : {name: string; email:string; s
                 videoLink,
                 accommodationType,
                 service,
+                propertyType,
                 property,
                 roommateName,
                 level,
@@ -166,6 +170,7 @@ const AddListing = ({name, email, school, role} : {name: string; email:string; s
                 isFavorite: false,
                 image: uploadedImages, // Use uploaded image URLs
             }
+            // console.log(listing)
             // Proceed with adding the listing via API function
             const res = await addListing(listing);
             console.log(res);
@@ -279,18 +284,18 @@ const AddListing = ({name, email, school, role} : {name: string; email:string; s
                         </Filter_2>
                     )}
                     {selectedCategory === 'marketplace' && (
-                        <Filter_3 propertyTypeRef={propertyTypeRef}>
+                        <Filter_3 propertyTypeRef={propertyTypeRef} propertyRef={propertyRef} setSelectedPropertyType={setSelectedPropertyType} selectedPropertyType={selectedPropertyType}>
                             <div className="input">
-                            <label className="p-text">PRICE</label>
-                            <div className="price">
-                            <input type="number" ref={priceRef} required name="price"  placeholder='Price'/>
-                            </div>
-                            <div className="input">
-                            <label className="p-text">phone</label>
-                            <div className="price">
-                            <input type="number" ref={phoneRef} required name="phoneNo" />
-                            </div>
-                            </div>
+                                <label className="p-text">PRICE</label>
+                                <div className="price">
+                                    <input type="number" ref={priceRef} required name="price"  placeholder='Price'/>
+                                </div>
+                                <div className="input">
+                                    <label className="p-text">phone</label>
+                                    <div className="price">
+                                        <input type="number" ref={phoneRef} required name="phoneNo" />
+                                    </div>
+                                </div>
                             </div>
                         </Filter_3>
                     )}

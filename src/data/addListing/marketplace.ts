@@ -1,0 +1,25 @@
+export const propertyTypes = [
+  { propertyType: "Furniture", item: "Table" },
+  { propertyType: "Furniture", item: "Chair" },
+  { propertyType: "Furniture", item: "Reading Desk" },
+  { propertyType: "Furniture", item: "Bookshelf" },
+  { propertyType: "Furniture", item: "Bed Frame" },
+  { propertyType: "Furniture", item: "Wardrobe" },
+  { propertyType: "Furniture", item: "Mattress" },
+
+  { propertyType: "Electronics & Gadgets", item: "Phones" },
+  { propertyType: "Electronics & Gadgets", item: "Laptops" },
+  { propertyType: "Electronics & Gadgets", item: "Earphones" },
+  { propertyType: "Electronics & Gadgets", item: "Chargers" },
+  { propertyType: "Electronics & Gadgets", item: "Power Banks" },
+  { propertyType: "Electronics & Gadgets", item: "Extension Boxes" },
+  { propertyType: "Electronics & Gadgets", item: "Fans" },
+  { propertyType: "Electronics & Gadgets", item: "Speaker" },
+
+  { propertyType: "Academic Materials", item: "Textbooks" },
+  { propertyType: "Academic Materials", item: "Handouts" },
+  { propertyType: "Academic Materials", item: "Project Materials" },
+  { propertyType: "Academic Materials", item: "Lab Coats" },
+  { propertyType: "Academic Materials", item: "Drawing Boards" },
+  { propertyType: "Academic Materials", item: "Calculators" },
+];

@@ -33,7 +33,7 @@ const SearchInstitute = ({ children, institutionRef, typeRef, campusRef }: Searc
                 const res = await fetch('/api/schools');
                 const data = await res.json();
                 setSchools(data);
-                console.log('Fetched school data:', data);
+                // console.log('Fetched school data:', data);
             } catch (error) {
                 console.error('Error fetching schools:', error);
             }

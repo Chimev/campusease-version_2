@@ -13,7 +13,7 @@ import Loading from "../loading/Loading";
 // import { listings } from "@/hooks/mock";
 
 const ListPage = ({category}:any) => {
-  const route = useRouter();
+  const route = useRouter()
   // const { category: categoryParam } = useParams();
   const [loading, setLoading] = useState(true)
   
@@ -39,7 +39,7 @@ const ListPage = ({category}:any) => {
 
   // Effect for params
   useEffect(() => {
-    const cat = categories.find(cate => cate.link == category);
+    const cat = categories.find(cate => cate.link.slice(10) == category);
     if (cat) {  
         setDescription(cat.description);
         setImg(cat.img);
@@ -102,7 +102,7 @@ const ListPage = ({category}:any) => {
         //
       }
   }else {
-    route.push('/sign-in')
+    route.replace('/sign-in')
   }
     console.log("list",FavouriteList)
   }

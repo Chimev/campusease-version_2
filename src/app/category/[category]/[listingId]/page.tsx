@@ -1,6 +1,7 @@
 'use client';
 
 import Image from "next/image";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState, useCallback, ReactNode } from "react";
 import { FaPhoneAlt } from "react-icons/fa";
@@ -125,9 +126,16 @@ const ListingDetails = () => {
             <p className="flex items-center text-gray-700">Level: {details?.level}</p>
             <p className="flex items-center text-gray-700">Level: {details?.gender}</p>
             <p className="mb-4 text-gray-700">{details?.description}</p>
-            <p className="text-lg mb-2">
+            <Link href={`/user/${details.name}`} className="bg-red-500 text-lg mb-2">
               <span className="font-bold">Listed by:</span> {details?.name}
-            </p>
+            </Link>
+            <div>
+              <p>Listed by:</p>
+              <Link href={`/user/${details.name}`}>
+              {details?.name}
+            </Link>
+            </div>
+            
           </>
         )}
       </div>

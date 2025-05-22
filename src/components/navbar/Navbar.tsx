@@ -81,11 +81,11 @@ const Navbar = () => {
   if (!showNavbar) return null
 
   return (
-    <nav className="text-primary text-xl px-2 sticky top-0 bg-white shadow-md z-50">
+    <nav className="text-primary text-xl px-2 sticky top-0 bg-white/85 shadow-md z-50">
       <div className="flex justify-between items-center max-w-[1300px] mx-auto w-full py-3">
         {/* Logo */}
         <Link href="/">
-          <Image src="/2.png" priority width={250} height={100} alt="logo" className=" w-[180px] md:w-auto" />
+          <Image src="/3.png" priority width={250} height={100} alt="logo" className=" w-[180px] md:w-auto" />
         </Link>
 
         {/* Desktop Menu */}
@@ -95,7 +95,7 @@ const Navbar = () => {
               <Link
                 href={menu.link}
                 key={menu.id}
-                className={` ${menu.menu === 'Add' && 'bg-secondary text-white py-1 px-2 hover:text-white'} ${pathname === menu.link && 'border-b-secondary border-b-2 text-secondary hover:text-secondary px-3 py-1'} hover:text-secondary transition-colors flex items-center gap-1 font-semibold`}
+                className={` ${menu.menu === 'Add' && 'bg-gradient-to-r from-teal-600 to-teal-700 text-white  hover:text-white hover:from-teal-700 hover:to-teal-800'} ${pathname === menu.link && 'text-teal-700 bg-teal-50'} px-4 py-2 hover:text-secondary rounded-full transition-colors flex items-center gap-1 font-medium ransition-all duration-200 `}
               >
                 {menu.icon}
                 {menu.menu} 
@@ -105,9 +105,9 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Menu Button */}
-        <div ref={toggleButtonRef} className="lg:hidden">
+        <div ref={toggleButtonRef} className="lg:hidden px-2">
           <GiHamburgerMenu
-            className="text-4xl text-gray-600 cursor-pointer hover:text-secondary transition-colors"
+            className="text-2xl text-gray-600 cursor-pointer hover:text-secondary transition-colors"
             onClick={() => setIsOpen(!isOpen)}
           />
         </div>
@@ -140,7 +140,7 @@ const Navbar = () => {
               <Link
                 href={menu.link}
                 key={menu.id}
-                className={` ${menu.menu === 'Add' && 'bg-secondary text-white py-1 px-2 w-fit'} ${pathname === menu.link && 'text-secondary hover:text-secondary'} hover:text-secondary transition-colors flex items-center gap-1 font-semibold`}
+                className={` ${menu.menu === 'Add' && 'bg-gradient-to-r from-teal-600 to-teal-700 text-white  hover:text-white hover:from-teal-700 hover:to-teal-800'} ${pathname === menu.link && 'text-teal-700 bg-teal-50'} px-4 py-2 hover:text-secondary rounded-full transition-colors flex items-center gap-1 font-medium ransition-all duration-200 `}
                 onClick={() => setIsOpen(false)}
               >
                 {menu.icon}

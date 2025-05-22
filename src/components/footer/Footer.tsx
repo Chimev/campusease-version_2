@@ -1,11 +1,10 @@
 // components/Footer.tsx
 'use client'
+import { categories } from "@/data/categories";
 import { NavbarContext, NavbarProvider } from "@/lib/Context/NavContext";
+import Image from "next/image";
 import Link from "next/link";
 import React, { useContext } from "react";
-import { FaInstagram } from "react-icons/fa6";
-import { FaWhatsapp } from "react-icons/fa6";
-import { FaXTwitter } from "react-icons/fa6";
 
 const Footer: React.FC = () => {
     const context = useContext(NavbarContext)
@@ -13,45 +12,78 @@ const Footer: React.FC = () => {
 
     if(!showNavbar) return null
 
+    const handleWhatsAppSupportAdvanced = () => {
+  const phoneNumber = '2349078608642';
+  const message = encodeURIComponent('Hi CampusEase support, I need help...');
+  const url = `https://wa.me/${phoneNumber}?text=${message}`;
+  
+  try {
+    // Check if we're in a browser environment
+    if (typeof window !== 'undefined') {
+      // Try to open WhatsApp
+      const newWindow = window.open(url, '_blank');
+      
+      // Check if popup was blocked
+      if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+        // Fallback: redirect in same window
+        window.location.href = url;
+      }
+    }
+  } catch (error) {
+    console.error('Error opening WhatsApp:', error);
+    alert('Unable to open WhatsApp. Please make sure it\'s installed on your device.');
+  }
+};
+
   return (
-    <footer className="bg-gray-100 py-6">
-      <div className="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm text-gray-600">
-        <div className="flex flex-col items-center md:items-start mb-4 md:mb-0">
-          <Link href="/privacy-policy" className="hover:underline mb-2">
-            Privacy Policy
-          </Link>
-          <Link href="/terms" className="hover:underline">
-            Terms and Conditions
-          </Link>
-        </div>
-        <div className="flex flex-col items-center text-center md:text-right">
-          <p className="mb-2">© {new Date().getFullYear()} Creative Chime Production</p>
-          <div className="flex space-x-4">
-            <Link
-              href="https://www.instagram.com/campus_ease/profilecard/?igsh=ZWFrdnI4eWQycmE="
-              target="_blank"
-              className="text-lg"
-            >
-              <FaInstagram />
-            </Link>
-            <Link
-              href="https://x.com/campus_ease?t=IdwfU5HNyOb0ocr9AaGrUg&s=09"
-              target="_blank"
-              className="text-lg"
-            >
-              <FaXTwitter />
-            </Link>
-            <Link
-              href="https://whatsapp.com/channel/0029VaqvVfRC1FuGeFs2Mi1A"
-              target="_blank"
-              className="text-lg"
-            >
-              <FaWhatsapp />
-            </Link>
+    <footer className="bg-teal-900 text-teal-200 py-12">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+              <Image src="/4.png" width={150} height={150} alt="logo" className="mb-7" />
+              <p className="mb-4">Making campus life easier, one connection at a time.</p>
+              <div className="flex space-x-4">
+                {/* Social icons would go here */}
+              </div>
+            </div>
+            
+            <div>
+              <h4 className="text-white font-semibold mb-4">Quick Links</h4>
+              <ul className="space-y-2">
+                <li><Link href="/about" className="hover:text-white">About Us</Link></li>
+                <li><Link href="/contact" className="hover:text-white">Contact</Link></li>
+                <li><Link href="/blog" className="hover:text-white">Blog</Link></li>
+                <li><Link href="/faq" className="hover:text-white">FAQ</Link></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="text-white font-semibold mb-4">Categories</h4>
+              <ul className="space-y-2">
+                {categories.map(cat => (
+                  <li key={cat.category}>
+                    <Link href={cat.link} className="hover:text-white">{cat.category}</Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="text-white font-semibold mb-4">Contact Us</h4>
+              <Link className="mb-2" href="mailto:campusease1@gmail.com">campusease1@gmail.com</Link>
+              <p onClick={handleWhatsAppSupportAdvanced} className="cursor-pointer">09078608642</p>
+            </div>
+          </div>
+          
+          <div className="border-t border-teal-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+            <p>&copy; {new Date().getFullYear()} campusEase. All rights reserved.</p>
+            <div className="flex space-x-6 mt-4 md:mt-0">
+              <Link href="/privacy" className="hover:text-white">Privacy Policy</Link>
+              <Link href="/terms" className="hover:text-white">Terms of Service</Link>
+            </div>
           </div>
         </div>
-      </div>
-    </footer>
+      </footer>
   );
 };
 

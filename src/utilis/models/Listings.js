@@ -55,6 +55,9 @@ const listingsSchema = new Schema(
         service: {
             type: String,
         },
+        propertyType: {
+            type: String,
+        },
         property: {
             type: String,
         },
