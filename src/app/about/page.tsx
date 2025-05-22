@@ -269,7 +269,7 @@ export default function AboutUsPage() {
                 </svg>
               </div>
               <h3 className="text-xl font-semibold mb-2">Email Us</h3>
-              <p className="text-gray-600">support@campusease.ng</p>
+              <p className="text-gray-600">campusease1@gmail.com</p>
             </div>
             
             <div className="bg-white p-8 rounded-2xl shadow-md hover:shadow-lg transition-all">
@@ -289,12 +289,12 @@ export default function AboutUsPage() {
                 </svg>
               </div>
               <h3 className="text-xl font-semibold mb-2">Call Us</h3>
-              <p className="text-gray-600">+234 800 CAMPUS (226787)</p>
+              <p className="text-gray-600">+234 9078608642</p>
             </div>
           </div>
           
           <div className="mt-12">
-            <Link href="/support" className="inline-block bg-teal-800 text-white px-6 py-3 rounded-xl font-semibold hover:bg-teal-700 transition mr-4">
+            <Link href="/contact" className="inline-block bg-teal-800 text-white px-6 py-3 rounded-xl font-semibold hover:bg-teal-700 transition mr-4">
               Support Center
             </Link>
             <Link href="/faq" className="inline-block bg-white border border-teal-800 text-teal-800 px-6 py-3 rounded-xl font-semibold hover:bg-teal-50 transition">
