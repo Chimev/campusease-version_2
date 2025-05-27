@@ -1,36 +1,44 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { FiShare2, FiCheck } from 'react-icons/fi';
 
-const ShareBTN = ({user}: any) => {
-    
-  const [copySuccess, setCopySuccess] = useState<string>(''); // State for copy success message
+const ShareBTN = ({ user }: any) => {
+  const [copySuccess, setCopySuccess] = useState('');
 
-     // Function to handle copying the profile link
+  // Function to handle copying the profile link
   const handleCopy = () => {
-    const profileUrl = `${window.location.origin}/user/${user?.name}`; // Construct the URL
+    const profileUrl = `${window.location.origin}/user/${user?.name}`;
     navigator.clipboard.writeText(profileUrl).then(() => {
-      setCopySuccess('Profile link copied to clipboard!');  // Set success message
-      setTimeout(() => setCopySuccess(''), 1000);  // Clear message after 3 seconds
+      setCopySuccess('Copied!');
+      setTimeout(() => setCopySuccess(''), 2000);
     }).catch((err) => {
       console.error('Failed to copy: ', err);
-      setCopySuccess('Failed to copy link.');
+      setCopySuccess('Failed to copy');
+      setTimeout(() => setCopySuccess(''), 2000);
     });
   };
 
   return (
-       <>
-        {/* Button to share profile */}
-       <button 
-       className={`${copySuccess ? 'bg-blue text-white p-2' : 'bg-orange p-2 text-white rounded' }`} 
-       onClick={handleCopy}
-    //    disabled={!user}  // Disable the button if user data is not available
-     >
-       {copySuccess ? 'Copied!' : 'Share Profile'}
-     </button>
-     {/* Show copy success message */}
-       </>
-  )
-}
+    <>
+      <button
+        onClick={handleCopy}
+        className="flex items-center bg-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-full font-medium hover:bg-white/30 transition-all"
+      >
+        {copySuccess ? (
+          <>
+            <FiCheck className="mr-2" />
+            {copySuccess}
+          </>
+        ) : (
+          <>
+            <FiShare2 className="mr-2" />
+            Share Profile
+          </>
+        )}
+      </button>
+    </>
+  );
+};
 
-export default ShareBTN
+export default ShareBTN;

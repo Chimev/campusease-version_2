@@ -1,68 +1,96 @@
-import React from 'react'
+import React from 'react';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import { authOptions } from '../api/auth/[...nextauth]/auth';
 import Link from 'next/link';
+import { FiEdit3, FiShare2, FiEye } from 'react-icons/fi';
 import ShareBTN from '@/components/profile/shareBtn/ShareBTN';
 import Menu from '@/components/profile/Menu';
 import SignOut from '@/components/profile/SignOut';
 
-
 interface User {
-    name?: string;
-    email?: string;
-  }
-
-const Profile = async() => {
-  const session = await getServerSession(authOptions) as any;
-  if(!session) {
-    redirect('/sign-in');
-  }
-    const user = session.user;
-  return (
-    <section className='px-1'>
-    {/* Profile Picture Placeholder (Optional) */}
-    <div className="flex justify-center mb-4 pt-4">
-      <div className="w-24 h-24 rounded-full bg-secondaryLight text-white flex items-center justify-center text-gray-500 text-2xl font-semibold">
-        {user?.name?.charAt(0).toUpperCase()}
-      </div>
-    </div>
-  
-    {/* User Info */}
-    <div className="text-center mb-6">
-      <h2 className="text-2xl font-bold text-gray-800 mb-1">{user?.name}</h2>
-      <p className="text-sm text-gray-600">{user?.email || ""}</p>
-      {user?.phone && (
-        <p className="text-sm text-gray-600 mt-1">{user.phone || ''}</p>
-      )}
-    </div>
-  
-    {/* Actions */}
-    <div className="flex justify-center flex-wrap gap-3 mb-6">
-      <Link
-        href="/profile/settings"
-        className="bg-[#f8ae24] hover:bg-[#d9941f] text-white px-5 py-2 rounded text-sm font-medium transition"
-      >
-        Edit Profile
-      </Link>
-      <ShareBTN user={user} />
-      <SignOut nav={false} />
-    </div>
-  
-    {/* Public Profile Link */}
-    <div className="text-center">
-      <Link
-        href={`/user/${user.name}`}
-        className="text-blue-600 hover:underline text-sm"
-      >
-        View your public profile
-      </Link>
-    </div>
-  
-
-    <Menu />
-  </section>
-  )
+  name?: string;
+  email?: string;
+  phone?: string;
 }
 
-export default Profile
+const Profile = async () => {
+  const session = await getServerSession(authOptions) as any;
+  if (!session) {
+    redirect('/sign-in');
+  }
+
+  const user = session.user;
+
+  return (
+    <main className="bg-gray-50 min-h-screen">
+      {/* Hero Section with Profile */}
+      <section className="relative bg-gradient-to-r from-teal-900 to-teal-700 py-16">
+        {/* Background circles for visual interest */}
+        <div className="absolute top-10 left-10 w-32 h-32 rounded-full bg-teal-600/20 blur-2xl"></div>
+        <div className="absolute bottom-5 right-20 w-40 h-40 rounded-full bg-teal-500/20 blur-2xl"></div>
+        
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            {/* Profile Picture */}
+            <div className="w-24 h-24 bg-amber-300 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-teal-800 shadow-lg">
+              {user?.name?.charAt(0).toUpperCase()}
+            </div>
+            
+            {/* User Info */}
+            <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
+              {user?.name}
+            </h1>
+            <p className="text-xl text-white/90 mb-2">
+              {user?.email || ""}
+            </p>
+            {user?.phone && (
+              <p className="text-lg text-white/80 mb-6">
+                {user.phone}
+              </p>
+            )}
+            
+            {/* All Quick Actions at the top */}
+            <div className="flex flex-wrap justify-center gap-4 mt-8">
+              <Link 
+                href="/profile/settings" 
+                className="flex items-center bg-amber-400 hover:bg-amber-500 text-white px-6 py-3 rounded-full font-medium transition-all shadow-lg"
+              >
+                <FiEdit3 className="mr-2" />
+                Edit Profile
+              </Link>
+              <ShareBTN user={user} />
+              <Link 
+                href={`/user/${user?.name}`} 
+                className="flex items-center bg-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-full font-medium hover:bg-white/30 transition-all"
+              >
+                <FiEye className="mr-2" />
+                View Public Profile
+              </Link>
+              <SignOut nav={false} />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* User Listings Section - Container for potential multiple listings */}
+      <section className="py-16">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-teal-800">Your Listings</h2>
+            <p className="mt-3 text-lg text-gray-600">Manage all your listings in one place</p>
+          </div>
+          
+          {/* Menu component at the bottom */}
+          <div className="bg-white overflow-hidden">
+            <div className="px-6">
+              <Menu />
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  );
+};
+
+export default Profile;

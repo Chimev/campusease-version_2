@@ -14,6 +14,7 @@ interface formData {
     phone?: string;
     accommodationType?: string;
     service?: string;
+    propertyType?: string;
     property?: string;
     roommateName?: string;
     level?: string;
@@ -24,6 +25,7 @@ const EditListing = ({ category, id, setShowBackground }:any) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [list, setList] = useState<any>({});
+  const [selectedPropertyType, setSelectedPropertyType] = useState('');
   
   // useRef for form fields
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
@@ -33,6 +35,8 @@ const EditListing = ({ category, id, setShowBackground }:any) => {
   const accommodationTypeRef = useRef<HTMLSelectElement>(null);
   const serviceTypeRef = useRef<HTMLSelectElement>(null);
   const propertyTypeRef = useRef<HTMLSelectElement>(null);
+  // Explicitly type as HTMLSelectElement for the select dropdown
+  const propertyRef = useRef<HTMLSelectElement>(null);
   const roommateNameRef = useRef<HTMLInputElement>(null);
   const levelRef = useRef<HTMLSelectElement>(null);
   const genderRef = useRef<HTMLSelectElement>(null);
@@ -63,10 +67,16 @@ const EditListing = ({ category, id, setShowBackground }:any) => {
       if (phoneRef.current) phoneRef.current.value = list.phone || '';
       if (accommodationTypeRef.current) accommodationTypeRef.current.value = list.accommodationType || '';
       if (serviceTypeRef.current) serviceTypeRef.current.value = list.service || '';
-      if (propertyTypeRef.current) propertyTypeRef.current.value = list.property || '';
+      if (propertyTypeRef.current) propertyTypeRef.current.value = list.propertyType || '';
+      if (propertyRef.current) propertyRef.current.value = list.property || '';
       if (roommateNameRef.current) roommateNameRef.current.value = list.roommateName || '';
       if (levelRef.current) levelRef.current.value = list.level || '';
       if (genderRef.current) genderRef.current.value = list.gender || '';
+      
+      // Set the selected property type from the list data
+      if (list.propertyType) {
+        setSelectedPropertyType(list.propertyType);
+      }
     }
   }, [list]);
 
@@ -82,7 +92,8 @@ const EditListing = ({ category, id, setShowBackground }:any) => {
       phone: phoneRef.current?.value || '',
       accommodationType: accommodationTypeRef.current?.value || '',
       service: serviceTypeRef.current?.value || '',
-      property: propertyTypeRef.current?.value || '',
+      propertyType: propertyTypeRef.current?.value || '',
+      property: propertyRef.current?.value || '',
       roommateName: roommateNameRef.current?.value || '',
       level: levelRef.current?.value || '',
       gender: genderRef.current?.value || '',
@@ -92,6 +103,7 @@ const EditListing = ({ category, id, setShowBackground }:any) => {
     if(category === 'accommodation'){
       delete formData.service;
       delete formData.property;
+      delete formData.propertyType;
       delete formData.level;
       delete formData.gender;
       delete formData.roommateName;
@@ -101,6 +113,7 @@ const EditListing = ({ category, id, setShowBackground }:any) => {
       delete formData.accommodationType;
       delete formData.price;
       delete formData.property;
+      delete formData.propertyType;
       delete formData.level;
       delete formData.gender;
       delete formData.roommateName;
@@ -119,6 +132,7 @@ const EditListing = ({ category, id, setShowBackground }:any) => {
       delete formData.accommodationType;
       delete formData.service;
       delete formData.property;
+      delete formData.propertyType;
     }
 
    
@@ -176,7 +190,11 @@ const EditListing = ({ category, id, setShowBackground }:any) => {
             </Filter_2>
           )}
           {category === 'marketplace' && (
-            <Filter_3 propertyTypeRef={propertyTypeRef}>
+            <Filter_3 
+              propertyTypeRef={propertyTypeRef} 
+              propertyRef={propertyRef}
+              selectedPropertyType={selectedPropertyType}
+              setSelectedPropertyType={setSelectedPropertyType}>
               <div className="input">
                 <label className="p-text">Price</label>
                 <input type="number" required ref={priceRef} placeholder='Price' />

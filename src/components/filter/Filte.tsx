@@ -28,19 +28,19 @@ export const Filter_1 = ({children, accommodationTypeRef}: IFilter) => {
     <div>
       <label className="p-text">ACCOMMODATION TYPE</label>
       <select name="accommodationType" ref={accommodationTypeRef} required className="p-3 w-3/4 mb-5 bg-[#d6c2c29d]">
-        <option>---</option>
-        <option value="4 Bedroom">4 Bedroom</option>
-        <option value="3 Bedroom">3 Bedroom</option>
-        <option value="2 Bedroom">2 Bedroom</option>
-        <option value="1 Bedroom">1 Bedroom</option>
-        <option value="6 man Room">6 man Room</option>
-        <option value="5 man Room">5 man Room</option>
-        <option value="4 man Room">4 man Room</option>
-        <option value="3 man Room">3 man Room</option>
-        <option value="2 man Room">2 man Room</option>
-        <option value="Single Room">Single Room</option>
-        <option value="Self Contain">Self Contain</option>
-        <option value="1 Room">1 Room</option>
+        <option key="default">---</option>
+        <option key="4-bedroom" value="4 Bedroom">4 Bedroom</option>
+        <option key="3-bedroom" value="3 Bedroom">3 Bedroom</option>
+        <option key="2-bedroom" value="2 Bedroom">2 Bedroom</option>
+        <option key="1-bedroom" value="1 Bedroom">1 Bedroom</option>
+        <option key="6-man-room" value="6 man Room">6 man Room</option>
+        <option key="5-man-room" value="5 man Room">5 man Room</option>
+        <option key="4-man-room" value="4 man Room">4 man Room</option>
+        <option key="3-man-room" value="3 man Room">3 man Room</option>
+        <option key="2-man-room" value="2 man Room">2 man Room</option>
+        <option key="single-room" value="Single Room">Single Room</option>
+        <option key="self-contain" value="Self Contain">Self Contain</option>
+        <option key="1-room" value="1 Room">1 Room</option>
       </select>
     </div>
     </>
@@ -54,14 +54,14 @@ export const Filter_2 = ({children, serviceTypeRef}: IFilter) => {
       <div className="flex flex-col">
         <label className="p-text">SERVICE TYPE</label>
         <select name="service" ref={serviceTypeRef} required className="p-3 w-fill bg-[#d6c2c29d]">
-          <option>---</option>
-          <option value="Academic-Assistant">Academic Assistance</option>
-          <option value="Barber">Barber</option>
-          <option value="Painter">Painter</option>
-          <option value="Hairdresser">Hairdresser</option>
-          <option value="Electrician">Electrician</option>
-          <option value="Gifting Services">Gifting Services</option>
-          <option value="Barker">Barker</option>
+          <option key="default">---</option>
+          <option key="academic-assistant" value="Academic-Assistant">Academic Assistance</option>
+          <option key="barber" value="Barber">Barber</option>
+          <option key="painter" value="Painter">Painter</option>
+          <option key="hairdresser" value="Hairdresser">Hairdresser</option>
+          <option key="electrician" value="Electrician">Electrician</option>
+          <option key="gifting-services" value="Gifting Services">Gifting Services</option>
+          <option key="barker" value="Barker">Barker</option>
         </select>
       </div>
     </>
@@ -104,7 +104,7 @@ export const Filter_3 = ({
         >
           <option value="">---</option>
           {
-            filteredPropertyType.map(prop => <option value={prop}>{prop}</option>)
+            filteredPropertyType.map(prop => <option key={prop} value={prop}>{prop}</option>)
           }
           {/* <option value="Electronics & Gadgets">Electronics & Gadgets</option>
           <option value="Furniture">Furniture</option>
@@ -123,7 +123,7 @@ export const Filter_3 = ({
         >
           <option value="">---</option>
           {filteredProperties.map((property, index) => (
-            <option key={index} value={property.item}>
+            <option key={property.item} value={property.item}>
               {property.item}
             </option>
           ))}
@@ -140,22 +140,22 @@ export const Filter_4 = ({children, levelRef, genderRef}: IFilter) => {
     <div className="flex flex-col">
       <label className="p-text">LEVEL</label>
       <select ref={levelRef} required name="level">
-        <option>---</option>
-        <option value="level 1">Level 1</option>
-        <option value="level 2">Level 2</option>
-        <option value="level 3">Level 3</option>
-        <option value="level 4">Level 4</option>
-        <option value="level 5">Level 5</option>
-        <option value="level 6">Level 6</option>
-        <option value="level 7">Level 7</option>
+        <option key="default">---</option>
+        <option key="level-1" value="level 1">Level 1</option>
+        <option key="level-2" value="level 2">Level 2</option>
+        <option key="level-3" value="level 3">Level 3</option>
+        <option key="level-4" value="level 4">Level 4</option>
+        <option key="level-5" value="level 5">Level 5</option>
+        <option key="level-6" value="level 6">Level 6</option>
+        <option key="level-7" value="level 7">Level 7</option>
       </select>
     </div>
     <div className="flex flex-col">
       <label className="p-text">GENDER</label>
       <select ref={genderRef} required name="gender">
-        <option>---</option>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
+        <option key="default">---</option>
+        <option key="male" value="male">Male</option>
+        <option key="female" value="female">Female</option>
       </select>
     </div>
     </>
