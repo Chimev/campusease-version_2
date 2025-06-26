@@ -34,10 +34,7 @@ const listingsSchema = new Schema(
             type: String,
             required: true,
         },
-        accommodationCategory: {
-            type: String,
-        },
-        accommodationName: {
+        accommodationTitle: {
             type: String,
         },
         videoLink: {

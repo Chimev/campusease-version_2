@@ -98,7 +98,7 @@ export default function Home() {
             Find <span className="text-amber-300">Comfort</span> with campusEase
           </h1>
           <p className="text-xl md:text-2xl text-white/90 text-center max-w-3xl mb-10">
-            Discover Accommodation, Roommate Services and MarketPlace within your campus - All in One Place!
+            Find Accommodation, Roommate Services and MarketPlace within your campus - All in One Place!
           </p>
           
           {/* CTA */}
@@ -187,7 +187,7 @@ export default function Home() {
                 <span className="text-2xl font-bold">1</span>
               </div>
               <h3 className="text-xl font-semibold mb-2">Create an Account</h3>
-              <p className="text-gray-600">Sign up with your university email to access exclusive listings and features.</p>
+              <p className="text-gray-600">Sign up with your email to access exclusive listings and features.</p>
             </div>
             
             <div className="bg-white p-8 rounded-2xl shadow-md text-center">
@@ -195,7 +195,7 @@ export default function Home() {
                 <span className="text-2xl font-bold">2</span>
               </div>
               <h3 className="text-xl font-semibold mb-2">Browse Listings</h3>
-              <p className="text-gray-600">Search through accommodations, roommate requests, or marketplace items.</p>
+              <p className="text-gray-600">Search through accommodations, roommate, services, or marketplace items.</p>
             </div>
             
             <div className="bg-white p-8 rounded-2xl shadow-md text-center">

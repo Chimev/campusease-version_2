@@ -180,7 +180,7 @@ export default function AboutUsPage() {
       </section>
 
       {/* What We Offer Section */}
-      <section className={`py-16 bg-teal-50 hover:opacity-100 opacity-90 transition-opacity duration-500`}>
+      {/* <section className={`py-16 bg-teal-50 hover:opacity-100 opacity-90 transition-opacity duration-500`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <div className="h-1 w-20 bg-amber-400 mx-auto"></div>
@@ -190,13 +190,13 @@ export default function AboutUsPage() {
             </p>
           </div>
 
-          {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature, index) => (
               <FeatureCard key={index} {...feature} />
             ))}
-          </div> */}
+          </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Testimonials */}
       <section className={`py-16 bg-teal-50 hover:opacity-100 opacity-90 transition-opacity duration-500`}>
@@ -227,7 +227,7 @@ export default function AboutUsPage() {
                 </p>
                 <ul className="space-y-4 mb-8">
                   <li className="flex items-center">
-                    <FiCheckCircle className="mr-3" /> Access to 100k+ students
+                    <FiCheckCircle className="mr-3" /> Access to students witin your campus
                   </li>
                   <li className="flex items-center">
                     <FiCheckCircle className="mr-3" /> Verification badge builds trust

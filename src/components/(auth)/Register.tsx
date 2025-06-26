@@ -165,7 +165,7 @@ const Register = () => {
                   Full Name
                 </label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <div className="absolute top-[25%] left-0 pl-4 flex items-center pointer-events-none">
                     <FiUser className="h-5 w-5 text-gray-400" />
                   </div>
                   <input
@@ -184,7 +184,7 @@ const Register = () => {
                   Phone Number
                 </label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <div className="absolute top-[25%] left-0 pl-4 flex items-center pointer-events-none">
                     <FiPhone className="h-5 w-5 text-gray-400" />
                   </div>
                   <input
@@ -203,7 +203,7 @@ const Register = () => {
                   Email Address
                 </label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <div className="absolute top-[25%] left-0 pl-4 flex items-center pointer-events-none">
                     <FiMail className="h-5 w-5 text-gray-400" />
                   </div>
                   <input
@@ -222,7 +222,7 @@ const Register = () => {
                   Password
                 </label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <div className="absolute top-[25%] left-0 pl-4 flex items-center pointer-events-none">
                     <FiLock className="h-5 w-5 text-gray-400" />
                   </div>
                   <input
@@ -235,7 +235,7 @@ const Register = () => {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+                    className="absolute top-[25%] right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
                   >
                     {showPassword ? (
                       <AiFillEyeInvisible className="h-5 w-5" />
@@ -253,7 +253,7 @@ const Register = () => {
                 </label>
                 <p className="text-xs text-gray-500">Please select from the dropdown menu</p>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <div className="absolute top-[25%] left-0 pl-4 flex items-center pointer-events-none">
                     <FaGraduationCap className="h-5 w-5 text-gray-400" />
                   </div>
                   <input

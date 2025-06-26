@@ -77,10 +77,7 @@ const ListCard = ({ listing, listings, loading, setLoading,  profile, handleFavo
         <div className="relative h-48 w-full">
           <Image 
             src={listing.image[0] || listing.image[1] || listing.image[2] || '/placeholder.jpg'} 
-            alt={listing.category === 'accommodation' ? listing.accommodationName : 
-                 listing.category === 'service' ? listing.service : 
-                 listing.category === 'marketplace' ? listing.property : 
-                 listing.category === 'roommate' ? listing.roommateName : 'Listing image'} 
+            alt="Listing image" 
             fill
             className="object-cover" 
           />
@@ -146,7 +143,7 @@ const ListCard = ({ listing, listings, loading, setLoading,  profile, handleFavo
             {/* Accommodation details */}
             {listing.category === 'accommodation' && (
               <>
-                <h3 className="font-semibold text-gray-800 line-clamp-1">{listing.accommodationName}</h3>
+                <h3 className="font-semibold text-gray-800 line-clamp-1">{listing.accommodationTitle}</h3>
                 <div className="flex items-center text-lg font-bold text-teal-700">
                   <TbCurrencyNaira className="flex-shrink-0" />
                   <span>{listing.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
@@ -193,10 +190,7 @@ const ListCard = ({ listing, listings, loading, setLoading,  profile, handleFavo
               </>
             )}
             
-            {/* Description - for all categories */}
-            <p className="text-sm text-gray-600 line-clamp-2">
-              {listing.description}
-            </p>
+            
           </div>
           
           {/* View Details Link */}

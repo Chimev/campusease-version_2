@@ -18,7 +18,7 @@ const page = async() => {
     redirect('/sign-in');
   }
   return (
-       <AddListing email={email} name={userId} school={school} role={role}/>
+       <AddListing email={email} name={userId} role={role}/>
    
   )
 }

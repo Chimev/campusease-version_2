@@ -16,15 +16,6 @@ interface IFilter {
 export const Filter_1 = ({children, accommodationTypeRef}: IFilter) => {
   return (
     <>
-    {children ??
-      <div className="input">
-        <label className="p-text">PRICE</label>
-        <div className="flex gap-2">
-          <input type="number" name="min" placeholder='Min' />
-          <input type="number" name="max" placeholder='Max' />
-        </div>
-      </div>
-    }
     <div>
       <label className="p-text">ACCOMMODATION TYPE</label>
       <select name="accommodationType" ref={accommodationTypeRef} required className="p-3 w-3/4 mb-5 bg-[#d6c2c29d]">
@@ -43,6 +34,15 @@ export const Filter_1 = ({children, accommodationTypeRef}: IFilter) => {
         <option key="1-room" value="1 Room">1 Room</option>
       </select>
     </div>
+    {children ??
+      <div className="input">
+        <label className="p-text">PRICE</label>
+        <div className="flex gap-2">
+          <input type="number" name="min" placeholder='Min' />
+          <input type="number" name="max" placeholder='Max' />
+        </div>
+      </div>
+    }
     </>
   )
 }

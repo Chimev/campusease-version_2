@@ -15,6 +15,22 @@ export const metadata: Metadata = {
     template: "%s - CampusEase"
   },
   description: "Find Comfort with campusEase Discover Accommodation, Services, MarketPlace and Roommate within your campus - All in One Place!",
+  keywords: [
+    "CampusEase",
+    "student housing Nigeria",
+    "student hostel",
+    "campus services",
+    "university services",
+    "roommates",
+    "college roommates",
+    "university roommates",
+    "sell on campus",
+    "student marketplace",
+    "university marketplace",
+    "university classifieds",
+    "student tech Nigeria",
+    "student listings",
+  ],
   openGraph: {
     title: "CampusEase",
     description: "Find Comfort with campusEase Discover Accommodation, Services, MarketPLace and Roommate within your campus - All in One Place!",

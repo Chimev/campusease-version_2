@@ -12,21 +12,16 @@ import { addListing } from '@/lib/functions/listings/addLiisting';
 import LoadingBackground from '../background/LoadingBackground';
 
 
-// Define schools that can show accommodation listings
-const schools_category = [
-    "UNILAG",
-];
 
 
-const AddListing = ({name, email, school, role} : {name: string; email:string; school:string; role:string[]}) => {
+
+const AddListing = ({name, email, role} : {name: string; email:string; school:string; role:string[]}) => {
     const route = useRouter();
     const [errorMessage, setErrorMessage] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
     const [loading, setLoading] = useState(false);
     const [selectedPropertyType, setSelectedPropertyType] = useState('')
    
-
-    const canShowAccommodationCategroy = schools_category.includes(school);
 
      
     
@@ -90,7 +85,7 @@ const AddListing = ({name, email, school, role} : {name: string; email:string; s
     const typeRef = useRef<HTMLSelectElement>(null);
     const campusRef = useRef<HTMLSelectElement>(null);
     const descriptionRef = useRef<HTMLTextAreaElement>(null);
-    const accommodationNameRef = useRef<HTMLInputElement>(null);
+    const accommodationTitleRef = useRef<HTMLInputElement>(null);
     const videoRef = useRef<HTMLInputElement>(null);
     const priceRef = useRef<HTMLInputElement>(null);
     const phoneRef = useRef<HTMLInputElement>(null);
@@ -119,7 +114,7 @@ const AddListing = ({name, email, school, role} : {name: string; email:string; s
         const type = typeRef?.current?.value;
         const campus = campusRef?.current?.value;
         const accommodationType = accommodationTypeRef?.current?.value;
-        const accommodationName = accommodationNameRef?.current?.value;
+        const accommodationTitle = accommodationTitleRef?.current?.value;
         const videoLink = videoRef?.current?.value;
         const service = serviceTypeRef?.current?.value;
         const propertyType = propertyTypeRef?.current?.value;
@@ -133,8 +128,8 @@ const AddListing = ({name, email, school, role} : {name: string; email:string; s
         // Handle image uploads
         const imageFiles = imageRef?.current?.files;
     
-        if (!imageFiles || imageFiles.length !== 3) {
-            setErrorMessage("Please upload exactly 3 images.");
+        if (!imageFiles || imageFiles.length < 5) {
+            setErrorMessage("Please upload minimum of 5.");
             setLoading(false);
             return;
         }
@@ -154,7 +149,7 @@ const AddListing = ({name, email, school, role} : {name: string; email:string; s
                 institution,
                 type,
                 campus,
-                accommodationName,
+                accommodationTitle,
                 videoLink,
                 accommodationType,
                 service,
@@ -218,7 +213,10 @@ const AddListing = ({name, email, school, role} : {name: string; email:string; s
 
                 <div className="input">
                     <p>IMAGE</p>
-                    <p className='-mt-6 text-sm'>The first image will be the cover (max 3)</p>
+                    <p className='-mt-5 text-xs'>
+                       <b>Add at least 5 photos</b><br/>
+                       First picture - is the title picture. You can change the order of photos: just grab your photos and drag
+                    </p>
                     <input 
                         name='images' 
                         type="file" 
@@ -240,19 +238,11 @@ const AddListing = ({name, email, school, role} : {name: string; email:string; s
                     {selectedCategory === 'accommodation' && (
                         <Filter_1 accommodationTypeRef={accommodationTypeRef}>
                             <div className="input">
-                                <label className="p-text">ACCOMMODATION NAME</label>
+                                <label className="p-text">ACCOMMODATION TITLE</label>
                                 <div className="price">
-                                    <input type="text" required ref={accommodationNameRef} name="accommodationName" placeholder='Accommodation Name' />
+                                    <input type="text" required ref={accommodationTitleRef} name="accommodationTitle" placeholder='Accommodation Name' />
                                 </div>
                             </div>
-                            { canShowAccommodationCategroy && (
-                                <div className="input">
-                                    <label className="p-text">ACCOMMODATION Category</label>
-                                    <div className="price">
-                                        <input type="text" required ref={accommodationNameRef} name="accommodationName" placeholder='Accommodation Name' />
-                                    </div>
-                                </div>
-                            )}
                             <div className="input">
                                 <label className="p-text">VIDEO LINK</label>
                                 <div className="price">

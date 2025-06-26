@@ -11,7 +11,7 @@ interface Details {
   type: string;
   institution: string;
   campus: string;
-  accommodationName?: string;
+  accommodationTitle?: string;
   videoLink?:string;
   accommodationType?: string;
   service?: string;
@@ -31,7 +31,7 @@ const Thumbnail = React.memo(({ img, onClick, isActive }: { img: string; onClick
     className={`relative h-20 w-20 rounded-lg overflow-hidden cursor-pointer border-2 transition-all ${isActive ? 'border-teal-500 shadow-md scale-105' : 'border-transparent hover:border-teal-300'}`} 
     onClick={onClick}
   >
-    <Image src={img} alt="" fill className="object-cover" />
+    <Image src={img} alt="Listing image"  fill className="object-cover" />
   </div>
 ));
 
@@ -40,6 +40,28 @@ const ListingDetails = () => {
   const [details, setDetails] = useState<Details | null>(null);
   const [activeImg, setActiveImg] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
+  const [showModal, setShowModal] = useState(false);
+  const [currentImgIndex, setCurrentImgIndex] = useState<number>(0);
+  const [visibleCount, setVisibleCount] = useState<number>(5);
+
+
+  useEffect(() => {
+  const updateVisibleCount = () => {
+    const width = window.innerWidth;
+
+    if (width < 640) setVisibleCount(3);       // small phones
+    else if (width < 768) setVisibleCount(4);  // medium devices
+    else if (width < 1024) setVisibleCount(5); // tablets
+    else setVisibleCount(6);                   // desktops and above
+  };
+
+  updateVisibleCount();
+  window.addEventListener("resize", updateVisibleCount);
+  return () => window.removeEventListener("resize", updateVisibleCount);
+}, []);
+
+
+
 
   useEffect(() => {
     const getListingDetails = async () => {
@@ -108,7 +130,7 @@ const ListingDetails = () => {
 
         {/* Title based on category */}
         <h1 className="text-3xl font-bold text-gray-800 mb-1">
-          {category === 'accommodation' ? details.accommodationName :
+          {category === 'accommodation' ? details.accommodationTitle :
            category === 'service' ? details.service :
            category === 'marketplace' ? details.property :
            category === 'roommate' ? details.roommateName : 'Listing Details'}
@@ -131,17 +153,81 @@ const ListingDetails = () => {
             )}
           </div>
 
-          {/* Thumbnail Gallery */}
-          <div className="flex gap-3 overflow-x-auto pb-2">
-            {details.image.map((img, index) => (
-              <Thumbnail 
-                key={index} 
-                img={img || ""} 
-                onClick={() => handleImageClick(img)} 
-                isActive={activeImg === img}
-              />
-            ))}
+          {/* Thumbnail Gallery with +N overlay and modal */}
+          <div className="relative">
+            <div className="flex gap-3 flex-wrap">
+              {details.image.slice(0, visibleCount).map((img, index) => (
+                <Thumbnail 
+                  key={index} 
+                  img={img} 
+                  onClick={() => handleImageClick(img)} 
+                  isActive={activeImg === img}
+                />
+              ))}
+
+              {details.image.length > visibleCount && (
+                <div 
+                   onClick={() => {
+                    setCurrentImgIndex(visibleCount); // Start from the next hidden image
+                    setShowModal(true);
+                  }} 
+                  className="relative h-20 w-20 rounded-lg overflow-hidden cursor-pointer border-2 border-teal-200 hover:shadow-lg flex items-center justify-center bg-black/40 text-white text-xl font-medium"
+                >
+                  +{details.image.length - visibleCount}
+                </div>
+              )}
+            </div>
+
+            {/* Modal */}
+            {showModal && (
+              <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+                 {/* Close button */}
+                  <button 
+                    onClick={() => setShowModal(false)} 
+                    className="absolute top-3 right-4 text-white hover:text-red-600 text-6xl font-bold"
+                  >
+                    &times;
+                  </button>
+                <div className="relative bg-white rounded-lg w-full max-w-xl p-4 shadow-lg flex flex-col items-center">
+                  {/* Image preview */}
+                  <div className="relative w-full h-[400px] rounded overflow-hidden mb-4">
+                    <Image 
+                      src={details.image[currentImgIndex]} 
+                      alt={`Image ${currentImgIndex + 1}`} 
+                      fill 
+                      className="object-cover"
+                    />
+                  </div>
+
+                  {/* Navigation buttons */}
+                  <div className="flex justify-between items-center w-full">
+                    <button
+                      onClick={() => setCurrentImgIndex((prev) => (prev > 0 ? prev - 1 : prev))}
+                      disabled={currentImgIndex === 0}
+                      className="px-4 py-2 text-sm bg-gray-100 hover:bg-gray-200 rounded disabled:opacity-50"
+                    >
+                      Prev
+                    </button>
+
+                    <span className="text-sm text-gray-600">
+                      {currentImgIndex + 1} of {details.image.length}
+                    </span>
+
+                    <button
+                      onClick={() => setCurrentImgIndex((prev) => (prev < details.image.length - 1 ? prev + 1 : prev))}
+                      disabled={currentImgIndex === details.image.length - 1}
+                      className="px-4 py-2 text-sm bg-gray-100 hover:bg-gray-200 rounded disabled:opacity-50"
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
           </div>
+
+          
         </div>
 
         {/* Right Column - Details */}
