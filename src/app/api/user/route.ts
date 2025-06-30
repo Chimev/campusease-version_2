@@ -2,6 +2,7 @@ import User from '@/utilis/models/User';
 import { connectToDB } from '@/utilis/connectToDB';
 import bcrypt from 'bcryptjs';
 import { NextRequest, NextResponse } from 'next/server';
+import { sendWelcomeEmail } from '@/lib/functions/emails/welcomeEmail';
 
 export const POST = async (request: any) => {
   const { name, phone, email, password, role, school, agentApproval } = await request.json();
@@ -34,6 +35,11 @@ export const POST = async (request: any) => {
 
   try {
     await newUser.save();
+
+    //Send welcome email
+    await sendWelcomeEmail({
+      user: newUser
+    })
     return new NextResponse("User is registered", { status: 200 });
   } catch (err: any) {
     return new NextResponse(err.message, { status: 500 });
