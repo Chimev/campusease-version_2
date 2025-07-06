@@ -28,11 +28,20 @@ export const POST = async(req:NextRequest) => {
 
 export const GET = async(req:NextRequest) => {
     await connectToDB()
+    const searchParams = req.nextUrl.searchParams;
+    const type = searchParams.get('type')
 
     try {
-        const schools = await Schools.find()
-        // console.log('sch:',schools)
-        return NextResponse.json(schools)
+        if(!type){
+            const schools = await Schools.find()
+            // console.log('sch:',schools)
+            return NextResponse.json(schools)
+        }else{
+            const schools = await Schools.find({type})
+             console.log('sch:',schools)
+            return NextResponse.json(schools)
+        }
+        
     } catch (error) {
         throw new Error("Error while fetching");
         

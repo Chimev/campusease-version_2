@@ -115,7 +115,7 @@ const AddListing = ({name, email, role} : {name: string; email:string; school:st
         const campus = campusRef?.current?.value;
         const accommodationType = accommodationTypeRef?.current?.value;
         const accommodationTitle = accommodationTitleRef?.current?.value;
-        const videoLink = videoRef?.current?.value;
+        const videoLink = videoRef?.current?.value || "";
         const service = serviceTypeRef?.current?.value;
         const propertyType = propertyTypeRef?.current?.value;
         const property = propertyRef?.current?.value;
@@ -244,9 +244,11 @@ const AddListing = ({name, email, role} : {name: string; email:string; school:st
                                 </div>
                             </div>
                             <div className="input">
-                                <label className="p-text">VIDEO LINK</label>
+                                <label className="p-text">VIDEO LINK <span className='text-xs'>
+                       (optional)
+                    </span></label>
                                 <div className="price">
-                                    <input type="text" required ref={videoRef} name="accommodationName" placeholder='Add the video link (from any social media)' />
+                                    <input type="text"  ref={videoRef} name="accommodationName" placeholder='Add the video link (from any social media)' />
                                 </div>
                             </div>
                             <div className="input">

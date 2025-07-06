@@ -17,7 +17,7 @@ interface FormData {
   type?:string;
   campus?:string;
   description?:string;
-  accommodationName?:string;
+  accommodationTitle?:string;
   videoLink?: string;
   price?:number;
   phone?:number;
@@ -44,7 +44,7 @@ export const POST = async (request: any) => {
         type,
         campus,
         description,
-        accommodationName,
+        accommodationTitle,
         videoLink,
         price,
         phone,
@@ -79,7 +79,7 @@ export const POST = async (request: any) => {
       type,
       campus,
       description,
-      accommodationName,
+      accommodationTitle,
       price,
       phone,
       accommodationType,
@@ -102,7 +102,7 @@ export const POST = async (request: any) => {
         delete formData.roommateName;
       }
       if(category === 'service'){
-        delete formData.accommodationName;
+        delete formData.accommodationTitle;
         delete formData.videoLink;
         delete formData.price;
         delete formData.accommodationType;
@@ -113,7 +113,7 @@ export const POST = async (request: any) => {
         delete formData.roommateName;
       }
       if(category === 'marketplace'){
-        delete formData.accommodationName;
+        delete formData.accommodationTitle;
         delete formData.videoLink;
         delete formData.accommodationType;
         delete formData.service;
@@ -122,7 +122,7 @@ export const POST = async (request: any) => {
         delete formData.roommateName;
       }
       if(category === 'roommate'){
-        delete formData.accommodationName;
+        delete formData.accommodationTitle;
         delete formData.videoLink;
         delete formData.price;
         delete formData.accommodationType;

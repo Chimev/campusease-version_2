@@ -46,29 +46,37 @@ export const POST = async (request: any) => {
   }
 };
 
+
 export const GET = async (req: NextRequest) => {
   try {
     await connectToDB();
-    
-    // Extract page and limit from query parameters
-    const { searchParams } = new URL(req.url);
+
+    const searchParams = req.nextUrl.searchParams;
+    const school = searchParams.get('school');
+    const role = searchParams.get('role');
     const page = parseInt(searchParams.get('page') || '1', 10);
     const limit = parseInt(searchParams.get('limit') || '10', 10);
-    
     const skip = (page - 1) * limit;
-    
-    // Fetch paginated users
-    const users = await User.find().skip(skip).limit(limit);
-    const totalUsers = await User.countDocuments();
+
+    // Build filter object dynamically
+    const filter: Record<string, any> = {};
+    if (school) filter.school = school;
+    if (role) filter.role = role;
+
+    // Fetch filtered + paginated users
+    const users = await User.find(filter).skip(skip).limit(limit);
+    const totalUsers = await User.countDocuments(filter);
     const totalPages = Math.ceil(totalUsers / limit);
-    
-    return NextResponse.json({ 
-      users, 
-      totalUsers, 
-      totalPages, 
-      currentPage: page 
+
+    return NextResponse.json({
+      users,
+      totalUsers,
+      totalPages,
+      currentPage: page
     }, { status: 200 });
+
   } catch (error: any) {
-    return new NextResponse(error.message, { status: 500 });
+    return new NextResponse(error.message || 'Internal Server Error', { status: 500 });
   }
 };
+

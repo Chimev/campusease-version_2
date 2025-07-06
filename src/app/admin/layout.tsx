@@ -2,6 +2,7 @@ import AdminNavbar from '@/components/admin/navbar/AdminNavbar'
 import Sidebar from '@/components/admin/sidebar/Sidebar'
 import Image from 'next/image'
 import React from 'react'
+import SchoolLayout from './SchoolLayout'
 
 const layout = ({ children }: any) => {
   return (
@@ -17,7 +18,9 @@ const layout = ({ children }: any) => {
       <div className='flex-[4] flex flex-col h-screen overflow-auto'>  
         <AdminNavbar />
         <div className='px-5 py-7 bg-secondaryLight flex-1'>
-          {children}
+          <SchoolLayout>
+            {children}
+          </SchoolLayout>
         </div>
       </div>
     </div>

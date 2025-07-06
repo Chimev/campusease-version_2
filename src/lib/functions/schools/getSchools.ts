@@ -1,5 +1,6 @@
-export const getSchools = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/schools`);
-    const data = await res.json();
-    return data;
+// accepts a string (or nothing)
+export const getSchools = async (type?: string | null) => {
+  const res = await fetch(`/api/schools?type=${type ?? ''}`);
+  if (!res.ok) throw new Error('Failed to fetch schools');
+  return await res.json();
 };
