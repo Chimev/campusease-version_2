@@ -4,7 +4,7 @@ import React, {  useEffect, useRef, useState } from 'react';
 import { Filter_1, Filter_2, Filter_3, Filter_4 } from "../filter/Filte";
 import SearchInstitute from "../Search/SearchInstitute";
 import SecondaryBtn from "../buttons/SecondaryBtn";
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { uploadImagesToCloudinary } from '@/lib/functions/uploadCloudinary';
@@ -17,6 +17,8 @@ import LoadingBackground from '../background/LoadingBackground';
 
 const AddListing = ({name, email, role} : {name: string; email:string; school:string; role:string[]}) => {
     const route = useRouter();
+    const searchParams   = useSearchParams();
+    const notifyRoommate = searchParams.get('notifyRoommate') === 'true';
     const [errorMessage, setErrorMessage] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
     const [loading, setLoading] = useState(false);
@@ -124,6 +126,20 @@ const AddListing = ({name, email, role} : {name: string; email:string; school:st
         const price = priceRef?.current?.value?.toString();
         const phone = phoneRef?.current?.value;
         const roommateName = roommateNameRef?.current?.value;
+
+        /* ───────────────────── enable roommate notify ────────────────── */
+        const enableRoommateNotification = async () => {
+            try {
+            await fetch('/api/notifications/preferences', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ category: 'roommate', enabled: true }),
+            });
+            console.log('Roommate notifications enabled for current user');
+            } catch (err) {
+            console.error('Failed to enable roommate notifications:', err);
+            }
+        };
     
         // Handle image uploads
         const imageFiles = imageRef?.current?.files;
@@ -169,6 +185,10 @@ const AddListing = ({name, email, role} : {name: string; email:string; school:st
             // Proceed with adding the listing via API function
             const res = await addListing(listing);
             console.log(res);
+             /* ─── AFTER successful save ─── */
+            if (notifyRoommate && category === 'roommate') {
+                await enableRoommateNotification();
+            }
             if (!res.ok) {
                 setLoading(false);
             }

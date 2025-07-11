@@ -1,5 +1,5 @@
 'use client'
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { FiMail, FiLock, FiUser, FiArrowRight } from 'react-icons/fi';
@@ -12,15 +12,18 @@ const SignIn = () => {
   const [loading, setLoading] = useState(false);
   const route = useRouter();
   const session = useSession();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get('callbackUrl') || '/';
 
-  useEffect(() => {
-    if (session?.status === "authenticated") {
-      toast.success("Login Successful");
-      setTimeout(() => {
-        route.replace('/')
-      }, 1000);
-    }
-  }, [session, route])
+ useEffect(() => {
+  if (session?.status === "authenticated") {
+    toast.success("Login Successful");
+    setTimeout(() => {
+      route.replace(callbackUrl);
+    }, 1000);
+  }
+}, [session, route, callbackUrl]);
+
 
   const handleLogin = async (e: any) => {
     e.preventDefault()

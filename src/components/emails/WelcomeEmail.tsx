@@ -29,7 +29,7 @@ const WelcomeEmail = ({ name = 'User' }: WelcomeEmailProps) => {
           {/* Header */}
           <Section style={header}>
             <img src={`${BASE_URL}/4.png`} alt='logoImage' style={logo} />
-            <Text style={headerSubtitle}>Simplifying Campus Life in Nigeria</Text>
+            <Text style={headerSubtitle}>Simplifying Student Living</Text>
           </Section>
 
           {/* Main Content */}
@@ -197,16 +197,9 @@ const header: CSSProperties = {
 
 const logo: CSSProperties = {
     
-  width: '100px',
-  height: '100px',
-  color: '#ffffff',
-  fontSize: '32px',
-  fontWeight: 'bold',
+  width: 'auto',
+  height: 'auto',
   margin: '0 auto 10px ',
-};
-
-const logoAccent: CSSProperties = {
-  color: '#f8ae24',
 };
 
 const headerSubtitle: CSSProperties = {

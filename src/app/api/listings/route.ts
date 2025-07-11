@@ -2,6 +2,8 @@ import  Listings  from '@/utilis/models/Listings'
 import { connectToDB } from '@/utilis/connectToDB'
 import { NextRequest, NextResponse } from 'next/server';
 import { v2 as cloudinary } from 'cloudinary';
+import { listingNotificationEmail } from '@/lib/functions/emails/listingNotificationEmail ';
+import NotificationPreference from '@/utilis/models/NotificationPreference';
 
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
@@ -138,6 +140,39 @@ export const POST = async (request: any) => {
     try {
       console.log(newListing)
       await newListing.save();
+
+      //extract id from saved listing to use for the notification
+      const listingId = newListing._id.toString();
+      
+      // Send email notifications to users subscribed to this category
+    if (category === 'accommodation' || category === 'roommate') {
+      try {
+        const subscribers = await NotificationPreference.find({ category, enabled: true });
+
+        for (const sub of subscribers) {
+          await listingNotificationEmail({
+            user: {
+              email: sub.email,
+            },
+            category,
+            listing: {
+              schoolName: institution || 'user',
+              listingTitle: accommodationTitle || roommateName || 'New Listing',
+              listingDescription: description || '',
+              listingPrice: price ? `₦${price.toLocaleString()}` : undefined,
+              listingLocation: campus || 'Unknown Location',
+              listingUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/category/${category}/${listingId}`,
+            },
+          });
+        }
+
+        console.log(`✅ Sent ${subscribers.length} emails`);
+      } catch (err) {
+        console.error('❌ Error sending emails:', err);
+      }
+    }
+
+
       return NextResponse.json('List Added', { status: 200 });
     } catch (error: any) {
       console.error("Error saving the listing:", error.message);

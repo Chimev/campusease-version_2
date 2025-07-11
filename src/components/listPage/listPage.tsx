@@ -10,6 +10,7 @@ import ListCard from "../listCard/ListCard";
 import { FavoriteContext } from "@/lib/Context/FavoriteContext";
 import { useSession } from "next-auth/react";
 import Loading from "../loading/Loading";
+import NotifyButton from "../constant/NotifyButton";
 // import { listings } from "@/hooks/mock";
 
 const ListPage = ({category}:any) => {
@@ -107,10 +108,6 @@ const ListPage = ({category}:any) => {
     console.log("list",FavouriteList)
   }
 
-
-
-  
-
   return (
     <>
       <div className="relative h-72 bg-cover text-white">
@@ -119,6 +116,9 @@ const ListPage = ({category}:any) => {
             <Image src={img} alt="" fill className="object-cover" />
           </div>
         )}
+
+        <NotifyButton category={category} />
+        
         <div className="h-3/4 flex justify-center text-center flex-col items-center gap-3 text-2xl">
           <h2 className="text-4xl font-semibold">{category.charAt().toUpperCase() + category.slice(1)}</h2>
           <p className="-mt-1 font-medium">{description}</p>
