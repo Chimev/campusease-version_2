@@ -1,94 +1,98 @@
 'use client';
 
-import UserTable from '@/components/admin/tables/UserTable';
 import React, { useState, useEffect } from 'react';
-import { getUsers } from '@/lib/functions/users/getUsers';
 import { 
   MdAdd, 
   MdDownload, 
   MdRefresh,
-  MdPeople,
+  MdNotifications,
   MdChevronLeft,
   MdChevronRight,
   MdSearch
 } from 'react-icons/md';
 import { useSchoolContext } from '@/lib/Context/SchoolContext';
+import NotificationTable from '@/components/admin/tables/NotificationTable';
+import { getNotifications } from '@/lib/functions/notifications/getNotifications';
 
-const UserManagementPage = () => {
+const NotificationManagementPage = () => {
   const {uniqueTypes, schools, setSelectedType, selectedType, setFilteredSchool, filteredSchool, selectedSchool, setSelectedSchool} = useSchoolContext();
-  const [userData, setUserData] = useState({
-    users: [],
-    totalUsers: 0,
+  const [notificationData, setNotificationData] = useState({
+    notifications: [],
+    totalNotifications: 0,
     totalPages: 0,
     currentPage: 1
   });
-  const [role, setRole] = useState('');
+  const [type, setType] = useState('');
+  const [priority, setPriority] = useState('');
+  const [status, setStatus] = useState('');
+  const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const [isFiltered, setIsFiltered] = useState(false);
-
-  // search states
-  const [query, setQuery] = useState('');
-
 
   useEffect(() => {
     const delayDebounce = setTimeout(async () => {
       if(!query.trim()){
-        fetchUsers();
+        fetchNotifications();
         return;
       }
 
       setLoading(true);
 
       try {
-        const res = await fetch(`/api/search/user?q=${query}`)
+        const res = await fetch(`/api/search/notifications?q=${query}`)
         const data = await res.json();
-
-        setUserData((prev) => ({
-          users: data.users || [],
-          totalUsers: data.users?.length || 0,
+        console.log('1', data)
+        setNotificationData(prev => ({
+          ...prev,
+          notifications: data.notification || [],
+          totalNotifications: data.notifications?.length || 0,
           totalPages: 1,
-          currentPage: 1,
-        }));
+          currentPage: 1
+        }))
       } catch (error) {
         console.error("Search error:", error);
       } finally {
         setLoading(false);
       }
-      }, 500)
+    }, 500);
 
-    //Cleanup to prevent mltiple calls
     return () => clearTimeout(delayDebounce);
   }, [query])
-  
-  
 
-  const fetchUsers = async (page = 1) => {
+  const fetchNotifications = async (page = 1) => {
     setLoading(true);
     try {
-      const data = await getUsers(page);
-      setUserData(prev => ({
-        ...data,
-        currentPage: page
+      const data = await getNotifications(page);
+      setNotificationData(prev => ({
+         ...prev,
+          notifications: data.notifications || [],
+          totalNotifications: data.notifications?.length || 0,
+          totalPages: 1,
+          currentPage: page,
       }));
+      
+        
     } catch (error) {
-      console.error("Error fetching users:", error);
+      console.error("Error fetching notifications:", error);
     } finally {
       setLoading(false);
     }
   };
 
-   // Fetch filtered users
-  const fetchFilteredUsers = async (page = 1) => {
+  // Fetch filtered notifications
+  const fetchFilteredNotifications = async (page = 1) => {
     setLoading(true);
     try {
       const query = new URLSearchParams();
       if (selectedSchool) query.append('school', selectedSchool);
-      if (role) query.append('role', role);
+      if (type) query.append('type', type);
+      if (priority) query.append('priority', priority);
+      if (status) query.append('status', status);
       query.append('page', page.toString());
 
-      const res = await fetch(`/api/user?${query.toString()}`);
+      const res = await fetch(`/api/notifications?${query.toString()}`);
       const data = await res.json();
-      setUserData({ ...data, currentPage: page });
+      setNotificationData({ ...data, currentPage: page });
     } catch (err) {
       console.error('Filter fetch failed', err);
     } finally {
@@ -96,93 +100,79 @@ const UserManagementPage = () => {
     }
   };
 
-   // Decide fetch strategy
+  // Decide fetch strategy
   const fetchBasedOnState = (page: number) => {
     if (isFiltered) {
-      fetchFilteredUsers(page);
+      fetchFilteredNotifications(page);
     } else {
-      fetchUsers(page);
+      fetchNotifications(page);
     }
   };
 
-    // Filter logic
+  // Filter logic
   const handleFilterSearch = () => {
     setIsFiltered(true);
-    fetchFilteredUsers(1);
+    fetchFilteredNotifications(1);
   };
 
-    const handleClearFilters = () => {
+  const handleClearFilters = () => {
     setSelectedType('');
     setSelectedSchool('');
-    setRole('');
+    setType('');
+    setPriority('');
+    setStatus('');
     setIsFiltered(false);
-    fetchUsers(1);
+    fetchNotifications(1);
   };
 
-    const handlePrevious = () => {
-    if (userData.currentPage > 1) {
-      fetchBasedOnState(userData.currentPage - 1);
+  const handlePrevious = () => {
+    if (notificationData.currentPage > 1) {
+      fetchBasedOnState(notificationData.currentPage - 1);
     }
   };
 
   const handleNext = () => {
-    if (userData.currentPage < userData.totalPages) {
-      fetchBasedOnState(userData.currentPage + 1);
+    if (notificationData.currentPage < notificationData.totalPages) {
+      fetchBasedOnState(notificationData.currentPage + 1);
     }
   };
 
   const handleRefresh = () => {
     if (isFiltered) {
-      fetchFilteredUsers(userData.currentPage);
+      fetchFilteredNotifications(notificationData.currentPage);
     } else {
-      fetchUsers(userData.currentPage);
+      fetchNotifications(notificationData.currentPage);
     }
   };
 
-  
   // School filter on type change
   useEffect(() => {
     if (selectedType) {
       const filtered = schools.filter((s) => s.type === selectedType);
       setFilteredSchool(filtered);
     } else {
-    setFilteredSchool(schools); // show all schools if no type is selected
-  }
-
+      setFilteredSchool(schools);
+    }
   }, [selectedType, schools]);
 
-
   const handleExport = () => {
-    // Export functionality
-    console.log('Exporting users...');
+    console.log('Exporting notifications...');
   };
 
-
-
-  const handleSearchChange = (e:any) => {
+  const handleSearchChange = (e: any) => {
     const value = e.target.value;
     setQuery(value);
-    
-    // Real-time search as user types
-    // if (value.trim()) {
-    //   console.log(`Searching for users with name containing: "${value}"`);
-    //   // Here you would make your server call for search
-    //   // For now, just logging the search term
-    // } else {
-    //   console.log('Search cleared, showing all users');
-    // }
   };
 
   const handleClearSearch = () => {
     setQuery('');
   };
 
-
-    
-//fetxch users
+  // Fetch notifications
   useEffect(() => {
-    fetchUsers();
+    fetchNotifications();
   }, []);
+
 
   return (
     <div className="space-y-6">
@@ -190,12 +180,12 @@ const UserManagementPage = () => {
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center space-x-3 mb-4 sm:mb-0">
-            <div className="w-12 h-12 bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl flex items-center justify-center">
-              <MdPeople className="w-6 h-6 text-white" />
+            <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl flex items-center justify-center">
+              <MdNotifications className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">User Management</h1>
-              <p className="text-gray-600">Manage all users across the platform</p>
+              <h1 className="text-2xl font-bold text-gray-900">Notification Management</h1>
+              <p className="text-gray-600">Send and manage notifications across the platform</p>
             </div>
           </div>
           
@@ -209,14 +199,14 @@ const UserManagementPage = () => {
             </button>
             <button
               onClick={handleExport}
-              className="flex items-center space-x-2 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-xl transition-colors"
+              className="flex items-center space-x-2 px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-xl transition-colors"
             >
               <MdDownload className="w-4 h-4" />
               <span className="hidden sm:inline">Export</span>
             </button>
-            <button className="flex items-center space-x-2 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-xl transition-colors">
+            <button className="flex items-center space-x-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl transition-colors">
               <MdAdd className="w-4 h-4" />
-              <span className="hidden sm:inline">Add User</span>
+              <span className="hidden sm:inline">Send Notification</span>
             </button>
           </div>
         </div>
@@ -227,50 +217,15 @@ const UserManagementPage = () => {
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Total Users</p>
-              <p className="text-2xl font-bold text-gray-900">{userData.totalUsers}</p>
+              <p className="text-sm text-gray-600">Total Notifications</p>
+              <p className="text-2xl font-bold text-gray-900">{notificationData.totalNotifications}</p>
             </div>
-            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-              <MdPeople className="w-5 h-5 text-blue-600" />
-            </div>
-          </div>
-        </div>
-        
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">Active Users</p>
-              <p className="text-2xl font-bold text-green-600">{Math.floor(userData.totalUsers * 0.85)}</p>
-            </div>
-            <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+            <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+              <MdNotifications className="w-5 h-5 text-purple-600" />
             </div>
           </div>
         </div>
         
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">New This Month</p>
-              <p className="text-2xl font-bold text-amber-600">{Math.floor(userData.totalUsers * 0.12)}</p>
-            </div>
-            <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center">
-              <div className="w-3 h-3 bg-amber-500 rounded-full"></div>
-            </div>
-          </div>
-        </div>
-        
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">Inactive Users</p>
-              <p className="text-2xl font-bold text-red-600">{Math.floor(userData.totalUsers * 0.15)}</p>
-            </div>
-            <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
-              <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Filters and Search */}
@@ -290,12 +245,12 @@ const UserManagementPage = () => {
             
             <div className="flex flex-wrap items-center gap-4">
               <select
-                name="type"
+                name="schoolType"
                 value={selectedType}
                 onChange={(e) => setSelectedType(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white"
+                className="px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white"
               >
-                <option value="">All Types</option>
+                <option value="">All School Types</option>
                 {uniqueTypes.map((type) => (
                   <option key={type} value={type}>
                     {type}
@@ -307,10 +262,10 @@ const UserManagementPage = () => {
                 name="school"
                 value={selectedSchool}
                 onChange={(e) => setSelectedSchool(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white"
+                className="px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white"
               >
                 <option value="">All Schools</option>
-                {filteredSchool.map((school:any) => (
+                {filteredSchool.map((school: any) => (
                   <option key={school.school} value={school.school}>
                     {school.school}
                   </option>
@@ -318,19 +273,22 @@ const UserManagementPage = () => {
               </select>
 
               <select
-                name="role"
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white"
+                name="type"
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+                className="px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white"
               >
-                <option value="">All Roles</option>
-                <option value="agent">Agent</option>
-                <option value="service">Service</option>
-                <option value="student">Student</option>
+                <option value="">All Types</option>
+                <option value="announcement">Announcement</option>
+                <option value="alert">Alert</option>
+                <option value="reminder">Reminder</option>
+                <option value="update">Update</option>
               </select>
+
+
               
               <button
-                onClick={() => handleFilterSearch()}
+                onClick={handleFilterSearch}
                 className="flex items-center space-x-2 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-colors"
               >
                 <span>Apply Filters</span>
@@ -344,7 +302,7 @@ const UserManagementPage = () => {
           {/* Search Section */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-gray-900">Search Users</h3>
+              <h3 className="text-lg font-semibold text-gray-900">Search Notifications</h3>
               <button
                 onClick={handleClearSearch}
                 className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
@@ -357,10 +315,10 @@ const UserManagementPage = () => {
               <MdSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type="text"
-                placeholder="Type to search users by name..."
+                placeholder="Type to search notifications by title or message..."
                 value={query}
                 onChange={handleSearchChange}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               />
             </div>
             
@@ -375,50 +333,50 @@ const UserManagementPage = () => {
         {/* Results Summary */}
         <div className="mt-6 pt-4 border-t border-gray-200 flex items-center justify-between text-sm text-gray-600">
           <p>
-            Showing <span className="font-medium text-gray-900">{userData?.users?.length}</span> of{' '}
-            <span className="font-medium text-gray-900">{userData.totalUsers}</span> users
+            Showing <span className="font-medium text-gray-900">{notificationData?.notifications?.length}</span> of{' '}
+            <span className="font-medium text-gray-900">{notificationData.totalNotifications}</span> notifications
           </p>
           <p>
-            Page <span className="font-medium text-gray-900">{userData.currentPage}</span> of{' '}
-            <span className="font-medium text-gray-900">{userData.totalPages}</span>
+            Page <span className="font-medium text-gray-900">{notificationData.currentPage}</span> of{' '}
+            <span className="font-medium text-gray-900">{notificationData.totalPages}</span>
           </p>
         </div>
       </div>
 
-      {/* User Table */}
+      {/* Notification Table */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center py-12">
             <div className="flex items-center space-x-3">
-              <div className="w-6 h-6 border-2 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
-              <span className="text-gray-600">Loading users...</span>
+              <div className="w-6 h-6 border-2 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+              <span className="text-gray-600">Loading notifications...</span>
             </div>
           </div>
         ) : (
-          <UserTable users={userData.users} setUserData={setUserData} setLoading={setLoading} />
+          <NotificationTable notifications={notificationData.notifications} setNotificationData={setNotificationData} setLoading={setLoading} />
         )}
       </div>
 
       {/* Pagination */}
       <div className="bg-white p-4 rounded-2xl border flex items-center justify-between">
         <p className="text-sm text-gray-600">
-          Showing {(userData.currentPage - 1) * 10 + 1} -{' '}
-          {Math.min(userData.currentPage * 10, userData.totalUsers)} of {userData.totalUsers}
+          Showing {(notificationData.currentPage - 1) * 10 + 1} -{' '}
+          {Math.min(notificationData.currentPage * 10, notificationData.totalNotifications)} of {notificationData.totalNotifications}
         </p>
         <div className="flex items-center space-x-2">
           <button
             onClick={handlePrevious}
-            disabled={userData.currentPage <= 1}
+            disabled={notificationData.currentPage <= 1}
             className="px-3 py-2 rounded-xl bg-gray-100 disabled:text-gray-400"
           >
             <MdChevronLeft />
           </button>
-          {[...Array(userData.totalPages).keys()].slice(0, 5).map((num) => (
+          {[...Array(notificationData.totalPages).keys()].slice(0, 5).map((num) => (
             <button
               key={num}
               onClick={() => fetchBasedOnState(num + 1)}
-              className={`px-3 py-2 rounded-xl ${userData.currentPage === num + 1
-                ? 'bg-teal-600 text-white'
+              className={`px-3 py-2 rounded-xl ${notificationData.currentPage === num + 1
+                ? 'bg-purple-600 text-white'
                 : 'bg-gray-100 text-gray-700'
               }`}
             >
@@ -427,7 +385,7 @@ const UserManagementPage = () => {
           ))}
           <button
             onClick={handleNext}
-            disabled={userData.currentPage >= userData.totalPages}
+            disabled={notificationData.currentPage >= notificationData.totalPages}
             className="px-3 py-2 rounded-xl bg-gray-100 disabled:text-gray-400"
           >
             <MdChevronRight />
@@ -438,4 +396,4 @@ const UserManagementPage = () => {
   );
 };
 
-export default UserManagementPage;
+export default NotificationManagementPage;

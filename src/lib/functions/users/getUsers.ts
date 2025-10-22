@@ -7,8 +7,8 @@ export const getUsers = async (
     try {
       // Get the base URL dynamically based on the environment
       const baseUrl = typeof window !== 'undefined'
-        ? window.location.origin // When running in browser
-        : process.env.NEXT_PUBLIC_BASE_URL || ''; // Fallback for server-side
+        ? window.location.origin 
+        : process.env.NEXT_PUBLIC_BASE_URL || '';
   
       const res = await fetch(`${baseUrl}/api/user?school=${selectedSchool ?? ""}&role=${role ?? ""}&page=${page}&limit=${limit}`);
       

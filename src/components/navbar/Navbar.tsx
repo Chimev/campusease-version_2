@@ -70,7 +70,7 @@ const Navbar = () => {
     
     if(pathname === '/'){
       context.setShowNavbar(true)
-    }else if( ['/admin/dashboard', '/admin/users'].includes(pathname) ) {
+    }else if( ['/admin/dashboard', '/admin/users', '/admin/listings', '/admin/notification'].includes(pathname) ) {
       context.setShowNavbar(false)
     }
     

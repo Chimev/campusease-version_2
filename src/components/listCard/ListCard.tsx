@@ -27,7 +27,7 @@ interface ListCardProps {
   loading?:any;
 }
 
-const ListCard = ({ listing, listings, loading, setLoading,  profile, handleFavorite, handleRemoveFavorite, favorite, setShowBackground, showBackground, setListings }: ListCardProps) => {
+const ListCard = ({ listing, listings, setLoading,  profile, handleFavorite, handleRemoveFavorite, favorite, setShowBackground, showBackground, setListings }: ListCardProps) => {
    const [editId, setEditId] = useState<string | null>(null) 
    const [editCategory, setEditCategory] = useState<string | null>(null)
   //  const [showBackground, setShowBackground] = useState(false)

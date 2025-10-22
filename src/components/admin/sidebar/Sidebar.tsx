@@ -1,18 +1,15 @@
-// Sidebar Component
 'use client';
 import SignOut from '@/components/profile/SignOut';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { 
-  MdOutlineArrowDropDown, 
   MdDashboard, 
   MdPeople, 
-  MdHome, 
-  MdGroup, 
-  MdBuild, 
   MdStorefront,
-  MdSchool
 } from 'react-icons/md';
+import { IoIosNotifications } from "react-icons/io";
+
 
 const menu = [
   { 
@@ -30,52 +27,29 @@ const menu = [
   {
     id: 3,
     menu: 'Listings',
-    menuIcon: <MdStorefront className="w-5 h-5" />,
-    dropdownIcon: <MdOutlineArrowDropDown className="w-5 h-5" />,
-    submenu: [
-      { 
-        id: 1, 
-        menu: 'Accommodation', 
-        link: 'dashboard/accommodation',
-        icon: <MdHome className="w-4 h-4" />
-      },
-      { 
-        id: 2, 
-        menu: 'Roommate', 
-        link: 'dashboard/roommate',
-        icon: <MdGroup className="w-4 h-4" />
-      },
-      { 
-        id: 3, 
-        menu: 'Service', 
-        link: 'dashboard/service',
-        icon: <MdBuild className="w-4 h-4" />
-      },
-      { 
-        id: 4, 
-        menu: 'Market Place', 
-        link: 'dashboard/marketplace',
-        icon: <MdStorefront className="w-4 h-4" />
-      },
-    ],
+    link: 'listings',
+    icon: <MdStorefront className="w-5 h-5" />,
   },
-  // Uncomment if needed
-  // { 
-  //   id: 4, 
-  //   menu: 'Schools', 
-  //   link: 'dashboard/schools',
-  //   icon: <MdSchool className="w-5 h-5" />
-  // },
+  { 
+    id: 4, 
+    menu: 'Notifications', 
+    link: 'notification',
+    icon: <IoIosNotifications className="w-5 h-5" />
+  },
 ];
 
- const Sidebar = () => {
-  const [activemenu, setActiveMenu] = useState<string>(menu[0].menu);
-  const [activeSubMenu, setActiveSubMenu] = useState<string | null>(null);
-  const [openSubMenu, setOpenSubMenu] = useState<string | null>(null);
+const Sidebar = () => {
+  const pathname = usePathname();
+  const [activemenu, setActiveMenu] = useState<string>('');
 
-  const toggleSubMenu = (menuName: string) => {
-    setOpenSubMenu((prev) => (prev === menuName ? null : menuName));
-  };
+  // Sync active menu with current route
+  useEffect(() => {
+    const currentPath = pathname.split('/').pop(); // Get last segment of path
+    const activeItem = menu.find(item => item.link === currentPath);
+    if (activeItem) {
+      setActiveMenu(activeItem.menu);
+    }
+  }, [pathname]);
 
   return (
     <div className="flex flex-col justify-between h-full">
@@ -96,62 +70,16 @@ const menu = [
                 onClick={() => {
                   if (menuItem.link) {
                     setActiveMenu(menuItem.menu);
-                    setActiveSubMenu(null);
                   }
                 }}
                 className="flex items-center justify-between p-4 rounded-r-xl font-medium"
               >
                 <div className="flex items-center space-x-3">
-                  {menuItem.icon || menuItem.menuIcon}
+                  {menuItem.icon}
                   <span className="text-sm font-medium">{menuItem.menu}</span>
                 </div>
-                {menuItem.submenu && (
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      toggleSubMenu(menuItem.menu);
-                    }}
-                    className={`p-1 rounded-md transition-transform duration-200 ${
-                      openSubMenu === menuItem.menu ? 'rotate-180' : ''
-                    }`}
-                  >
-                    {menuItem.dropdownIcon}
-                  </button>
-                )}
               </Link>
             </div>
-
-            {/* Submenu items with smooth animation */}
-            {menuItem.submenu && (
-              <div
-                className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                  openSubMenu === menuItem.menu 
-                    ? 'max-h-96 opacity-100' 
-                    : 'max-h-0 opacity-0'
-                }`}
-              >
-                <div className="ml-6 mt-2 space-y-1 border-l-2 border-white/20 pl-4">
-                  {menuItem.submenu.map((subItem) => (
-                    <Link
-                      key={subItem.id}
-                      href={`/admin/${subItem.link?.toLowerCase()}`}
-                      onClick={() => {
-                        setActiveSubMenu(subItem.menu);
-                        setActiveMenu(menuItem.menu);
-                      }}
-                      className={`${
-                        activeSubMenu === subItem.menu
-                          ? 'bg-white/20 text-white border-l-2 border-amber-400'
-                          : 'text-white/70 hover:bg-white/10 hover:text-white'
-                      } flex items-center space-x-3 p-3 rounded-lg text-sm font-medium transition-all duration-150 group`}
-                    >
-                      {subItem.icon}
-                      <span>{subItem.menu}</span>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
         ))}
       </div>
@@ -164,4 +92,4 @@ const menu = [
   );
 };
 
-export default Sidebar
+export default Sidebar;

@@ -15,8 +15,7 @@ const layout = ({ children }: any) => {
       </div>
 
       {/* Main Content Section */}
-      <div className='flex-[4] flex flex-col h-screen overflow-auto'>  
-        <AdminNavbar />
+      <div className='flex-[4] h-screen overflow-auto'>
         <div className='px-5 py-7 bg-secondaryLight flex-1'>
           <SchoolLayout>
             {children}

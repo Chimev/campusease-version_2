@@ -68,3 +68,25 @@ export const PATCH =async (req:NextRequest) => {
     }
     
 }
+
+export const DELETE = async (req:NextRequest, { params }: any) => {
+    const id = params.slug
+    try {
+        await connectToDB();
+
+        //Find User by Id
+        const user = await User.findById(id)
+        
+        if(!user){
+            return NextResponse.json({message: 'User not found'}, {status: 404})
+        }
+
+        await User.findByIdAndDelete(id)
+        return NextResponse.json({message: 'User Deleted'}, {status: 200})
+    } catch (error: any) {
+        return new NextResponse(
+            JSON.stringify({ message: "Internal Server Error", error: error.message }),
+            { status: 500 }
+        );
+    }
+}

@@ -16,10 +16,36 @@ interface UserTableProps {
   users: User[];
   currentPage?: number;
   limit?: number;
+  setUserData?: any;
+  setLoading?: any;
 }
 
-const UserTable = ({ users, currentPage = 1, limit = 10 }: UserTableProps) => {
-  if (users.length === 0) {
+const UserTable = ({setUserData, users, currentPage = 1, limit = 10, setLoading }: UserTableProps) => {
+
+  const handleDelete = async (id: string) => {
+    setLoading(true)
+    try {
+      const res = await fetch(`/api/user/${id}`, {
+        method: 'DELETE',
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      if(res.ok){
+        setLoading(false)
+        const remainingUsers = users.filter(user => user._id !== id)
+        setUserData((prev: any) => ({
+          ...remainingUsers,
+          currentPage: currentPage
+        }))
+      }
+    } catch (error) {
+      
+    }
+  }
+
+
+  if (users?.length === 0) {
     return <div className="bg-white p-5 text-center">No users found</div>;
   }
 
@@ -39,7 +65,7 @@ const UserTable = ({ users, currentPage = 1, limit = 10 }: UserTableProps) => {
           </tr>
         </thead>
         <tbody>
-          {users.map((user, index) => (
+          {users?.map((user, index) => (
             <tr key={user._id} className="text-sm border">
               <td className="p-2 border">{(index + 1) + (currentPage - 1) * limit}</td>
               <td className="p-2 border">{user.name}</td>
@@ -56,7 +82,7 @@ const UserTable = ({ users, currentPage = 1, limit = 10 }: UserTableProps) => {
               </td>
               <td className="p-2 flex items-center justify-center gap-4">
                 <CiEdit />
-                <MdDelete />
+                <MdDelete onClick={() => handleDelete(user._id)} />
               </td>
             </tr>
           ))}

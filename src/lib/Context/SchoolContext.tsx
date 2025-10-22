@@ -26,7 +26,8 @@ interface SchoolContextType {
   setFilteredSchool: any;
   filteredSchool: any;
   setSelectedSchool:any;
-    selectedSchool:any;
+  selectedSchool:any;
+  loading: any;
 }
 
 export const SchoolContext = createContext<SchoolContextType | null>(null);
@@ -36,6 +37,7 @@ export const SchoolContextProvider = ({ children }: { children: ReactNode }) => 
   const [selectedType, setSelectedType] = useState('');
   const [selectedSchool, setSelectedSchool] = useState('');
   const [filteredSchool, setFilteredSchool] = useState([])
+  const [loading, setLoading] = useState(true);
 
   const uniqueTypes = [...new Set(schools.map((school) => school.type))];
 
@@ -43,10 +45,13 @@ export const SchoolContextProvider = ({ children }: { children: ReactNode }) => 
     const fetchSchools = async () => {
       try {
         const data = await getSchools();
-        setSchools(data);
+        setSchools(data)
       } catch (error) {
         console.error('Failed to fetch schools:', error);
       }
+    finally{
+      setLoading(false)
+    }
     };
     fetchSchools();
   }, []);
@@ -59,7 +64,8 @@ export const SchoolContextProvider = ({ children }: { children: ReactNode }) => 
     setFilteredSchool,
     filteredSchool,
     setSelectedSchool,
-    selectedSchool
+    selectedSchool,
+    loading
   };
 
   return (
