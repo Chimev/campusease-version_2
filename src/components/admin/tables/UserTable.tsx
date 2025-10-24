@@ -8,6 +8,7 @@ interface User {
   email: string;
   school: string;
   role: string[];
+  phone: string;
   agentApproval: boolean;
   createdAt: string;
 }
@@ -59,6 +60,7 @@ const UserTable = ({setUserData, users, currentPage = 1, limit = 10, setLoading 
             <th className="p-2 border">Email</th>
             <th className="p-2 border">Institution</th>
             <th className="p-2 border">Role</th>
+            <th className="p-2 border">Phone</th>
             <th className="p-2 border">Date Joined</th>
             <th className="p-2 border">Status</th>
             <th className="p-2 border">Actions</th>
@@ -72,6 +74,7 @@ const UserTable = ({setUserData, users, currentPage = 1, limit = 10, setLoading 
               <td className="p-2 border">{user.email}</td>
               <td className="p-2 border">{user.school}</td>
               <td className="p-2 border">{user.role.join(', ')}</td>
+              <td className="p-2 border">{user.phone}</td>
               <td className="p-2 border">{new Date(user.createdAt).toLocaleDateString()}</td>
               <td
                 className={`p-2 border ${
