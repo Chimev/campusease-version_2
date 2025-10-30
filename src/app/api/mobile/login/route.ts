@@ -10,14 +10,14 @@ export const POST = async  (req: NextRequest) => {
         await connectToDB();
 
         const {email, password} = await req.json();
-        const user: any = User.findOne({email});
+        const user: any = await User.findOne({email});
 
         if(!user){
             return NextResponse.json({error: 'User not found'}, {status: 400})
         }
 
         const isValid = await bcrypt.compare(password, user.password);
-        if(isValid){
+        if(!isValid){
             return NextResponse.json({error: 'Invalid credentials'}, {status: 401});
         }
 
