@@ -102,7 +102,6 @@ const Register = () => {
       userData.agentApproval = false;
     }
 
-    console.log(userData)
   
     try {
       const res = await fetch("/api/user", {
