@@ -2,8 +2,8 @@ import  Listings  from '@/utilis/models/Listings'
 import { connectToDB } from '@/utilis/connectToDB'
 import { NextRequest, NextResponse } from 'next/server';
 import { v2 as cloudinary } from 'cloudinary';
-import { listingNotificationEmail } from '@/lib/functions/emails/listingNotificationEmail ';
 import NotificationPreference from '@/utilis/models/NotificationPreference';
+import { listingNotificationEmail } from '@/lib/functions/emails/listingNotificationEmail';
 
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
