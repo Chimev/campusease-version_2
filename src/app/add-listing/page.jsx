@@ -8,10 +8,9 @@ const page = async() => {
   const session = await getServerSession(authOptions)
   const userId = session?.user?.name;
   const email = session?.user?.email;
-  const school = session?.user?.school;
+  // const school = session?.user?.school;
   const role = session?.user?.role;
 
-  console.log(role)
 
   
   if(!session) {

@@ -220,13 +220,13 @@ const AddListing = ({name, email, role} : {name: string; email:string; school:st
                             <option value="accommodation">Accommodation</option>
                         )}
                         {availableCategories.includes('service') && (
-                            <option value="service">Service</option>
+                            <option value="services">Service</option>
                         )}
                         {availableCategories.includes('marketplace') && (
                             <option value="marketplace">MarketPlace</option>
                         )}
                         {availableCategories.includes('roommate') && (
-                            <option value="roommate">Roommate</option>
+                            <option value="roommates">Roommate</option>
                         )}
                     </select>
                 </div>
