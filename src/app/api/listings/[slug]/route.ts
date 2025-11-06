@@ -12,51 +12,44 @@ cloudinary.config({
   });
 
 export const GET = async (req: NextRequest, { params }: any) => {
-    const searchParams = req.nextUrl.searchParams;
-    const type = searchParams.get("type");
-    const institution = searchParams.get("institution");
-    const campus = searchParams.get("campus");
-    const slug = params?.slug;  // category slug from URL
-    // const listingId = params?.slug; 
+  const searchParams = req.nextUrl.searchParams;
+  const type = searchParams.get("type");
+  const institution = searchParams.get("institution");
+  const campus = searchParams.get("campus");
+  const slug = params?.slug;
 
-    try {
-        await connectToDB();
+  try {
+    await connectToDB();
 
-        if(!type && !institution && !campus){
-            const listDetails = await Listings.findById({_id: slug})
-
-            if(!listDetails){
-                return new NextResponse(JSON.stringify({message: "No Listing Found"}), {status:404})
-            }
-
-            return NextResponse.json(listDetails)
-        }else{
-            const categoryList = await Listings.find({
-                category: slug,
-                institution,
-                campus,
-                type
-            }).sort({ createdAt: -1 });
-            // .limit(50); 
-             // Consider limiting results for better performance
-    
-            if (!categoryList.length) {
-                return new NextResponse(JSON.stringify({ message: "No listings found" }), { status: 404 });
-            }
-    
-            return NextResponse.json(categoryList);
-        }
-    } catch (error:any) {
-        console.error("Error fetching listings:", {
-            message: error.message,
-            stack: error.stack,
-            params: { slug, type, institution, campus }
-        });
-        return new NextResponse(
-            JSON.stringify({ message: "Internal Server Error", error: error.message }),
-            { status: 500 }
-        );
+    // If no filters at all → fetch single listing by ID
+    if (!type && !institution && !campus) {
+      const listing = await Listings.findById(slug);
+      if (!listing)
+        return NextResponse.json({ message: "No listing found" }, { status: 404 });
+      return NextResponse.json(listing);
     }
+
+    // Otherwise → build dynamic filter object
+    const filters: any = {};
+    if (slug) filters.category = slug;
+    if (institution) filters.institution = institution;
+    if (campus) filters.campus = campus;
+    if (type) filters.type = type;
+
+    const listings = await Listings.find(filters).sort({ createdAt: -1 });
+
+    if (!listings.length) {
+      return NextResponse.json({ message: "No listings found" }, { status: 404 });
+    }
+
+    return NextResponse.json(listings);
+  } catch (error: any) {
+    console.error("Error fetching listings:", error);
+    return NextResponse.json(
+      { message: "Internal Server Error", error: error.message },
+      { status: 500 }
+    );
+  }
 };
 
 
