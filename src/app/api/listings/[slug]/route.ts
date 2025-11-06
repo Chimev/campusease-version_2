@@ -39,7 +39,7 @@ export const GET = async (req: NextRequest, { params }: any) => {
     const listings = await Listings.find(filters).sort({ createdAt: -1 });
 
     if (!listings.length) {
-      return NextResponse.json({ message: "No listings found" }, { status: 404 });
+        return NextResponse.json([], { status: 200 });
     }
 
     return NextResponse.json(listings);
