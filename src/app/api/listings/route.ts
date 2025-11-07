@@ -185,8 +185,18 @@ export const POST = async (request: any) => {
 export const GET = async (req:NextRequest) => {
   try {
     await connectToDB()
-    
-    const listings = await Listings.find({})
+    const searchParams = req.nextUrl.searchParams;
+    const type = searchParams.get("type");
+    const institution = searchParams.get("institution");
+    const campus = searchParams.get("campus");
+
+    const filters: any = {};
+    if (institution) filters.institution = institution;
+    if (campus) filters.campus = campus;
+    if (type) filters.type = type;
+
+    const listings = await Listings.find(filters).sort({ createdAt: -1 });
+
     return NextResponse.json(listings, {status:200})
   } catch (error:any) {
     return new NextResponse(error.message, {status: 500})

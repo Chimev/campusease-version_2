@@ -25,7 +25,7 @@ export const GET = async (req: NextRequest, { params }: any) => {
     if (!type && !institution && !campus) {
       const listing = await Listings.findById(slug);
       if (!listing)
-        return NextResponse.json({ message: "No listing found" }, { status: 404 });
+        return NextResponse.json({ message: "No listing Details found" }, { status: 404 });
       return NextResponse.json(listing);
     }
 
@@ -39,7 +39,7 @@ export const GET = async (req: NextRequest, { params }: any) => {
     const listings = await Listings.find(filters).sort({ createdAt: -1 });
 
     if (!listings.length) {
-        return NextResponse.json([], { status: 200 });
+      return NextResponse.json([], { status: 200 });
     }
 
     return NextResponse.json(listings);
