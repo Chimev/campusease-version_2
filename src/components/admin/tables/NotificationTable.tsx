@@ -7,10 +7,10 @@ import Image from 'next/image';
 
 interface Notification {
   _id: string;
-  school?: string;
   category?: string;
   email?: string;
   createdAt: string;
+  enabled?: any;
 }
 
 interface NotificationTableProps {
@@ -105,33 +105,33 @@ const NotificationTable = ({
 //     }
 //   };
 
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case 'approved':
-        return (
-          <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
-            <MdCheckCircle className="w-3 h-3" />
-            Approved
-          </span>
-        );
-      case 'rejected':
-        return (
-          <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700">
-            <MdCancel className="w-3 h-3" />
-            Rejected
-          </span>
-        );
-      case 'pending':
-        return (
-          <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-700">
-            <MdPending className="w-3 h-3" />
-            Pending
-          </span>
-        );
-      default:
-        return null;
-    }
-  };
+  // const getStatusBadge = (status: string) => {
+  //   switch (status) {
+  //     case 'approved':
+  //       return (
+  //         <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+  //           <MdCheckCircle className="w-3 h-3" />
+  //           Approved
+  //         </span>
+  //       );
+  //     case 'rejected':
+  //       return (
+  //         <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700">
+  //           <MdCancel className="w-3 h-3" />
+  //           Rejected
+  //         </span>
+  //       );
+  //     case 'pending':
+  //       return (
+  //         <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-700">
+  //           <MdPending className="w-3 h-3" />
+  //           Pending
+  //         </span>
+  //       );
+  //     default:
+  //       return null;
+  //   }
+  // };
 
   if (notifications?.length === 0) {
     return <div className="bg-white p-5 text-center">No listings found</div>;
@@ -145,6 +145,7 @@ const NotificationTable = ({
             <th className="p-2 border">#</th>
             <th className="p-2 border">Email</th>
             <th className="p-2 border">Category</th>
+            <th className="p-2 border">Enabled</th>
             <th className="p-2 border">Actions</th>
           </tr>
         </thead>
@@ -158,6 +159,11 @@ const NotificationTable = ({
               <td className="p-2 border">
                 <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs capitalize">
                   {listing.category}
+                </span>
+              </td>
+              <td className="p-2 border">
+                <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs capitalize">
+                  {listing.enabled ? 'Yes' : 'No'}
                 </span>
               </td>
               <td className="p-2 border">

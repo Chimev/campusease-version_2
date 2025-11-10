@@ -22,6 +22,21 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
     }
 
+    // Fetch existing preference
+    const existingPref = await NotificationPreference.findOne({
+      email: session.user.email,
+      category,
+    });
+
+    // Delete only if the notification exists
+    if (existingPref?.enabled === true) {
+      const deletedPref = await NotificationPreference.findOneAndDelete({
+        email: session.user.email,
+        category,
+      });
+      return NextResponse.json({ success: true, deleted: deletedPref });
+    }
+
     // Upsert preference for this user and category
     const updatedPref = await NotificationPreference.findOneAndUpdate(
       { email: session.user.email, category },

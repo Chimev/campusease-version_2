@@ -70,6 +70,8 @@ const NotificationManagementPage = () => {
           totalPages: 1,
           currentPage: page,
       }));
+
+      
       
         
     } catch (error) {

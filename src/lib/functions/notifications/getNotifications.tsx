@@ -9,5 +9,6 @@ export const getNotifications =async (
 
         const res = await fetch(`${baseUrl}/api/notifications/preferences/?page=${page}&limit=${limit}`);
     const data = await res.json();
+    console.log(data)
     return data;
 }
