@@ -285,7 +285,7 @@ const AddListing = ({name, email, role} : {name: string; email:string; school:st
                             </div>
                         </Filter_1>
                     )}
-                    {selectedCategory === 'service' && (
+                    {selectedCategory === 'services' && (
                         <Filter_2 serviceTypeRef={serviceTypeRef}>
                             <div className="input">
                                 <label className="p-text">PHONE</label>
@@ -311,7 +311,7 @@ const AddListing = ({name, email, role} : {name: string; email:string; school:st
                             </div>
                         </Filter_3>
                     )}
-                    {selectedCategory === 'roommate' && (
+                    {selectedCategory === 'roommates' && (
                         <Filter_4 levelRef={levelRef} genderRef={genderRef}>
                             <div className="input">
                             <label className="p-text">Name</label>
