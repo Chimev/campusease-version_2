@@ -131,9 +131,9 @@ const ListingDetails = () => {
         {/* Title based on category */}
         <h1 className="text-3xl font-bold text-gray-800 mb-1">
           {category === 'accommodation' ? details.accommodationTitle :
-           category === 'service' ? details.service :
+           category === 'services' ? details.service :
            category === 'marketplace' ? details.property :
-           category === 'roommate' ? details.roommateName : 'Listing Details'}
+           category === 'roommates' ? details.roommateName : 'Listing Details'}
         </h1>
       </div>
 

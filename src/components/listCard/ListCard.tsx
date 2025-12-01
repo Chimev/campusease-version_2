@@ -65,7 +65,7 @@ const ListCard = ({ listing, listings, setLoading,  profile, handleFavorite, han
   return (
     <>
       {showBackground && editId && <Background id={editId} category={editCategory} setShowBackground={setShowBackground} />}
-      <div className="relative bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg hover:translate-y-[-2px]">
+      <div className="relative bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg hover:translate-y-[-2px] pb-3">
         {/* Category Badge */}
         <div className="absolute top-3 left-3 z-10">
           <span className="inline-block bg-teal-500 bg-opacity-80 backdrop-blur-sm text-white text-xs font-medium px-2.5 py-1 rounded-full capitalize">
@@ -162,7 +162,7 @@ const ListCard = ({ listing, listings, setLoading,  profile, handleFavorite, han
             )}
             
             {/* Service details */}
-            {listing.category === 'service' && (
+            {listing.category === 'services' && (
               <>
                 <h3 className="font-semibold text-gray-800 line-clamp-1">{listing.service}</h3>
               </>
@@ -180,7 +180,7 @@ const ListCard = ({ listing, listings, setLoading,  profile, handleFavorite, han
             )}
             
             {/* Roommate details */}
-            {listing.category === 'roommate' && (
+            {listing.category === 'roommates' && (
               <>
                 <h3 className="font-semibold text-gray-800 line-clamp-1">{listing.roommateName}</h3>
                 <div className="flex flex-wrap gap-1 text-xs text-gray-600">
