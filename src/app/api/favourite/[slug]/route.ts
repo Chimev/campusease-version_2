@@ -26,21 +26,24 @@ export const GET = async (_req: NextRequest, { params }: any) => {
 // ======================================
 // DELETE /api/favorites/[favoriteId]
 // ======================================
-export const DELETE = async (_req: NextRequest, { params }: any) => {
-  const id = params.slug;
+export const DELETE = async (req: NextRequest, { params }: any) => {
+  const listingId = params.slug; // This will be the listingId now
 
   try {
     await connectToDB();
 
-    const favorite = await Favorite.findById(id);
+    // Find the favorite by listingId 
+    const favorite = await Favorite.findOne({ listingId: listingId });
+    
     if (!favorite) {
       return NextResponse.json({ message: "Favorite not found" }, { status: 404 });
     }
 
-    await Favorite.findByIdAndDelete(id);
+    // Delete using the found favorite's _id
+    await Favorite.findByIdAndDelete(favorite._id);
 
     return NextResponse.json(
-      { message: "Favorite deleted" },
+      { message: "Favorite deleted successfully" },
       { status: 200 }
     );
   } catch (error: any) {
