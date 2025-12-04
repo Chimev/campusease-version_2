@@ -22,7 +22,7 @@ export const POST = async (request: NextRequest ) => {
     if (exists) {
       return NextResponse.json(
         { message: "Already favorited", favorite: exists },
-        { status: 200 }
+        { status: 400 }
       );
     }
 
