@@ -28,12 +28,12 @@ export const GET = async (_req: NextRequest, { params }: any) => {
 // ======================================
 export const DELETE = async (req: NextRequest, { params }: any) => {
   const listingId = params.slug; // This will be the listingId now
-
+  const {email} = await req.json();
   try {
     await connectToDB();
 
     // Find the favorite by listingId 
-    const favorite = await Favorite.findOne({ listingId: listingId });
+    const favorite = await Favorite.findOne({ listingId, email });
     
     if (!favorite) {
       return NextResponse.json({ message: "Favorite not found" }, { status: 404 });
