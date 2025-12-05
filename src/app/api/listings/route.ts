@@ -7,8 +7,8 @@ import { listingNotificationEmail } from '@/lib/functions/emails/listingNotifica
 
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
-  api_secret: process.env.NEXT_PUBLIC_CLOUDINARY_API_SECRET,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
   secure:true
 });
 
@@ -37,46 +37,66 @@ interface FormData {
 
 
 
+export const POST = async (request: NextRequest) => {
+  try {
+    const formData = await request.formData();
 
-export const POST = async (request: any) => {
-    const {
-        category,
-        image,
-        institution,
-        type,
-        campus,
-        description,
-        accommodationTitle,
-        videoLink,
-        price,
-        phone,
-        accommodationType,
-        service,
-        propertyType,
-        property,
-        roommateName,
-        level,
-        gender,
-        name,
-        email,
-        isFavorite,
-    } = await request.json();
+    // Extract all form fields
+    const category = formData.get('category') as string;
+    const institution = formData.get('institution') as string;
+    const type = formData.get('type') as string;
+    const campus = formData.get('campus') as string;
+    const description = formData.get('description') as string;
+    const accommodationTitle = formData.get('accommodationTitle') as string;
+    const videoLink = formData.get('videoLink') as string;
+    const price = formData.get('price') ? Number(formData.get('price')) : undefined;
+    const phone = formData.get('phone') ? Number(formData.get('phone')) : undefined;
+    const accommodationType = formData.get('accommodationType') as string;
+    const service = formData.get('service') as string;
+    const propertyType = formData.get('propertyType') as string;
+    const property = formData.get('property') as string;
+    const roommateName = formData.get('roommateName') as string;
+    const level = formData.get('level') as string;
+    const gender = formData.get('gender') as string;
+    const name = formData.get('name') as string;
+    const email = formData.get('email') as string;
+    const isFavorite = formData.get('isFavorite') as string;
+
+    // Get all uploaded images
+    const images = formData.getAll('images') as File[];
+
+    if (!images || images.length < 5) {
+      return NextResponse.json(
+        { message: 'Please upload at least 5 images' },
+        { status: 400 }
+      );
+    }
 
     await connectToDB();
 
-    // //Upload images to Cloudinary and collect URLs
-    // const uploadedImages = [];
-    // for (const img of image) {
-    //   const result = await cloudinary.uploader.upload(img, {
-    //     folder: "campusEase", //OPtional
-    //   });
-    //   uploadedImages.push(result.secure_url);
-    // }
+    // Upload images to Cloudinary
+    const uploadedImages: string[] = [];
+    
+    for (const image of images) {
+      // Convert File to base64
+      const bytes = await image.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      const base64Image = `data:${image.type};base64,${buffer.toString('base64')}`;
 
-    const formData: FormData = {
+      // Upload to Cloudinary
+      const result = await cloudinary.uploader.upload(base64Image, {
+        folder: "campusEase",
+        resource_type: "auto",
+      });
+      
+      uploadedImages.push(result.secure_url);
+    }
+
+    // Build form data object
+    const listingData: FormData = {
       isFavorite,
       category,
-      image,
+      image: uploadedImages,
       institution,
       type,
       campus,
@@ -94,57 +114,54 @@ export const POST = async (request: any) => {
       gender,
       name,
       email
+    };
+
+    // Remove irrelevant fields based on category
+    if (category === 'accommodation') {
+      delete listingData.service;
+      delete listingData.propertyType;
+      delete listingData.property;
+      delete listingData.level;
+      delete listingData.gender;
+      delete listingData.roommateName;
     }
-    if(category === 'accommodation'){
-        delete formData.service;
-        delete formData.propertyType;
-        delete formData.property;
-        delete formData.level;
-        delete formData.gender;
-        delete formData.roommateName;
-      }
-      if(category === 'service'){
-        delete formData.accommodationTitle;
-        delete formData.videoLink;
-        delete formData.price;
-        delete formData.accommodationType;
-        delete formData.propertyType;
-        delete formData.property;
-        delete formData.level;
-        delete formData.gender;
-        delete formData.roommateName;
-      }
-      if(category === 'marketplace'){
-        delete formData.accommodationTitle;
-        delete formData.videoLink;
-        delete formData.accommodationType;
-        delete formData.service;
-        delete formData.level;
-        delete formData.gender;
-        delete formData.roommateName;
-      }
-      if(category === 'roommate'){
-        delete formData.accommodationTitle;
-        delete formData.videoLink;
-        delete formData.price;
-        delete formData.accommodationType;
-        delete formData.service;
-        delete formData.propertyType;
-        delete formData.property;
-      }
-    
+    if (category === 'services') {
+      delete listingData.accommodationTitle;
+      delete listingData.videoLink;
+      delete listingData.price;
+      delete listingData.accommodationType;
+      delete listingData.propertyType;
+      delete listingData.property;
+      delete listingData.level;
+      delete listingData.gender;
+      delete listingData.roommateName;
+    }
+    if (category === 'marketplace') {
+      delete listingData.accommodationTitle;
+      delete listingData.videoLink;
+      delete listingData.accommodationType;
+      delete listingData.service;
+      delete listingData.level;
+      delete listingData.gender;
+      delete listingData.roommateName;
+    }
+    if (category === 'roommates') {
+      delete listingData.accommodationTitle;
+      delete listingData.videoLink;
+      delete listingData.price;
+      delete listingData.accommodationType;
+      delete listingData.service;
+      delete listingData.propertyType;
+      delete listingData.property;
+    }
 
+    const newListing = new Listings(listingData);
+    await newListing.save();
 
-    
-    const newListing = new Listings(formData);
-    try {
-      console.log(newListing)
-      await newListing.save();
+    // Extract id from saved listing to use for the notification
+    const listingId = newListing._id.toString();
 
-      //extract id from saved listing to use for the notification
-      const listingId = newListing._id.toString();
-      
-      // Send email notifications to users subscribed to this category
+    // Send email notifications to users subscribed to this category
     if (category === 'accommodation' || category === 'roommate') {
       try {
         const subscribers = await NotificationPreference.find({ category, enabled: true });
@@ -172,15 +189,12 @@ export const POST = async (request: any) => {
       }
     }
 
-
-      return NextResponse.json('List Added', { status: 200 });
-    } catch (error: any) {
-      console.error("Error saving the listing:", error.message);
-      return new NextResponse(JSON.stringify({ message: error.message }), { status: 500 });
-    }
-    
-
-}
+    return NextResponse.json({ message: 'List Added', listingId }, { status: 200 });
+  } catch (error: any) {
+    console.error("Error saving the listing:", error.message);
+    return NextResponse.json({ message: error.message }, { status: 500 });
+  }
+};
 
 export const GET = async (req:NextRequest) => {
   try {

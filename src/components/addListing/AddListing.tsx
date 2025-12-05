@@ -107,105 +107,106 @@ const AddListing = ({name, email, role} : {name: string; email:string; school:st
     };
 
     const addList = async (e: any) => {
-        e.preventDefault();
-        setLoading(true);
-    
-        const category = categoryRef?.current?.value;
-        const description = descriptionRef?.current?.value;
-        const institution = institutionRef?.current?.value;
-        const type = typeRef?.current?.value;
-        const campus = campusRef?.current?.value;
-        const accommodationType = accommodationTypeRef?.current?.value;
-        const accommodationTitle = accommodationTitleRef?.current?.value;
-        const videoLink = videoRef?.current?.value || "";
-        const service = serviceTypeRef?.current?.value;
-        const propertyType = propertyTypeRef?.current?.value;
-        const property = propertyRef?.current?.value;
-        const level = levelRef?.current?.value;
-        const gender = genderRef?.current?.value;
-        const price = priceRef?.current?.value?.toString();
-        const phone = phoneRef?.current?.value;
-        const roommateName = roommateNameRef?.current?.value;
+    e.preventDefault();
+    setLoading(true);
 
-        /* ───────────────────── enable roommate notify ────────────────── */
-        const enableRoommateNotification = async () => {
+    const category = categoryRef?.current?.value;
+    const description = descriptionRef?.current?.value;
+    const institution = institutionRef?.current?.value;
+    const type = typeRef?.current?.value;
+    const campus = campusRef?.current?.value;
+    const accommodationType = accommodationTypeRef?.current?.value;
+    const accommodationTitle = accommodationTitleRef?.current?.value;
+    const videoLink = videoRef?.current?.value || "";
+    const service = serviceTypeRef?.current?.value;
+    const propertyType = propertyTypeRef?.current?.value;
+    const property = propertyRef?.current?.value;
+    const level = levelRef?.current?.value;
+    const gender = genderRef?.current?.value;
+    const price = priceRef?.current?.value?.toString();
+    const phone = phoneRef?.current?.value;
+    const roommateName = roommateNameRef?.current?.value;
+
+    // Handle image uploads
+    const imageFiles = imageRef?.current?.files;
+
+    if (!imageFiles || imageFiles.length < 5) {
+        setErrorMessage("Please upload minimum of 5.");
+        setLoading(false);
+        return;
+    }
+
+    try {
+        // Create FormData to send files
+        const formData = new FormData();
+        
+        // Append all form fields
+        formData.append('category', category || '');
+        formData.append('description', description || '');
+        formData.append('institution', institution || '');
+        formData.append('type', type || '');
+        formData.append('campus', campus || '');
+        formData.append('email', email);
+        formData.append('name', name);
+        formData.append('isFavorite', 'false');
+        
+        // Append category-specific fields
+        if (accommodationTitle) formData.append('accommodationTitle', accommodationTitle);
+        if (videoLink) formData.append('videoLink', videoLink);
+        if (accommodationType) formData.append('accommodationType', accommodationType);
+        if (service) formData.append('service', service);
+        if (propertyType) formData.append('propertyType', propertyType);
+        if (property) formData.append('property', property);
+        if (roommateName) formData.append('roommateName', roommateName);
+        if (level) formData.append('level', level);
+        if (gender) formData.append('gender', gender);
+        if (price) formData.append('price', price);
+        if (phone) formData.append('phone', phone);
+        
+        // Append all image files
+        for (let i = 0; i < imageFiles.length; i++) {
+            formData.append('images', imageFiles[i]);
+        }
+
+        // Send to backend API
+        const response = await fetch('/api/listings', {
+            method: 'POST',
+            body: formData, // Send FormData, no Content-Type header needed
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || 'Failed to add listing');
+        }
+
+        // Enable roommate notification if needed
+        if (notifyRoommate && category === 'roommate') {
             try {
-            await fetch('/api/notifications/preferences', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ category: 'roommate', enabled: true }),
-            });
-            console.log('Roommate notifications enabled for current user');
+                await fetch('/api/notifications/preferences', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ category: 'roommate', enabled: true }),
+                });
+                console.log('Roommate notifications enabled for current user');
             } catch (err) {
-            console.error('Failed to enable roommate notifications:', err);
+                console.error('Failed to enable roommate notifications:', err);
             }
-        };
-    
-        // Handle image uploads
-        const imageFiles = imageRef?.current?.files;
-    
-        if (!imageFiles || imageFiles.length < 5) {
-            setErrorMessage("Please upload minimum of 5.");
-            setLoading(false);
-            return;
         }
-    
-        try {
-            const uploadedImages = await uploadImagesToCloudinary(imageFiles);
-    
-            if (!uploadedImages.length) {
-                setErrorMessage("Failed to upload images.");
-                setLoading(false);
-                return;
-            }
-    
-            const listing = {
-                category,
-                description,
-                institution,
-                type,
-                campus,
-                accommodationTitle,
-                videoLink,
-                accommodationType,
-                service,
-                propertyType,
-                property,
-                roommateName,
-                level,
-                gender,
-                price,
-                phone,
-                email,
-                name,
-                isFavorite: false,
-                image: uploadedImages, // Use uploaded image URLs
-            }
-            // console.log(listing)
-            // Proceed with adding the listing via API function
-            const res = await addListing(listing);
-            console.log(res);
-             /* ─── AFTER successful save ─── */
-            if (notifyRoommate && category === 'roommate') {
-                await enableRoommateNotification();
-            }
-            if (!res.ok) {
-                setLoading(false);
-            }
-            toast.success("Listing added successfully!");
-            route.push('/profile');
-        } catch (error) {
-            if(error instanceof Error){
-                if(error.message === "Upload failed: File size too large. Got 12503874. Maximum is 10485760. Upgrade your plan to enjoy higher limits https://www.cloudinary.com/pricing/upgrades/file-limit"){
-                    toast.error("Image size too large. Upload less than 8MB");
-                }
-            }
-            console.error("Error during listing:", error);
+
+        toast.success("Listing added successfully!");
+        route.push('/profile');
+    } catch (error) {
+        console.error("Error during listing:", error);
+        if (error instanceof Error) {
+            toast.error(error.message || "Error during listing.");
+        } else {
             toast.error("Error during listing.");
-        } finally {
-            setLoading(false);
         }
-    };
+    } finally {
+        setLoading(false);
+    }
+};
 
     return (
         <div className='px-3 py-8 sm:max-w-[500px] sm:m-auto'>
