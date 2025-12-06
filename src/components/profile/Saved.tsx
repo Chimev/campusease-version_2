@@ -1,68 +1,43 @@
 "use client"
 import ListCard from '@/components/listCard/ListCard'
+import { useListing } from '@/lib/Context/ListingContext'
 import { useSession } from 'next-auth/react'
 // import ListCard from '@/components/listCard/ListCard'
 import React, {  useEffect, useState } from 'react'
 
 const Saved = () => {
-    const [loading, setLoading] = useState(true)
-    const [favoriteList, setFavoriteList] = useState([]);
 
-    const {data: session, status} = useSession();
+    const {savedListings, isLoading, listings} = useListing()
+
+    const favouriteListings = listings.filter(listing =>
+      savedListings.some((fav:any) => fav.listingId === listing._id)
+    );
 
     
 
-    useEffect(() => {
-        const getFavorite = async() => {
-            if(status === "authenticated" && session?.user?.email){
-                const email = session.user.email
-                const res = await fetch(`/api/favorite/${email}`)
-                const data = await res.json()
-                setFavoriteList(data)
-                setLoading(false)
-            }
-        }
-        getFavorite();
-    }, [status, session])
 
-    const handleRemoveFavorite = async(id:any) => {
-      console.log(id)
+    
 
-      const res = await fetch(`/api/favorite/${id}`, {
-        method: 'DELETE',
-        headers: {
-          "Content-Type": "application/json"
-        },
-      })
 
-      if(res.ok) {
-        const remainingFavorite = favoriteList.filter((fv:any) => fv._id !== id)
-        setFavoriteList(remainingFavorite)
-      }else {
-        console.error('Failed to delete favoritw');
-      }
-    }
 
   return (
     <section className='w-full'>
       <div className="flex justify-between items-center mb-6">
-        <h2 className='text-2xl font-bold text-teal-800'>Saved Listings <span className="text-teal-600 ml-2">({favoriteList.length})</span></h2>
+        <h2 className='text-2xl font-bold text-teal-800'>Saved Listings <span className="text-teal-600 ml-2">({favouriteListings.length})</span></h2>
       </div>
 
-      {loading ? (
+      {isLoading ? (
         <div className="flex justify-center py-8">
           <div className="w-8 h-8 border-t-2 border-b-2 border-teal-500 rounded-full animate-spin"></div>
         </div>
       ) : (
         <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
-          {Array.isArray(favoriteList) && favoriteList.length > 0 ? (
-            favoriteList.map((listing: any, index: number) => (
+          {Array.isArray(favouriteListings) && favouriteListings.length > 0 ? (
+            favouriteListings.map((listing: any, index: number) => (
               <ListCard
                 key={index} 
                 listing={listing}
                 profile={false}
-                favorite={true}
-                handleRemoveFavorite={handleRemoveFavorite}
               />
             ))
           ) : (

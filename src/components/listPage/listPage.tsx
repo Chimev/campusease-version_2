@@ -7,7 +7,6 @@ import { categories } from "@/data/categories";
 import { useRouter } from 'next/navigation';
 // import { Filter_1, Filter_2, Filter_3, Filter_4 } from "../filter/Filte";
 import ListCard from "../listCard/ListCard";
-import { FavoriteContext } from "@/lib/Context/FavoriteContext";
 import { useSession } from "next-auth/react";
 import Loading from "../loading/Loading";
 import NotifyButton from "../constant/NotifyButton";
@@ -25,8 +24,7 @@ const ListPage = ({category}:any) => {
   const [showListing, setShowListing] = useState(false);
   // const [showFilter, setShowFilter] = useState(false);
 
-  //for saved listing
-  const {favorite, setFavorite, setFavoriteList} = useContext<any>(FavoriteContext)
+ 
 
 
   const [listings, setListings] = useState([])
@@ -70,43 +68,7 @@ const ListPage = ({category}:any) => {
     getLisiting(); 
   }
 
-  
 
-  const handleFavorite = async ( id:any) => {
-    const FavouriteList = listings.find((list:any) => list._id == id)
-    console.log(id)
-
-    if(!FavouriteList) return
-    if(status === "authenticated" && session?.user?.email){
-      const email = session.user.email
-
-      const newFavouriteList = {...FavouriteList as any, email: email}
-      console.log( "check", newFavouriteList)
-
-      try {
-        const res = await fetch('/api/favorite', {
-          method: "POST",
-          headers: {
-            "Content-Type" : "application/json"
-        },
-        body: JSON.stringify(newFavouriteList)
-        })
-  
-        if(res.status === 500){
-          setFavorite(false)
-          throw new Error("Could not add to save")
-        }if(res.status === 200){
-          setFavorite(true)
-          console.log("success")
-        }
-      } catch (error) {
-        //
-      }
-  }else {
-    route.replace('/sign-in')
-  }
-    console.log("list",FavouriteList)
-  }
 
   return (
     <>
@@ -162,7 +124,7 @@ const ListPage = ({category}:any) => {
                 <div className="grid gap-2 grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                   {Array.isArray(listings) && listings.length > 0 ? (
                     listings.map((listing: any) => (
-                      <ListCard key={listing._id} listing={listing} favorite={favorite} handleFavorite={handleFavorite} />
+                      <ListCard key={listing._id} listing={listing}  />
                     ))
                   ) : (
                     <p>No listings found</p>

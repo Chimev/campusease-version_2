@@ -2,23 +2,21 @@
 
 import Image from 'next/image';
 import React, { useState } from 'react';
-import { FaPhoneAlt } from 'react-icons/fa';
 import { TbCurrencyNaira } from "react-icons/tb";
 import { FiEdit2, FiTrash2, FiEye, FiHeart } from "react-icons/fi";
-import { MdDelete, MdEdit } from "react-icons/md";
-import { GrFavorite } from "react-icons/gr";
-import { MdOutlineFavorite } from "react-icons/md";
 import Link from 'next/link';
 import Background from '../background/Background';
+import { useSession } from 'next-auth/react';
+import { useListing } from '@/lib/Context/ListingContext';
+import { redirect } from 'next/navigation';
+import { removeFavourite } from '@/lib/functions/favourite/removeFavourite';
+import { addFavourite } from '@/lib/functions/favourite/addFavourite';
 
 interface ListCardProps {
   listing: any;
   onDelete?: any;
   onEdit?: any;
   profile?:boolean;
-  favorite?: boolean;
-  handleFavorite?: any;
-  handleRemoveFavorite?:any;
   setShowBackground?:any;
   showBackground?:any;
   setListings?:any;
@@ -27,10 +25,74 @@ interface ListCardProps {
   loading?:any;
 }
 
-const ListCard = ({ listing, listings, setLoading,  profile, handleFavorite, handleRemoveFavorite, favorite, setShowBackground, showBackground, setListings }: ListCardProps) => {
+const ListCard = ({ listing, listings, setLoading,  profile, setShowBackground, showBackground, setListings }: ListCardProps) => {
    const [editId, setEditId] = useState<string | null>(null) 
    const [editCategory, setEditCategory] = useState<string | null>(null)
-  //  const [showBackground, setShowBackground] = useState(false)
+   const {savedListings, setSavedListings} = useListing()
+
+  const {data: session, status} = useSession();
+
+  // This is for favourite listing 
+  const isFav = savedListings.some((fav: any) => fav.listingId === listing._id);
+
+  const handleFavourite = async() => {
+    try {
+      if(status === "authenticated" && session?.user?.email){
+      const email = session.user.email
+      const listingId = listing._id;
+
+      const result = await addFavourite(email, listingId )
+      console.log('Result:', result);
+
+      if(result.ok){
+        console.log('Successful')
+        // Add the item to savedListings immediately
+        setSavedListings((prev: any[]) => {
+            const newList = [...prev, { listingId, email }];
+            console.log('New savedListings:', newList);
+            return newList;
+        });
+      }else {
+          console.log('API returned not ok');
+      }
+    }else{
+      redirect('/sign-in')
+    }
+    } catch (error) {
+      console.error('Error adding to saved listing:', error)
+    }
+  }
+
+
+  const handleFavouriteDelete = async(listingId: string) => {
+    console.log('Attempting to delete:', listingId);
+    try {
+      if(status === "authenticated" && session?.user?.email){
+      const email = session.user.email
+        const res = await removeFavourite(email, listingId);
+        console.log('Delete response:', res); // Check what this shows
+        console.log('res.ok:', res?.ok);
+        
+        if(res?.ok){
+            console.log('Delete successful, updating UI');
+            setSavedListings((prev: any[]) => {
+                console.log('Current savedListings:', prev);
+                const newList = prev.filter((fav: any) => {
+                    console.log('Comparing:', fav.listingId, '!==', listingId);
+                    return fav.listingId !== listingId;
+                });
+                console.log('New savedListings after delete:', newList);
+                return newList;
+            });
+        } else {
+            console.log('Delete failed - API returned not ok');
+        }
+      }
+    } catch (error) {
+        console.error('Error Deleting SavedListing', error);
+    }
+}
+
 
 
 
@@ -68,12 +130,7 @@ const ListCard = ({ listing, listings, setLoading,  profile, handleFavorite, han
     <>
       {showBackground && editId && <Background id={editId} category={editCategory} setShowBackground={setShowBackground} />}
       <div className="relative bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg hover:translate-y-[-2px] pb-3">
-        {/* Category Badge */}
-        <div className="absolute top-3 left-3 z-10">
-          <span className="inline-block bg-teal-500 bg-opacity-80 backdrop-blur-sm text-white text-xs font-medium px-2.5 py-1 rounded-full capitalize">
-            {listing.category}
-          </span>
-        </div>
+        
         
         {/* Image Container */}
         <div className="relative h-48 w-full">
@@ -84,8 +141,10 @@ const ListCard = ({ listing, listings, setLoading,  profile, handleFavorite, han
             className="object-cover" 
           />
           
+          
           {/* Action buttons - positioned absolute over the image */}
           {profile && (
+            <>
             <div className="absolute bottom-3 right-3 flex space-x-2">
               <button 
                 onClick={() => onEdit(listing._id, listing.category)}
@@ -102,30 +161,31 @@ const ListCard = ({ listing, listings, setLoading,  profile, handleFavorite, han
                 <FiTrash2 size={16} />
               </button>
             </div>
+            {/* Category Badge */}
+            <div className="absolute top-3 left-3 z-10">
+              <span className="inline-block bg-teal-500 bg-opacity-80 backdrop-blur-sm text-white text-xs font-medium px-2.5 py-1 rounded-full capitalize">
+                {listing.category}
+              </span>
+            </div>
+            </>
+            
           )}
-          
-          {!profile && (
-            <div className="absolute top-3 right-3">
-              {favorite ? (
-                <button 
-                  onClick={() => handleRemoveFavorite && handleRemoveFavorite(listing._id)}
+        </div>
+
+        {
+          !profile && (
+             <div className="absolute top-3 right-3">
+              {true 
+              && <button 
+                  onClick={isFav ? () => handleFavouriteDelete(listing._id) : handleFavourite}
                   className="p-2 bg-white/80 backdrop-blur-sm rounded-full text-amber-500 hover:bg-white transition-colors"
                   aria-label="Remove from favorites"
                 >
-                  <FiHeart size={18} className="fill-amber-500" />
-                </button>
-              ) : (
-                <button 
-                  onClick={() => handleFavorite && handleFavorite(listing._id)}
-                  className="p-2 bg-white/80 backdrop-blur-sm rounded-full text-gray-400 hover:text-amber-500 hover:bg-white transition-colors"
-                  aria-label="Add to favorites"
-                >
-                  <FiHeart size={18} />
-                </button>
-              )}
+                  <FiHeart size={24} className={isFav ? 'fill-amber-500' : ''} />
+                </button>}
             </div>
-          )}
-        </div>
+          )
+        }
         
         {/* Content */}
         <div className="p-4">

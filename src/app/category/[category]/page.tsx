@@ -1,6 +1,5 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/auth';
 import ListPage from '@/components/listPage/listPage';
-import { FavouriteListProvider } from '@/lib/Context/FavoriteContext';
 import { Metadata } from 'next';
 import { getServerSession } from 'next-auth/next'; // <-- fix import path
 import { redirect } from 'next/navigation';
@@ -28,9 +27,8 @@ const Page = async ({ params }: Props) => {
   }
 
   return (
-    <FavouriteListProvider>
+    
       <ListPage category={category} />
-    </FavouriteListProvider>
   );
 };
 
