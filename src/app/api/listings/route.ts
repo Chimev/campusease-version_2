@@ -16,11 +16,11 @@ cloudinary.config({
 interface FormData {
   category?:string;
   image: [
-  {
-    url: string,
-    publicId: string
-  }
-]
+    {
+      url: string,
+      publicId: string
+    }
+  ];
 
   institution?:string;
   type?:string;

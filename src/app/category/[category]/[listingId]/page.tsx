@@ -23,7 +23,12 @@ interface Details {
   price?: string;
   description?: string;
   name?: string;
-  image: string[]; // Assuming this is an array of image URLs
+  image: [
+    {
+      url: string,
+      publicId: string
+    }
+  ] 
 }
 
 const Thumbnail = React.memo(({ img, onClick, isActive }: { img: string; onClick: () => void; isActive?: boolean }) => (
@@ -73,7 +78,7 @@ const ListingDetails = () => {
 
         // Set the active image once details are fetched
         if (data?.image?.length > 0) {
-          setActiveImg(data.image[0]);
+          setActiveImg(data.image[0].url);
         }
       } catch (error) {
         console.error('Error fetching listing details:', error);
@@ -159,9 +164,9 @@ const ListingDetails = () => {
               {details.image.slice(0, visibleCount).map((img, index) => (
                 <Thumbnail 
                   key={index} 
-                  img={img} 
-                  onClick={() => handleImageClick(img)} 
-                  isActive={activeImg === img}
+                  img={img.url} 
+                  onClick={() => handleImageClick(img.url)} 
+                  isActive={activeImg === img.url}
                 />
               ))}
 
@@ -192,7 +197,7 @@ const ListingDetails = () => {
                   {/* Image preview */}
                   <div className="relative w-full h-[400px] rounded overflow-hidden mb-4">
                     <Image 
-                      src={details.image[currentImgIndex]} 
+                      src={details.image[currentImgIndex].url} 
                       alt={`Image ${currentImgIndex + 1}`} 
                       fill 
                       className="object-cover"
