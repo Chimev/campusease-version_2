@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { v2 as cloudinary } from 'cloudinary';
 import NotificationPreference from '@/utilis/models/NotificationPreference';
 import { listingNotificationEmail } from '@/lib/functions/emails/listingNotificationEmail';
+import { Readable } from 'stream';
 
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
@@ -14,7 +15,13 @@ cloudinary.config({
 
 interface FormData {
   category?:string;
-  image?: string[];
+  image: [
+  {
+    url: string,
+    publicId: string
+  }
+]
+
   institution?:string;
   type?:string;
   campus?:string;
@@ -74,23 +81,36 @@ export const POST = async (request: NextRequest) => {
 
     await connectToDB();
 
-    // Upload images to Cloudinary
-    const uploadedImages: string[] = [];
-    
-    for (const image of images) {
-      // Convert File to base64
-      const bytes = await image.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-      const base64Image = `data:${image.type};base64,${buffer.toString('base64')}`;
+    // Convert File → Cloudinary upload (stream)
+    const uploadToCloudinary = (file: File) => {
+      return new Promise((resolve, reject) => {
+        const upload = cloudinary.uploader.upload_stream(
+          {
+            folder: "campusEase",
+            resource_type: "auto",
+          },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        );
 
-      // Upload to Cloudinary
-      const result = await cloudinary.uploader.upload(base64Image, {
-        folder: "campusEase",
-        resource_type: "auto",
+        file.arrayBuffer().then((ab) => {
+          const buffer = Buffer.from(ab);
+          Readable.from(buffer).pipe(upload);
+        });
+
+       
       });
-      
-      uploadedImages.push(result.secure_url);
-    }
+    };
+
+    // Upload all images *in parallel*
+    const uploadPromises = images.map((img) => uploadToCloudinary(img));
+    const cloudinaryResults = await Promise.all(uploadPromises);
+
+    const uploadedImages:any = cloudinaryResults.map((r: any) => ({ url: r.secure_url, publicId: r.public_id }));
+
+
 
     // Build form data object
     const listingData: FormData = {

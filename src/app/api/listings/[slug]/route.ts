@@ -66,19 +66,16 @@ export const DELETE = async (req: NextRequest, { params }: any) => {
             return NextResponse.json({ message: 'Listing not found' }, { status: 404 });
         }
     
-        // Delete associated images from Cloudinary
-        if (listing.image && listing.image.length > 0) { // Corrected typo 'lemgth'
-            for (const img of listing.image) {
-                if(!img){
-                    continue;
-                }
+        
+        // Delete Cloudinary images (parallel)
+        if (listing.image && listing.image.length > 0) {
+          const deletePromises = listing.image.map((img: any) => {
+            if (!img?.publicId) return null;
+            return cloudinary.uploader.destroy(img.publicId, { resource_type: "image" });
+          });
 
-                const publicId = img.split('/').pop()?.split('.')[0]; // Extract public ID from URL
-                
-                if (publicId) {
-                    await cloudinary.uploader.destroy(publicId); // Destroy the image in Cloudinary
-                }
-            }
+          // Run all deletions together
+          await Promise.all(deletePromises);
         }
     
         // Delete the listing from the database

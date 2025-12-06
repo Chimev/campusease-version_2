@@ -32,6 +32,8 @@ const ListCard = ({ listing, listings, setLoading,  profile, handleFavorite, han
    const [editCategory, setEditCategory] = useState<string | null>(null)
   //  const [showBackground, setShowBackground] = useState(false)
 
+
+
   const onEdit = (id:string, category:string) => {
     console.log(id, category)
     setEditId(id); // Set the id for editing
@@ -76,7 +78,7 @@ const ListCard = ({ listing, listings, setLoading,  profile, handleFavorite, han
         {/* Image Container */}
         <div className="relative h-48 w-full">
           <Image 
-            src={listing.image[0] || listing.image[1] || listing.image[2] || '/placeholder.jpg'} 
+            src={listing.image[0].url || listing.image[1].url || listing.image[2].url || '/placeholder.jpg'} 
             alt="Listing image" 
             fill
             className="object-cover" 

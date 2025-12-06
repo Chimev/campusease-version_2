@@ -15,9 +15,12 @@ const listingsSchema = new Schema(
             type: String,
             required: true,
         },
-        image: {
-            type: [String],
-        },
+        image: [
+        {
+            url: { type: String, required: true },
+            publicId: { type: String, required: true },
+        }
+        ],
         institution: {
             type: String,
             required: true,
