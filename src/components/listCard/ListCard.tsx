@@ -107,6 +107,8 @@ const ListCard = ({ listing, listings, setLoading,  profile, setShowBackground, 
 
   const onDelete = async (id: string) => {
   setLoading(true);
+  const email = session?.user.email as string
+  const listingId = listing._id;
 
   try {
     const res = await deleteListing(id);
@@ -116,6 +118,10 @@ const ListCard = ({ listing, listings, setLoading,  profile, setShowBackground, 
         (listing: any) => listing._id !== id
       );
       setListings(remainingListings);
+      // Automatically remove from favorites if it was favorited
+        if (isFav && session?.user?.email) {
+          await handleFavouriteDelete(listingId);
+        }
     } else {
       console.error("Failed to delete listing");
     }
