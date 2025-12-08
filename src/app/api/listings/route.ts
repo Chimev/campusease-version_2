@@ -1,78 +1,76 @@
-import  Listings  from '@/utilis/models/Listings'
+import Listings from '@/utilis/models/Listings'
 import { connectToDB } from '@/utilis/connectToDB'
 import { NextRequest, NextResponse } from 'next/server';
 import { v2 as cloudinary } from 'cloudinary';
 import NotificationPreference from '@/utilis/models/NotificationPreference';
 import { listingNotificationEmail } from '@/lib/functions/emails/listingNotificationEmail';
-import { Readable } from 'stream';
 
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
-  secure:true
+  secure: true
 });
 
-interface FormData {
-  category?:string;
-  image: [
-    {
-      url: string,
-      publicId: string
-    }
-  ];
-
-  institution?:string;
-  type?:string;
-  campus?:string;
-  description?:string;
-  accommodationTitle?:string;
-  videoLink?: string;
-  price?:number;
-  phone?:number;
-  accommodationType?:string;
-  service?:string;
-  propertyType?:string;
-  property?:string;
-  roommateName?:string;
-  level?:string;
-  gender?:string;
-  email?:string
-  name?:string;
-  isFavorite?:string;
+interface ImageData {
+  url: string;
+  publicId: string;
 }
 
-
+interface FormData {
+  category?: string;
+  image: ImageData[];
+  institution?: string;
+  type?: string;
+  campus?: string;
+  description?: string;
+  accommodationTitle?: string;
+  videoLink?: string;
+  price?: number;
+  phone?: number;
+  accommodationType?: string;
+  service?: string;
+  propertyType?: string;
+  property?: string;
+  roommateName?: string;
+  level?: string;
+  gender?: string;
+  email?: string;
+  name?: string;
+  isFavorite?: string;
+}
 
 export const POST = async (request: NextRequest) => {
   try {
-    const formData = await request.formData();
+    // Parse JSON body instead of FormData
+    const body = await request.json();
 
-    // Extract all form fields
-    const category = formData.get('category') as string;
-    const institution = formData.get('institution') as string;
-    const type = formData.get('type') as string;
-    const campus = formData.get('campus') as string;
-    const description = formData.get('description') as string;
-    const accommodationTitle = formData.get('accommodationTitle') as string;
-    const videoLink = formData.get('videoLink') as string;
-    const price = formData.get('price') ? Number(formData.get('price')) : undefined;
-    const phone = formData.get('phone') ? Number(formData.get('phone')) : undefined;
-    const accommodationType = formData.get('accommodationType') as string;
-    const service = formData.get('service') as string;
-    const propertyType = formData.get('propertyType') as string;
-    const property = formData.get('property') as string;
-    const roommateName = formData.get('roommateName') as string;
-    const level = formData.get('level') as string;
-    const gender = formData.get('gender') as string;
-    const name = formData.get('name') as string;
-    const email = formData.get('email') as string;
-    const isFavorite = formData.get('isFavorite') as string;
+    // Extract all fields from JSON body
+    const {
+      category,
+      institution,
+      type,
+      campus,
+      description,
+      accommodationTitle,
+      videoLink,
+      price,
+      phone,
+      accommodationType,
+      service,
+      propertyType,
+      property,
+      roommateName,
+      level,
+      gender,
+      name,
+      email,
+      isFavorite,
+      image // This now comes as an array of {url, publicId} objects
+    } = body;
 
-    // Get all uploaded images
-    const images = formData.getAll('images') as File[];
-
-    if (!images || images.length < 5) {
+    // Validate images
+    if (!image || !Array.isArray(image) || image.length < 5) {
       return NextResponse.json(
         { message: 'Please upload at least 5 images' },
         { status: 400 }
@@ -81,49 +79,18 @@ export const POST = async (request: NextRequest) => {
 
     await connectToDB();
 
-    // Convert File → Cloudinary upload (stream)
-    const uploadToCloudinary = (file: File) => {
-      return new Promise((resolve, reject) => {
-        const upload = cloudinary.uploader.upload_stream(
-          {
-            folder: "campusEase",
-            resource_type: "auto",
-          },
-          (error, result) => {
-            if (error) reject(error);
-            else resolve(result);
-          }
-        );
-
-        file.arrayBuffer().then((ab) => {
-          const buffer = Buffer.from(ab);
-          Readable.from(buffer).pipe(upload);
-        });
-
-       
-      });
-    };
-
-    // Upload all images *in parallel*
-    const uploadPromises = images.map((img) => uploadToCloudinary(img));
-    const cloudinaryResults = await Promise.all(uploadPromises);
-
-    const uploadedImages:any = cloudinaryResults.map((r: any) => ({ url: r.secure_url, publicId: r.public_id }));
-
-
-
-    // Build form data object
+    // Build listing data object
     const listingData: FormData = {
       isFavorite,
       category,
-      image: uploadedImages,
+      image, // Already uploaded to Cloudinary from frontend
       institution,
       type,
       campus,
       description,
       accommodationTitle,
-      price,
-      phone,
+      price: price ? Number(price) : undefined,
+      phone: phone ? Number(phone) : undefined,
       accommodationType,
       videoLink,
       service,
@@ -216,6 +183,8 @@ export const POST = async (request: NextRequest) => {
   }
 };
 
+
+
 export const GET = async (req:NextRequest) => {
   try {
     await connectToDB()
@@ -236,3 +205,6 @@ export const GET = async (req:NextRequest) => {
     return new NextResponse(error.message, {status: 500})
   }
 }
+
+
+

@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { uploadImagesToCloudinary } from '@/lib/functions/uploadCloudinary';
 import { addListing } from '@/lib/functions/listings/addLiisting';
 import LoadingBackground from '../background/LoadingBackground';
+import { deleteListing } from '@/lib/functions/listings/deleteListing';
 
 
 
@@ -136,42 +137,65 @@ const AddListing = ({name, email, role} : {name: string; email:string; school:st
         return;
     }
 
+    let uploadedImages: Array<{ url: string; publicId: string }> = [];
+
     try {
-        // Create FormData to send files
-        const formData = new FormData();
-        
-        // Append all form fields
-        formData.append('category', category || '');
-        formData.append('description', description || '');
-        formData.append('institution', institution || '');
-        formData.append('type', type || '');
-        formData.append('campus', campus || '');
-        formData.append('email', email);
-        formData.append('name', name);
-        formData.append('isFavorite', 'false');
-        
-        // Append category-specific fields
-        if (accommodationTitle) formData.append('accommodationTitle', accommodationTitle);
-        if (videoLink) formData.append('videoLink', videoLink);
-        if (accommodationType) formData.append('accommodationType', accommodationType);
-        if (service) formData.append('service', service);
-        if (propertyType) formData.append('propertyType', propertyType);
-        if (property) formData.append('property', property);
-        if (roommateName) formData.append('roommateName', roommateName);
-        if (level) formData.append('level', level);
-        if (gender) formData.append('gender', gender);
-        if (price) formData.append('price', price);
-        if (phone) formData.append('phone', phone);
-        
-        // Append all image files
-        for (let i = 0; i < imageFiles.length; i++) {
-            formData.append('images', imageFiles[i]);
-        }
+        //Uplaod Images
+        const uploadImagesArray = async (imageFiles: FileList) => {
+            const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+            const uploadPreset = process.env.NEXT_PUBLIC_UPLOAD_PRESET;
+
+            const uploads = Array.from(imageFiles).map(async (file) => {
+                const formData = new FormData();
+                formData.append("file", file);
+                formData.append("upload_preset", uploadPreset!);
+
+                const res = await fetch(
+                `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+                { method: "POST", body: formData }
+                );
+
+                const data = await res.json();
+                return {
+                url: data.secure_url,
+                publicId: data.public_id,
+                };
+            });
+
+            return await Promise.all(uploads);
+        };
+
+        uploadedImages = await uploadImagesArray(imageFiles);
+
+
 
         // Send to backend API
         const response = await fetch('/api/listings', {
             method: 'POST',
-            body: formData, // Send FormData, no Content-Type header needed
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                category,
+                description,
+                institution,
+                type,
+                campus,
+                email,
+                name,
+                accommodationTitle,
+                videoLink,
+                accommodationType,
+                service,
+                propertyType,
+                property,
+                roommateName,
+                level,
+                gender,
+                price,
+                phone,
+                image: uploadedImages 
+            }),
         });
 
         const data = await response.json();
@@ -198,6 +222,18 @@ const AddListing = ({name, email, role} : {name: string; email:string; school:st
         route.push('/profile');
     } catch (error) {
         console.error("Error during listing:", error);
+
+        // Delete uploaded images if listing fails
+        if (uploadedImages && uploadedImages.length > 0) {
+            for (const img of uploadedImages) {
+                try {
+                    await deleteListing(img.publicId); // <-- call your helper
+                } catch (err) {
+                    console.error("Failed to delete image:", img.publicId, err);
+                }
+            }
+        }
+
         if (error instanceof Error) {
             toast.error(error.message || "Error during listing.");
         } else {
@@ -206,7 +242,7 @@ const AddListing = ({name, email, role} : {name: string; email:string; school:st
     } finally {
         setLoading(false);
     }
-};
+    };
 
     return (
         <div className='px-3 py-8 sm:max-w-[500px] sm:m-auto'>
@@ -232,6 +268,7 @@ const AddListing = ({name, email, role} : {name: string; email:string; school:st
                     </select>
                 </div>
 
+                {/* Image */}
                 <div className="input">
                     <p>IMAGE</p>
                     <p className='-mt-5 text-xs'>
@@ -241,7 +278,7 @@ const AddListing = ({name, email, role} : {name: string; email:string; school:st
                     <input 
                         name='images' 
                         type="file" 
-                        accept='.jpg, .png, .jpeg'
+                        accept='image/*'
                         ref={imageRef}
                         multiple
                         required
@@ -281,7 +318,7 @@ const AddListing = ({name, email, role} : {name: string; email:string; school:st
                             <div className="input">
                                 <label className="p-text">PHONE</label>
                                 <div className="price">
-                                    <input type="number" required ref={phoneRef} name="phoneNo" />
+                                    <input type="tel" required ref={phoneRef} name="phoneNo" />
                                 </div>
                             </div>
                         </Filter_1>
@@ -291,7 +328,7 @@ const AddListing = ({name, email, role} : {name: string; email:string; school:st
                             <div className="input">
                                 <label className="p-text">PHONE</label>
                                 <div className="price">
-                                    <input type="number" required ref={phoneRef} name="phoneNo" />
+                                    <input type="tel" required ref={phoneRef} name="phoneNo" />
                                 </div>
                             </div>
                         </Filter_2>
@@ -306,7 +343,7 @@ const AddListing = ({name, email, role} : {name: string; email:string; school:st
                                 <div className="input">
                                     <label className="p-text">phone</label>
                                     <div className="price">
-                                        <input type="number" ref={phoneRef} required name="phoneNo" />
+                                        <input type="tel" ref={phoneRef} required name="phoneNo" />
                                     </div>
                                 </div>
                             </div>

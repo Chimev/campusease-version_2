@@ -11,6 +11,7 @@ import { useListing } from '@/lib/Context/ListingContext';
 import { redirect } from 'next/navigation';
 import { removeFavourite } from '@/lib/functions/favourite/removeFavourite';
 import { addFavourite } from '@/lib/functions/favourite/addFavourite';
+import { deleteListing } from '@/lib/functions/listings/deleteListing';
 
 interface ListCardProps {
   listing: any;
@@ -105,26 +106,25 @@ const ListCard = ({ listing, listings, setLoading,  profile, setShowBackground, 
   }
 
   const onDelete = async (id: string) => {
-    setLoading(true)
-    try {
-      const res = await fetch(`/api/listings/${id}`, {
-        method: 'DELETE',
-        headers: {
-          "Content-Type" : "application/json"
-      },
-      })
-      if (res.ok) {
-        setLoading(false)
-        const remainingListings = listings.filter((listing: any) => listing._id !== id);
-        setListings(remainingListings); 
-      } else {
-        setLoading(false)
-        console.error('Failed to delete listing');
-      }
-    } catch (error) {
-      console.error("Error deleting listing:", error);
+  setLoading(true);
+
+  try {
+    const res = await deleteListing(id);
+
+    if (res?.ok) {
+      const remainingListings = listings.filter(
+        (listing: any) => listing._id !== id
+      );
+      setListings(remainingListings);
+    } else {
+      console.error("Failed to delete listing");
     }
+  } catch (error) {
+    console.error("Error deleting listing:", error);
+  } finally {
+    setLoading(false);
   }
+};
 
   return (
     <>

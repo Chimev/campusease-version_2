@@ -70,9 +70,6 @@ const listingsSchema = new Schema(
         gender: {
             type: String,
         },
-        isFavorite: {
-            type: String,
-        },
     },
     {timestamps: true}
 );
