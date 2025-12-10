@@ -1,0 +1,17 @@
+
+
+export const deleteUploadedImage = async (publicId: string) => {
+  try {
+    const response = await fetch(`/api/listing/image/${publicId}`, {
+      method: 'DELETE',
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      console.error('Failed to delete image:', data.message);
+    }
+    return data;
+  } catch (error) {
+    console.error('Error deleting image:', error);
+  }
+};

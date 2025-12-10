@@ -7,10 +7,8 @@ import SecondaryBtn from "../buttons/SecondaryBtn";
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { uploadImagesToCloudinary } from '@/lib/functions/uploadCloudinary';
-import { addListing } from '@/lib/functions/listings/addLiisting';
 import LoadingBackground from '../background/LoadingBackground';
-import { deleteListing } from '@/lib/functions/listings/deleteListing';
+import { deleteUploadedImage } from '@/lib/functions/listings/image/deleteUploadedImage';
 
 
 
@@ -131,8 +129,8 @@ const AddListing = ({name, email, role} : {name: string; email:string; school:st
     // Handle image uploads
     const imageFiles = imageRef?.current?.files;
 
-    if (!imageFiles || imageFiles.length < 5) {
-        setErrorMessage("Please upload minimum of 5.");
+    if (!imageFiles || imageFiles.length < 3) {
+        setErrorMessage("Please upload minimum of 3.");
         setLoading(false);
         return;
     }
@@ -227,7 +225,7 @@ const AddListing = ({name, email, role} : {name: string; email:string; school:st
         if (uploadedImages && uploadedImages.length > 0) {
             for (const img of uploadedImages) {
                 try {
-                    await deleteListing(img.publicId); // <-- call your helper
+                    await deleteUploadedImage(img.publicId); // <-- call your helper
                 } catch (err) {
                     console.error("Failed to delete image:", img.publicId, err);
                 }

@@ -69,13 +69,6 @@ export const POST = async (request: NextRequest) => {
       image // This now comes as an array of {url, publicId} objects
     } = body;
 
-    // Validate images
-    if (!image || !Array.isArray(image) || image.length < 5) {
-      return NextResponse.json(
-        { message: 'Please upload at least 5 images' },
-        { status: 400 }
-      );
-    }
 
     await connectToDB();
 
