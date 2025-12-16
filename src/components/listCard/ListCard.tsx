@@ -94,9 +94,6 @@ const ListCard = ({ listing, listings, setLoading,  profile, setShowBackground, 
     }
 }
 
-
-
-
   const onEdit = (id:string, category:string) => {
     console.log(id, category)
     setEditId(id); // Set the id for editing

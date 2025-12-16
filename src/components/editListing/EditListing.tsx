@@ -108,7 +108,7 @@ const EditListing = ({ category, id, setShowBackground }:any) => {
       delete formData.gender;
       delete formData.roommateName;
     }
-    if(category === 'service'){
+    if(category === 'services'){
       delete formData.accommodationName;
       delete formData.accommodationType;
       delete formData.price;
@@ -126,7 +126,7 @@ const EditListing = ({ category, id, setShowBackground }:any) => {
       delete formData.gender;
       delete formData.roommateName;
     }
-    if(category === 'roommate'){
+    if(category === 'roommates'){
       delete formData.accommodationName;
       delete formData.price;
       delete formData.accommodationType;
