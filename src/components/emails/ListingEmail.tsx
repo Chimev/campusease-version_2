@@ -14,7 +14,7 @@ import {
 
 type NewListingEmailProps = {
   schoolName: string;
-  category: 'accommodation' | 'roommate' | string;
+  category: 'accommodation' | 'roommates' | string;
   listingTitle: string;
   listingDescription: string;
   listingPrice?: string;

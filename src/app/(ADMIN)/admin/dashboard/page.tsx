@@ -5,13 +5,50 @@ import Link from 'next/link';
 import { MdGroups, MdListAlt, MdSchool, MdTrendingUp } from "react-icons/md";
 
 
+// Im just calling the db directly because cookies wnt work server to server especially from diffeent origin 
+
+import { connectToDB } from "@/utilis/connectToDB";
+import User from "@/utilis/models/User";
+
+export const getUsersData = async ({ 
+  school, 
+  role, 
+  page = 1, 
+  limit = 10 
+}: { 
+  school?: string | null, 
+  role?: string | null, 
+  page?: number, 
+  limit?: number 
+}) => {
+  await connectToDB();
+
+  const skip = (page - 1) * limit;
+  const filter: Record<string, any> = {};
+  if (school) filter.school = school;
+  if (role) filter.role = role;
+
+  const users = await User.find(filter).skip(skip).limit(limit).lean();
+  const totalUsers = await User.countDocuments(filter);
+  const totalPages = Math.ceil(totalUsers / limit);
+
+  return {
+    users: JSON.parse(JSON.stringify(users)), // Ensure data is serializable for RSC
+    totalUsers,
+    totalPages,
+    currentPage: page
+  };
+};
+
 
 export const revalidate = 60;
 
 const Page = async () => {
-  const users = await getUsers()
+  const users = await getUsersData({ page: 1, limit: 10 });
   const listings = await getListings()
   const schools = await getSchools()
+
+  console.log('user', users)
       
   return (
     <div className="space-y-8">

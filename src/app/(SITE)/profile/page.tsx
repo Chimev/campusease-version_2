@@ -1,12 +1,12 @@
 import React from 'react';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
-import { authOptions } from '../api/auth/[...nextauth]/auth';
 import Link from 'next/link';
 import { FiEdit3, FiShare2, FiEye } from 'react-icons/fi';
 import ShareBTN from '@/components/profile/shareBtn/ShareBTN';
 import Menu from '@/components/profile/Menu';
 import SignOut from '@/components/profile/SignOut';
+import { authOptions } from '@/app/api/auth/[...nextauth]/auth';
 
 interface User {
   name?: string;

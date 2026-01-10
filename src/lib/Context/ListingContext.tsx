@@ -42,7 +42,7 @@ export const ListingProvider = ({ children }: { children: any }) => {
         setIsLoading(true);
         try {
             const data = await getFavourite(session?.user.email as string) 
-            console.log( 'data', data)
+            // console.log( 'data', data)
             setSavedListings(data)
         } catch (error) {
             console.error('Error fetching saved listings')

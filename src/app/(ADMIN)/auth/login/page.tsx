@@ -1,6 +1,6 @@
 'use client'
-import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { FiMail, FiLock, FiUser, FiArrowRight } from 'react-icons/fi';
 import { signIn, useSession } from 'next-auth/react';
@@ -11,18 +11,6 @@ const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const route = useRouter();
-  const session = useSession();
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get('callbackUrl') || '/';
-
-//  useEffect(() => {
-//   if (session?.status === "authenticated") {
-//     toast.success("Login Successful");
-//     setTimeout(() => {
-//       route.replace(callbackUrl);
-//     }, 1000);
-//   }
-// }, [session, route, callbackUrl]);
 
 
   const handleLogin = async (e: any) => {
@@ -32,34 +20,32 @@ const SignIn = () => {
 
     setLoading(true)
 
-    const res = await signIn("credentials", {
-      redirect: false,
+    await signIn("credentials", {
+      redirect: true,
       email,
       password
     })
 
-    console.log("res", res)
 
-    if (res?.ok) {
-    toast.success("Login Successful");
-    
-    window.location.href = callbackUrl || "/"; 
-    return;
-  } else {
-    setLoading(false);
-    toast.error("Invalid credentials or network error");
-  }
+    //We commented this becuase of the redirect in te signin method only uncomment if you want the info from the res
+    // console.log(res)
 
-    if (res?.error === "Error: querySrv ETIMEOUT _mongodb._tcp.cluster0.dgonc.mongodb.net") {
-      console.log(res?.error)
-      setLoading(false)
-      toast.error("Network Error");
-    }
-    if (res?.error === "CredentialsSignin") {
-      console.log(res?.error)
-      setLoading(false)
-      toast.error("Invalid email or password");
-    }
+
+    // if (!res?.ok) {
+    //   setLoading(false);
+    //   toast.error("Error while trying to login")
+    // }
+
+    // if (res?.error === "Error: querySrv ETIMEOUT _mongodb._tcp.cluster0.dgonc.mongodb.net") {
+    //   console.log(res?.error)
+    //   setLoading(false)
+    //   toast.error("Network Error");
+    // }
+    // if (res?.error === "CredentialsSignin") {
+    //   console.log(res?.error)
+    //   setLoading(false)
+    //   toast.error("Invalid email or password");
+    // }
   }
 
   return (
@@ -90,7 +76,7 @@ const SignIn = () => {
               <FiUser className="text-2xl text-white" />
             </div>
             <h1 className='text-4xl font-bold text-teal-800 mb-2'>
-              Welcome Back
+              Welcome Back Admin!
             </h1>
             <p className="text-gray-600 text-lg">
               Sign in to continue your campus journey
@@ -182,42 +168,7 @@ const SignIn = () => {
             </form>
           </div>
 
-          {/* Sign Up Link */}
-          <div className='text-center mt-8'>
-            <p className="text-gray-600">
-              Don't have an account yet?{' '}
-              <button
-                onClick={() => route.push('/register')}
-                className='text-amber-600 hover:text-amber-700 font-semibold transition-colors'
-              >
-                Create Account
-              </button>
-            </p>
-          </div>
-
-          {/* Additional CTA */}
-          <div className="mt-8 p-6 bg-gradient-to-r from-teal-50 to-amber-50 rounded-2xl border border-teal-100">
-            <div className="text-center">
-              <h3 className="font-semibold text-teal-800 mb-1">New to CampusEase?</h3>
-              <p className="text-sm text-gray-600 mb-3">
-                Join thousands of students finding their perfect campus life
-              </p>
-              <div className="flex justify-center space-x-4 text-xs text-gray-500">
-                <span className="flex items-center">
-                  <div className="w-2 h-2 bg-teal-400 rounded-full mr-1"></div>
-                  50+ Campuses
-                </span>
-                <span className="flex items-center">
-                  <div className="w-2 h-2 bg-amber-400 rounded-full mr-1"></div>
-                  10k+ Users
-                </span>
-                <span className="flex items-center">
-                  <div className="w-2 h-2 bg-teal-400 rounded-full mr-1"></div>
-                  5k+ Listings
-                </span>
-              </div>
-            </div>
-          </div>
+          
         </div>
       </section>
     </main>

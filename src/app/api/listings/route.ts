@@ -142,7 +142,7 @@ export const POST = async (request: NextRequest) => {
     const listingId = newListing._id.toString();
 
     // Send email notifications to users subscribed to this category
-    if (category === 'accommodation' || category === 'roommate') {
+    if (category === 'accommodation' || category === 'roommates') {
       try {
         const subscribers = await NotificationPreference.find({ category, enabled: true });
 

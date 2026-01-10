@@ -57,7 +57,7 @@ const ListPage = ({category}:any) => {
       setLoading(false)
       setListings(data)
     } catch (error) {
-      
+      console.error( 'Error during listing',  error)
       //
     }
   };

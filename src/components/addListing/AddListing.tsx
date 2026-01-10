@@ -1,10 +1,10 @@
 'use client'
 
-import React, {  useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Filter_1, Filter_2, Filter_3, Filter_4 } from "../filter/Filte";
 import SearchInstitute from "../Search/SearchInstitute";
 import SecondaryBtn from "../buttons/SecondaryBtn";
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import LoadingBackground from '../background/LoadingBackground';
@@ -16,8 +16,6 @@ import { deleteUploadedImage } from '@/lib/functions/listings/image/deleteUpload
 
 const AddListing = ({name, email, role} : {name: string; email:string; school:string; role:string[]}) => {
     const route = useRouter();
-    const searchParams   = useSearchParams();
-    const notifyRoommate = searchParams.get('notifyRoommate') === 'true';
     const [errorMessage, setErrorMessage] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
     const [loading, setLoading] = useState(false);
@@ -106,140 +104,141 @@ const AddListing = ({name, email, role} : {name: string; email:string; school:st
     };
 
     const addList = async (e: any) => {
-    e.preventDefault();
-    setLoading(true);
+        e.preventDefault();
+        setLoading(true);
 
-    const category = categoryRef?.current?.value;
-    const description = descriptionRef?.current?.value;
-    const institution = institutionRef?.current?.value;
-    const type = typeRef?.current?.value;
-    const campus = campusRef?.current?.value;
-    const accommodationType = accommodationTypeRef?.current?.value;
-    const accommodationTitle = accommodationTitleRef?.current?.value;
-    const videoLink = videoRef?.current?.value || "";
-    const service = serviceTypeRef?.current?.value;
-    const propertyType = propertyTypeRef?.current?.value;
-    const property = propertyRef?.current?.value;
-    const level = levelRef?.current?.value;
-    const gender = genderRef?.current?.value;
-    const price = priceRef?.current?.value?.toString();
-    const phone = phoneRef?.current?.value;
-    const roommateName = roommateNameRef?.current?.value;
+        const category = categoryRef?.current?.value;
+        const description = descriptionRef?.current?.value;
+        const institution = institutionRef?.current?.value;
+        const type = typeRef?.current?.value;
+        const campus = campusRef?.current?.value;
+        const accommodationType = accommodationTypeRef?.current?.value;
+        const accommodationTitle = accommodationTitleRef?.current?.value;
+        const videoLink = videoRef?.current?.value || "";
+        const service = serviceTypeRef?.current?.value;
+        const propertyType = propertyTypeRef?.current?.value;
+        const property = propertyRef?.current?.value;
+        const level = levelRef?.current?.value;
+        const gender = genderRef?.current?.value;
+        const price = priceRef?.current?.value?.toString();
+        const phone = phoneRef?.current?.value;
+        const roommateName = roommateNameRef?.current?.value;
 
-    // Handle image uploads
-    const imageFiles = imageRef?.current?.files;
+        // Handle image uploads
+        const imageFiles = imageRef?.current?.files;
 
-    if (!imageFiles || imageFiles.length < 3) {
-        setErrorMessage("Please upload minimum of 3.");
-        setLoading(false);
-        return;
-    }
-
-    let uploadedImages: Array<{ url: string; publicId: string }> = [];
-
-    try {
-        //Uplaod Images
-        const uploadImagesArray = async (imageFiles: FileList) => {
-            const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-            const uploadPreset = process.env.NEXT_PUBLIC_UPLOAD_PRESET;
-
-            const uploads = Array.from(imageFiles).map(async (file) => {
-                const formData = new FormData();
-                formData.append("file", file);
-                formData.append("upload_preset", uploadPreset!);
-
-                const res = await fetch(
-                `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-                { method: "POST", body: formData }
-                );
-
-                const data = await res.json();
-                return {
-                url: data.secure_url,
-                publicId: data.public_id,
-                };
-            });
-
-            return await Promise.all(uploads);
-        };
-
-        uploadedImages = await uploadImagesArray(imageFiles);
-
-
-
-        // Send to backend API
-        const response = await fetch('/api/listings', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                category,
-                description,
-                institution,
-                type,
-                campus,
-                email,
-                name,
-                accommodationTitle,
-                videoLink,
-                accommodationType,
-                service,
-                propertyType,
-                property,
-                roommateName,
-                level,
-                gender,
-                price,
-                phone,
-                image: uploadedImages 
-            }),
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.message || 'Failed to add listing');
+        if (!imageFiles || imageFiles.length < 3) {
+            setErrorMessage("Please upload minimum of 3.");
+            setLoading(false);
+            return;
         }
 
-        // Enable roommate notification if needed
-        if (notifyRoommate && category === 'roommate') {
-            try {
-                await fetch('/api/notifications/preferences', {
+        let uploadedImages: Array<{ url: string; publicId: string }> = [];
+
+        try {
+            //Uplaod Images
+            const uploadImagesArray = async (imageFiles: FileList) => {
+                const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+                const uploadPreset = process.env.NEXT_PUBLIC_UPLOAD_PRESET;
+
+                const uploads = Array.from(imageFiles).map(async (file) => {
+                    const formData = new FormData();
+                    formData.append("file", file);
+                    formData.append("upload_preset", uploadPreset!);
+
+                    const res = await fetch(
+                    `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+                    { method: "POST", body: formData }
+                    );
+
+                    const data = await res.json();
+                    return {
+                    url: data.secure_url,
+                    publicId: data.public_id,
+                    };
+                });
+
+                return await Promise.all(uploads);
+            };
+
+            uploadedImages = await uploadImagesArray(imageFiles);
+
+
+
+            // Enable roommate notification if needed
+            if (category === 'roommates') {
+                const res = await fetch('/api/notifications', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ category: 'roommate', enabled: true }),
+                    body: JSON.stringify({ category: 'roommates', enabled: true }),
                 });
-                console.log('Roommate notifications enabled for current user');
-            } catch (err) {
-                console.error('Failed to enable roommate notifications:', err);
-            }
-        }
 
-        toast.success("Listing added successfully!");
-        route.push('/profile');
-    } catch (error) {
-        console.error("Error during listing:", error);
-
-        // Delete uploaded images if listing fails
-        if (uploadedImages && uploadedImages.length > 0) {
-            for (const img of uploadedImages) {
-                try {
-                    await deleteUploadedImage(img.publicId); // <-- call your helper
-                } catch (err) {
-                    console.error("Failed to delete image:", img.publicId, err);
+                if (!res.ok) {
+                    throw new Error('Failed to enable roommate notifications');
                 }
             }
-        }
+                        
+            // Send to backend API
+            const response = await fetch('/api/listings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    category,
+                    description,
+                    institution,
+                    type,
+                    campus,
+                    email,
+                    name,
+                    accommodationTitle,
+                    videoLink,
+                    accommodationType,
+                    service,
+                    propertyType,
+                    property,
+                    roommateName,
+                    level,
+                    gender,
+                    price,
+                    phone,
+                    image: uploadedImages 
+                }),
+            });
 
-        if (error instanceof Error) {
-            toast.error(error.message || "Error during listing.");
-        } else {
-            toast.error("Error during listing.");
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to add listing');
+            }
+
+            
+
+            toast.success("Listing added successfully!");
+            route.push('/profile');
+        } catch (error) {
+            console.error("Error during listing:", error);
+
+            // Delete uploaded images if listing fails
+            if (uploadedImages && uploadedImages.length > 0) {
+                for (const img of uploadedImages) {
+                    try {
+                        await deleteUploadedImage(img.publicId); // <-- call your helper
+                    } catch (err) {
+                        console.error("Failed to delete image:", img.publicId, err);
+                    }
+                }
+            }
+
+            if (error instanceof Error) {
+                toast.error(error.message || "Error during listing.");
+            } else {
+                toast.error("Error during listing.");
+            }
+        } finally {
+            setLoading(false);
         }
-    } finally {
-        setLoading(false);
-    }
     };
 
     return (

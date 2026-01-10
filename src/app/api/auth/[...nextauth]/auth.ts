@@ -60,8 +60,6 @@ export const authOptions: NextAuthOptions = {
       async jwt({ token, user }) {
         if (user) {
           token.id = user.id;
-          token.phone = user.phone;
-          token.school = user.school;
           token.role = user.role
         }
         return token;
@@ -72,7 +70,7 @@ export const authOptions: NextAuthOptions = {
             session.user.id = token.id as string; 
             session.user.phone = token.phone as string;
             session.user.school = token.school as string;
-            session.user.role = token.role as string;
+            session.user.role = token.role as string[];
           }
         }
         return session;

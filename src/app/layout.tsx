@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import { Rubik } from "next/font/google";
-import "./globals.css";
-import Navbar from "@/components/navbar/Navbar";
+import "@/app/globals.css";
 import { getServerSession } from "next-auth";
 import AuthProvider from "@/utilis/SessionProvider";
-import Footer from "@/components/footer/Footer";
-import { NavbarProvider } from "@/lib/Context/NavContext";
 import { ListingProvider } from "@/lib/Context/ListingContext";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 
 const inter = Rubik({ subsets: ["latin"], weight:['400'] });
 
@@ -60,15 +59,11 @@ export default async function RootLayout({
     <html lang="en" className="scroll-smooth">
       <body className={inter.className }>
         <>
-        <NavbarProvider>
-          <AuthProvider session={session} >
-            <ListingProvider>
-              <Navbar/>
-              {children}
-              <Footer/>
-            </ListingProvider>
-          </AuthProvider>
-        </NavbarProvider>
+        <AuthProvider session={session} >
+          <ListingProvider>
+            {children}
+          </ListingProvider>
+        </AuthProvider>
         </>
         </body>
     </html>

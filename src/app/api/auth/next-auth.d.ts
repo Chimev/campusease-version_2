@@ -9,7 +9,7 @@ declare module "next-auth" {
       email?: string | null;
       phone?: string | null;
       school?: string | null;
-      role?: string | null;
+      role?: string[] | null;
     };
   }
   interface User {

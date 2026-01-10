@@ -3,8 +3,9 @@ import Sidebar from '@/components/admin/sidebar/Sidebar'
 import Image from 'next/image'
 import React from 'react'
 import SchoolLayout from './SchoolLayout'
+import "@/app/globals.css";
 
-const layout = ({ children }: any) => {
+const Adminlayout = ({ children }: any) => {
   return (
     <div className='bg-blue min-h-screen flex overflow-hidden'>  
       {/* Sidebar Section */}
@@ -26,4 +27,4 @@ const layout = ({ children }: any) => {
   )
 }
 
-export default layout
+export default Adminlayout

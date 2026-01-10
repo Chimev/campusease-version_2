@@ -1,16 +1,11 @@
 // components/Footer.tsx
 'use client'
 import { categories } from "@/data/categories";
-import { NavbarContext, NavbarProvider } from "@/lib/Context/NavContext";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useContext } from "react";
+import React from "react";
 
 const Footer: React.FC = () => {
-    const context = useContext(NavbarContext)
-    const showNavbar = context?.showNavbar
-
-    if(!showNavbar) return null
 
     const handleWhatsAppSupportAdvanced = () => {
   const phoneNumber = '2349078608642';

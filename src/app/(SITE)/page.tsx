@@ -5,6 +5,7 @@ import { TestimonialCard } from '@/components/constant/TestimonialCard';
 import { CategoryCard } from '@/components/categoryCard/CategoryCard';
 import { testimonials } from '@/data/testimonials';
 import MobileAppComp from '@/components/constant/MobileAppComp';
+import { useSession } from 'next-auth/react';
 
 
 export const metadata = {

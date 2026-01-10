@@ -2,7 +2,7 @@ import AddListing from '@/components/addListing/AddListing'
 import React from 'react'
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
-import { authOptions } from '../api/auth/[...nextauth]/auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/auth';
 
 const page = async() => {
   const session = await getServerSession(authOptions)
@@ -10,7 +10,6 @@ const page = async() => {
   const email = session?.user?.email;
   // const school = session?.user?.school;
   const role = session?.user?.role;
-
 
   
   if(!session) {

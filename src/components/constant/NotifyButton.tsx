@@ -6,24 +6,24 @@ import { FiBell, FiBellOff } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 
 interface NotifyButtonProps {
-  category: string; // "accommodation" or "roommate"
+  category: string; // "accommodation" or "roommates"
   onToggle?: (enabled: boolean) => void;
 }
 
 const NotifyButton: React.FC<NotifyButtonProps> = ({ category, onToggle }) => {
   const [enabled, setEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
     const fetchPreference = async () => {
       if (status !== 'authenticated') return;
       try {
-        const res = await fetch(`/api/notifications/preferences?category=${category}`);
+        const res = await fetch(`/api/notifications/?category=${category}`);
         const data = await res.json();
-        if (data.preference) {
-          setEnabled(data.preference.enabled);
+        if (data?.enabled) {
+          setEnabled(data.enabled);
         }
       } catch (error) {
         console.error('Error loading preference:', error);
@@ -40,12 +40,12 @@ const NotifyButton: React.FC<NotifyButtonProps> = ({ category, onToggle }) => {
   }
 
   // Special handling for 'roommate'
-  if (category === 'roommate') {
+  if (category === 'roommates') {
     if (enabled) {
       // 👇 Turn off notification if it's already on
       setLoading(true);
       try {
-        const res = await fetch('/api/notifications/preferences', {
+        const res = await fetch('/api/notifications', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ category, enabled: false }),
@@ -68,7 +68,7 @@ const NotifyButton: React.FC<NotifyButtonProps> = ({ category, onToggle }) => {
       }
     } else {
       // 👇 If it's off, redirect to add listing
-      router.push('/add-listing?notifyRoommate=true');
+      router.push('/add-listing');
     }
     return;
   }
@@ -102,7 +102,7 @@ const NotifyButton: React.FC<NotifyButtonProps> = ({ category, onToggle }) => {
 };
 
 
-  if (category !== 'accommodation' && category !== 'roommate') return null;
+  if (category !== 'accommodation' && category !== 'roommates') return null;
 
   return (
     <button

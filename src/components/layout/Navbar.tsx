@@ -9,7 +9,6 @@ import { useSession } from 'next-auth/react';
 import SignOut from '../profile/SignOut';
 import { FaPlus } from "react-icons/fa";
 import { FaSignInAlt } from "react-icons/fa";
-import { NavbarContext } from '@/lib/Context/NavContext';
 
 // Updated navMenu to handle dynamic authentication
 const getNavMenu = (isAuthenticated: boolean) => [
@@ -26,9 +25,6 @@ const Navbar = () => {
   const [authorization, setAuthorization] = useState(false);
   const pathname = usePathname();
   const session = useSession();
-  const context = useContext(NavbarContext)
-  const showNavbar = context?.showNavbar
-  
 
 
   useEffect(() => {
@@ -64,21 +60,8 @@ const Navbar = () => {
   const navMenuItems = getNavMenu(authorization);
 
 
-  //Dynamic Navbar
-  useEffect(() => {
-    if (!context) return 
-    
-    if(pathname === '/'){
-      context.setShowNavbar(true)
-    }else if( ['/admin/dashboard', '/admin/users', '/admin/listings', '/admin/notification'].includes(pathname) ) {
-      context.setShowNavbar(false)
-    }
-    
-  }, [pathname, context])
   
 
-
-  if (!showNavbar) return null
 
   return (
     <nav className="text-primary text-xl px-2 sticky top-0 bg-white/85 shadow-md z-50">
