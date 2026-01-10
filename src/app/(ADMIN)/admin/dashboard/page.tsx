@@ -10,7 +10,7 @@ import { MdGroups, MdListAlt, MdSchool, MdTrendingUp } from "react-icons/md";
 import { connectToDB } from "@/utilis/connectToDB";
 import User from "@/utilis/models/User";
 
-export const getUsersData = async ({ 
+const getUsersData = async ({ 
   school, 
   role, 
   page = 1, 
@@ -43,7 +43,7 @@ export const getUsersData = async ({
 
 export const revalidate = 60;
 
-const Page = async () => {
+const Dashboard = async () => {
   const users = await getUsersData({ page: 1, limit: 10 });
   const listings = await getListings()
   const schools = await getSchools()
@@ -142,4 +142,4 @@ const Page = async () => {
   );
 };
 
-export default Page;
+export default Dashboard;
