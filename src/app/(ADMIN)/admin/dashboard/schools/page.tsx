@@ -37,7 +37,7 @@ const Page = () => {
       } else if (res.status === 200) {
         setCampuses([]);
         setInputValue('');
-        console.log('School added successfully');
+        // console.log('School added successfully');
       }
     } catch (error) {
       console.error('Error:', error);

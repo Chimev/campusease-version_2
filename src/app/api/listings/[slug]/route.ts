@@ -92,7 +92,7 @@ export const DELETE = async (req: NextRequest, { params }: any) => {
 
 export const PATCH = async (req: NextRequest, {params}: any) => {
     const body = await req.json()
-    const id = params.slug
+    const id = params.slugListings
 
     await connectToDB();
 

@@ -47,8 +47,6 @@ const Dashboard = async () => {
   const users = await getUsersData({ page: 1, limit: 10 });
   const listings = await getListings()
   const schools = await getSchools()
-
-  console.log('user', users)
       
   return (
     <div className="space-y-8">
